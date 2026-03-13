@@ -260,7 +260,7 @@ void ops::shift_ortho_center(MPS& mps, int target, SVDWorkspace& ws) {
 
 // ============================================================
 // from_statevector: amplitude vector → MPS via sequential SVD
-// Amplitude ordering: qubit 0 = MSB (Qsun convention)
+// Amplitude ordering: qubit 0 = MSB (Qforge convention)
 // ============================================================
 void ops::from_statevector(MPS& mps, const std::complex<double>* amp,
                             size_t dim, int max_chi, double eps,

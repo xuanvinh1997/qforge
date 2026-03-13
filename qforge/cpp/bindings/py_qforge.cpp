@@ -10,7 +10,7 @@
 namespace py = pybind11;
 
 PYBIND11_MODULE(_qforge_core, m) {
-    m.doc() = "Qsun C++ acceleration engine";
+    m.doc() = "Qforge C++ acceleration engine";
 
     // --- StateVector ---
     py::class_<qforge::StateVector>(m, "StateVector")

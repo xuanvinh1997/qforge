@@ -1,6 +1,6 @@
 #include "qforge/cuda_backend.h"
 
-#ifdef QSUN_HAS_CUDA
+#ifdef QFORGE_HAS_CUDA
 
 #include <cuda_runtime.h>
 #include <cuComplex.h>
@@ -13,28 +13,28 @@
 // Kernel launchers declared in cuda_kernels.cu (compiled by nvcc)
 // ---------------------------------------------------------------------------
 extern "C" {
-void   qsun_launch_single(cuDoubleComplex* sv, int n_qubits, int tgt_qubit,
+void   qforge_launch_single(cuDoubleComplex* sv, int n_qubits, int tgt_qubit,
                             cuDoubleComplex m00, cuDoubleComplex m01,
                             cuDoubleComplex m10, cuDoubleComplex m11);
-void   qsun_launch_controlled(cuDoubleComplex* sv, int n_qubits,
+void   qforge_launch_controlled(cuDoubleComplex* sv, int n_qubits,
                                 int ctrl_qubit, int tgt_qubit,
                                 cuDoubleComplex m00, cuDoubleComplex m01,
                                 cuDoubleComplex m10, cuDoubleComplex m11);
-void   qsun_launch_double_controlled(cuDoubleComplex* sv, int n_qubits,
+void   qforge_launch_double_controlled(cuDoubleComplex* sv, int n_qubits,
                                       int c1_qubit, int c2_qubit, int tgt_qubit,
                                       cuDoubleComplex m00, cuDoubleComplex m01,
                                       cuDoubleComplex m10, cuDoubleComplex m11);
-void   qsun_launch_two_qubit(cuDoubleComplex* sv, int n_qubits,
+void   qforge_launch_two_qubit(cuDoubleComplex* sv, int n_qubits,
                                int tgt1_qubit, int tgt2_qubit,
                                const cuDoubleComplex* mat_device);
-double qsun_launch_prob0(const cuDoubleComplex* sv, int n_qubits, int qubit);
+double qforge_launch_prob0(const cuDoubleComplex* sv, int n_qubits, int qubit);
 // Versions that reuse a caller-supplied 1024-double device reduction buffer:
-double qsun_launch_prob0_ex(const cuDoubleComplex* sv, int n_qubits, int qubit,
+double qforge_launch_prob0_ex(const cuDoubleComplex* sv, int n_qubits, int qubit,
                              double* d_reduce_buf);
-double qsun_launch_pauli(const cuDoubleComplex* sv, int n_qubits, int qubit,
+double qforge_launch_pauli(const cuDoubleComplex* sv, int n_qubits, int qubit,
                           int pauli_type, double* d_reduce_buf);
 // GPU depolarizing channel: d_scratch must be dim doubles on device.
-void qsun_launch_depolarize(cuDoubleComplex* sv, int n_qubits, int qubit,
+void qforge_launch_depolarize(cuDoubleComplex* sv, int n_qubits, int qubit,
                              double p_noise, double* d_scratch);
 }
 
@@ -151,7 +151,7 @@ void CudaBackend::apply_single_gate(int target,
     std::complex<double> m10, std::complex<double> m11)
 {
     sync_to_device();
-    qsun_launch_single(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_, target,
+    qforge_launch_single(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_, target,
                         to_cu(m00), to_cu(m01), to_cu(m10), to_cu(m11));
     host_dirty_ = true;
 }
@@ -208,7 +208,7 @@ void CudaBackend::apply_controlled_gate(int control, int target,
     std::complex<double> m10, std::complex<double> m11)
 {
     sync_to_device();
-    qsun_launch_controlled(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
+    qforge_launch_controlled(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
                             control, target,
                             to_cu(m00), to_cu(m01), to_cu(m10), to_cu(m11));
     host_dirty_ = true;
@@ -243,7 +243,7 @@ void CudaBackend::apply_double_controlled_gate(int c1, int c2, int target,
     std::complex<double> m10, std::complex<double> m11)
 {
     sync_to_device();
-    qsun_launch_double_controlled(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
+    qforge_launch_double_controlled(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
                                    c1, c2, target,
                                    to_cu(m00), to_cu(m01), to_cu(m10), to_cu(m11));
     host_dirty_ = true;
@@ -280,7 +280,7 @@ void CudaBackend::apply_two_qubit_gate(int t1, int t2,
     cudaStream_t s = static_cast<cudaStream_t>(stream_);
     CUDA_CHECK(cudaMemcpyAsync(d_mat2q_, h_mat, 16 * sizeof(cuDoubleComplex),
                                cudaMemcpyHostToDevice, s));
-    qsun_launch_two_qubit(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
+    qforge_launch_two_qubit(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
                            t1, t2, static_cast<const cuDoubleComplex*>(d_mat2q_));
     host_dirty_ = true;
 }
@@ -314,7 +314,7 @@ void CudaBackend::SISWAP(int t1, int t2) {
 
 void CudaBackend::E(double p_noise, int target) {
     sync_to_device();
-    qsun_launch_depolarize(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
+    qforge_launch_depolarize(static_cast<cuDoubleComplex*>(d_sv_), n_qubits_,
                             target, p_noise,
                             static_cast<double*>(d_scratch_));
     host_dirty_ = true;
@@ -332,7 +332,7 @@ void CudaBackend::E_all(double p_noise) {
 double CudaBackend::measure_one_prob0(int qubit) const {
     // Compute probability on GPU — no host sync required.
     const_cast<CudaBackend*>(this)->sync_to_device();
-    return qsun_launch_prob0_ex(
+    return qforge_launch_prob0_ex(
         static_cast<const cuDoubleComplex*>(d_sv_), n_qubits_, qubit,
         static_cast<double*>(d_reduce_));
 }
@@ -359,7 +359,7 @@ void CudaBackend::collapse_one(int qubit, int value) {
 double CudaBackend::pauli_expectation(int qubit, int pauli_type) const {
     // Compute expectation on GPU — no host sync required.
     const_cast<CudaBackend*>(this)->sync_to_device();
-    return qsun_launch_pauli(
+    return qforge_launch_pauli(
         static_cast<const cuDoubleComplex*>(d_sv_), n_qubits_, qubit,
         pauli_type, static_cast<double*>(d_reduce_));
 }
@@ -372,7 +372,7 @@ void CudaBackend::probabilities(double* out) const {
 
 } // namespace qforge
 
-#else // !QSUN_HAS_CUDA
+#else // !QFORGE_HAS_CUDA
 
 namespace qforge {
 
@@ -425,4 +425,4 @@ void CudaBackend::probabilities(double*) const   { CUDA_STUB; }
 #undef CUDA_STUB
 } // namespace qforge
 
-#endif // QSUN_HAS_CUDA
+#endif // QFORGE_HAS_CUDA

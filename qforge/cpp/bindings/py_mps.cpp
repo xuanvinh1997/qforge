@@ -1,5 +1,5 @@
 // -*- coding: utf-8 -*-
-// py_mps.cpp — pybind11 bindings for _qsun_mps (MPS + MPO + DMRG)
+// py_mps.cpp — pybind11 bindings for _qforge_mps (MPS + MPO + DMRG)
 #include <pybind11/pybind11.h>
 #include <pybind11/numpy.h>
 #include <pybind11/complex.h>
@@ -17,7 +17,7 @@ double dmrg_sweep(mps::MPS& psi, const mpo::MPO& H,
 }}
 
 PYBIND11_MODULE(_qforge_mps, m) {
-    m.doc() = "Qsun MPS/DMRG C++ acceleration engine";
+    m.doc() = "Qforge MPS/DMRG C++ acceleration engine";
 
     // ================================================================
     // MPS class

@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # author: vinhpx
-"""Internal shared utilities for Qsun."""
+"""Internal shared utilities for Qforge."""
 from __future__ import annotations
 
 

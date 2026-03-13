@@ -19,7 +19,7 @@ public:
     void sync_to_device() override {} // no-op
     void reset() override { sv_.reset(); }
 
-    // Access underlying StateVector (for backward compat with _qsun_core)
+    // Access underlying StateVector (for backward compat with _qforge_core)
     StateVector& state_vector() { return sv_; }
     const StateVector& state_vector() const { return sv_; }
 

@@ -1,5 +1,5 @@
 """
-QML Algorithm Benchmark: Qsun vs PennyLane vs Qiskit
+QML Algorithm Benchmark: Qforge vs PennyLane vs Qiskit
 =====================================================
 
 Compares VQE and QAOA across three frameworks on identical problems:
@@ -110,7 +110,7 @@ def _median_time(fn, n_runs=N_RUNS):
 # VQE implementations
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _vqe_qsun(backend):
+def _vqe_qforge(backend):
     from qforge.algo import Hamiltonian, VQE, GradientDescent
 
     H = Hamiltonian(
@@ -149,7 +149,7 @@ def _vqe_pennylane(qml):
 
     @qml.qnode(dev, diff_method="parameter-shift")
     def circuit(params):
-        # 1-layer hardware-efficient ansatz (matches Qsun)
+        # 1-layer hardware-efficient ansatz (matches Qforge)
         qml.RY(params[0], wires=0); qml.RY(params[1], wires=1)
         qml.CNOT(wires=[0, 1])
         qml.RY(params[2], wires=0); qml.RY(params[3], wires=1)
@@ -182,7 +182,7 @@ def _vqe_qiskit():
         ("XX", VQE_COEFFS[4]),
     ])
 
-    # 1-layer TwoLocal: RY-CNOT-RY on 2 qubits → 4 parameters (matches Qsun)
+    # 1-layer TwoLocal: RY-CNOT-RY on 2 qubits → 4 parameters (matches Qforge)
     ansatz = TwoLocal(
         VQE_N_QUBITS, rotation_blocks=["ry"], entanglement_blocks="cx",
         reps=1, entanglement="linear"
@@ -218,7 +218,7 @@ def _vqe_qiskit():
 # QAOA implementations
 # ─────────────────────────────────────────────────────────────────────────────
 
-def _qaoa_qsun(backend):
+def _qaoa_qforge(backend):
     from qforge.algo import QAOA, GradientDescent
 
     def run():
@@ -259,7 +259,7 @@ def _qaoa_pennylane(qml):
         # Initial superposition
         for w in range(QAOA_N_QUBITS):
             qml.Hadamard(wires=w)
-        # Problem unitary (matches Qsun QAOA exactly)
+        # Problem unitary (matches Qforge QAOA exactly)
         for (i, j) in QAOA_EDGES:
             qml.CNOT(wires=[i, j])
             qml.RZ(-gamma, wires=j)
@@ -302,7 +302,7 @@ def _qaoa_qiskit():
         ("ZIIZ", -0.5),   # Z₃Z₀
     ])
 
-    # Build QAOA circuit matching Qsun's structure exactly
+    # Build QAOA circuit matching Qforge's structure exactly
     gamma = ParameterVector("γ", QAOA_P)
     beta  = ParameterVector("β", QAOA_P)
     params_list = [*gamma, *beta]
@@ -378,15 +378,15 @@ def run_vqe_benchmark(qml, has_qiskit):
 
     _header(f"VQE  |  {VQE_N_QUBITS} qubits, H₂-like Hamiltonian, {STEPS} steps, lr={LR}")
 
-    # Qsun backends
+    # Qforge backends
     for backend, available in [("cpu", _HAS_CPP), ("cuda", _HAS_CUDA), ("metal", _HAS_METAL)]:
         if not available:
             continue
         try:
-            t, energy = _vqe_qsun(backend)
-            _row(f"Qsun ({backend})", t, energy)
+            t, energy = _vqe_qforge(backend)
+            _row(f"Qforge ({backend})", t, energy)
         except Exception as e:
-            _row_na(f"Qsun ({backend})", str(e)[:40])
+            _row_na(f"Qforge ({backend})", str(e)[:40])
 
     # PennyLane
     if qml is not None:
@@ -422,10 +422,10 @@ def run_qaoa_benchmark(qml, has_qiskit):
         if not available:
             continue
         try:
-            t, cut = _qaoa_qsun(backend)
-            _row(f"Qsun ({backend})", t, cut, "(expected cut)")
+            t, cut = _qaoa_qforge(backend)
+            _row(f"Qforge ({backend})", t, cut, "(expected cut)")
         except Exception as e:
-            _row_na(f"Qsun ({backend})", str(e)[:40])
+            _row_na(f"Qforge ({backend})", str(e)[:40])
 
     if qml is not None:
         try:
@@ -534,18 +534,18 @@ if __name__ == "__main__":
     import argparse
     from qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL
 
-    ap = argparse.ArgumentParser(description="QML benchmark: Qsun vs PennyLane vs Qiskit")
+    ap = argparse.ArgumentParser(description="QML benchmark: Qforge vs PennyLane vs Qiskit")
     ap.add_argument("--scale", action="store_true",
-                    help="Run multi-qubit scaling benchmark (Qsun backends only)")
+                    help="Run multi-qubit scaling benchmark (Qforge backends only)")
     ap.add_argument("--all", action="store_true",
                     help="Run both framework comparison and scaling benchmark")
     args = ap.parse_args()
 
     print("=" * 60)
-    print("QML Algorithm Benchmark: Qsun vs PennyLane vs Qiskit")
+    print("QML Algorithm Benchmark: Qforge vs PennyLane vs Qiskit")
     print("=" * 60)
     print(f"Settings: steps={STEPS}, lr={LR}, grad=parameter-shift(π/2)")
-    print(f"Qsun backends — CPU:{_HAS_CPP}  CUDA:{_HAS_CUDA}  Metal:{_HAS_METAL}")
+    print(f"Qforge backends — CPU:{_HAS_CPP}  CUDA:{_HAS_CUDA}  Metal:{_HAS_METAL}")
 
     if args.scale:
         run_scaling_benchmark()

@@ -216,7 +216,7 @@ def run_benchmarks():
 # Main
 # ============================================================
 if __name__ == "__main__":
-    print("Qsun GPU Benchmark")
+    print("Qforge GPU Benchmark")
     print(f"  CPU (C++): {_HAS_CPP}")
     print(f"  CUDA:      {_HAS_CUDA}")
     print(f"  Metal:     {_HAS_METAL}")

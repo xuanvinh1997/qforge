@@ -626,7 +626,7 @@ void MetalBackend::OR(int c1, int c2, int target) {
     // OR = X(c1) X(c2) CCNOT(c1,c2,t) X(c1) X(c2) — but simpler to use
     // the controlled gate approach. OR flips target if c1=1 OR c2=1.
     // Implement via: X target, CCNOT, X target (De Morgan's)
-    // Actually, to match original Qsun behavior exactly:
+    // Actually, to match original Qforge behavior exactly:
     // For each state where c1=1 OR c2=1, flip target
     // This isn't a standard 2x2 gate on target conditioned on controls.
     // We need to fall back to host for this non-standard gate.

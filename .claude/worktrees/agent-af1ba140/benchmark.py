@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Correctness validation and performance benchmark for Qsun C++ engine."""
+"""Correctness validation and performance benchmark for Qforge C++ engine."""
 import numpy as np
 import time
 import sys

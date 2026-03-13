@@ -40,7 +40,7 @@ class CustomBuildExt(pybind11_build_ext):
                 cmd = [
                     nvcc, '-O3', '-std=c++17',
                     '--compiler-options', '-fPIC',
-                    '-DQSUN_HAS_CUDA',
+                    '-DQFORGE_HAS_CUDA',
                     '-arch=native',
                     '-c', cu_src,
                     '-o', obj,
@@ -145,8 +145,8 @@ ext_modules.append(
     )
 )
 
-# --- Metal backend (macOS only, opt-in via QSUN_METAL=1) ---
-if sys.platform == 'darwin' and os.environ.get('QSUN_METAL', '0') == '1':
+# --- Metal backend (macOS only, opt-in via QFORGE_METAL=1) ---
+if sys.platform == 'darwin' and os.environ.get('QFORGE_METAL', '0') == '1':
     pybind11_includes = []
     try:
         import pybind11
@@ -179,8 +179,8 @@ if sys.platform == 'darwin' and os.environ.get('QSUN_METAL', '0') == '1':
         )
     )
 
-# --- CUDA backend (opt-in via QSUN_CUDA=1) ---
-if os.environ.get('QSUN_CUDA', '0') == '1':
+# --- CUDA backend (opt-in via QFORGE_CUDA=1) ---
+if os.environ.get('QFORGE_CUDA', '0') == '1':
     cuda_home = os.environ.get('CUDA_HOME', '/usr/local/cuda')
     cuda_include = os.path.join(cuda_home, 'include')
     cuda_lib = os.path.join(cuda_home, 'lib64')
@@ -197,7 +197,7 @@ if os.environ.get('QSUN_CUDA', '0') == '1':
         ],
         library_dirs=[cuda_lib],
         libraries=["cudart"],
-        extra_compile_args=["-O3", "-DQSUN_HAS_CUDA"],
+        extra_compile_args=["-O3", "-DQFORGE_HAS_CUDA"],
         language="c++",
     )
     # Attach .cu sources for the custom build step

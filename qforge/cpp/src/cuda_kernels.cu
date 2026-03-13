@@ -1,8 +1,8 @@
 /**
- * cuda_kernels.cu — Custom CUDA kernels for Qsun state-vector simulation.
+ * cuda_kernels.cu — Custom CUDA kernels for Qforge state-vector simulation.
  * No cuQuantum dependency: only cuda_runtime and cuComplex.
  *
- * Qubit convention (same as the rest of Qsun):
+ * Qubit convention (same as the rest of Qforge):
  *   Qubit index 0 is the MOST significant bit in the integer state index.
  *   For n_qubits=3, qubit 0 → bit 2, qubit 1 → bit 1, qubit 2 → bit 0.
  *   Callers pass bit positions already converted:
@@ -313,7 +313,7 @@ static inline int grid(size_t n, int blk) {
     return (int)((n + blk - 1) / blk);
 }
 
-void qsun_launch_single(cuDoubleComplex* sv, int n_qubits, int tgt_qubit,
+void qforge_launch_single(cuDoubleComplex* sv, int n_qubits, int tgt_qubit,
                          cuDoubleComplex m00, cuDoubleComplex m01,
                          cuDoubleComplex m10, cuDoubleComplex m11) {
     int tgt_bit = n_qubits - 1 - tgt_qubit;
@@ -322,7 +322,7 @@ void qsun_launch_single(cuDoubleComplex* sv, int n_qubits, int tgt_qubit,
     k_single<<<grid(half, blk), blk>>>(sv, tgt_bit, half, m00, m01, m10, m11);
 }
 
-void qsun_launch_controlled(cuDoubleComplex* sv, int n_qubits,
+void qforge_launch_controlled(cuDoubleComplex* sv, int n_qubits,
                               int ctrl_qubit, int tgt_qubit,
                               cuDoubleComplex m00, cuDoubleComplex m01,
                               cuDoubleComplex m10, cuDoubleComplex m11) {
@@ -334,7 +334,7 @@ void qsun_launch_controlled(cuDoubleComplex* sv, int n_qubits,
                                                m00, m01, m10, m11);
 }
 
-void qsun_launch_double_controlled(cuDoubleComplex* sv, int n_qubits,
+void qforge_launch_double_controlled(cuDoubleComplex* sv, int n_qubits,
                                     int c1_qubit, int c2_qubit, int tgt_qubit,
                                     cuDoubleComplex m00, cuDoubleComplex m01,
                                     cuDoubleComplex m10, cuDoubleComplex m11) {
@@ -347,7 +347,7 @@ void qsun_launch_double_controlled(cuDoubleComplex* sv, int n_qubits,
                                                      eighth, m00, m01, m10, m11);
 }
 
-void qsun_launch_two_qubit(cuDoubleComplex* sv, int n_qubits,
+void qforge_launch_two_qubit(cuDoubleComplex* sv, int n_qubits,
                             int tgt1_qubit, int tgt2_qubit,
                             const cuDoubleComplex* mat_device) {
     int tgt1_bit = n_qubits - 1 - tgt1_qubit;
@@ -358,7 +358,7 @@ void qsun_launch_two_qubit(cuDoubleComplex* sv, int n_qubits,
                                               mat_device);
 }
 
-double qsun_launch_prob0(const cuDoubleComplex* sv, int n_qubits, int qubit) {
+double qforge_launch_prob0(const cuDoubleComplex* sv, int n_qubits, int qubit) {
     int qubit_bit = n_qubits - 1 - qubit;
     size_t dim = 1ULL << n_qubits;
     const int blk = 256;
@@ -379,7 +379,7 @@ double qsun_launch_prob0(const cuDoubleComplex* sv, int n_qubits, int qubit) {
 }
 
 // Reuses a caller-supplied device reduction buffer (avoids per-call cudaMalloc).
-double qsun_launch_prob0_ex(const cuDoubleComplex* sv, int n_qubits, int qubit,
+double qforge_launch_prob0_ex(const cuDoubleComplex* sv, int n_qubits, int qubit,
                              double* d_reduce_buf) {
     int qubit_bit = n_qubits - 1 - qubit;
     size_t dim = 1ULL << n_qubits;
@@ -398,7 +398,7 @@ double qsun_launch_prob0_ex(const cuDoubleComplex* sv, int n_qubits, int qubit,
 }
 
 // pauli_type: 0 = X, 1 = Y, 2 = Z (matches CudaBackend::pauli_expectation convention)
-double qsun_launch_pauli(const cuDoubleComplex* sv, int n_qubits, int qubit,
+double qforge_launch_pauli(const cuDoubleComplex* sv, int n_qubits, int qubit,
                           int pauli_type, double* d_reduce_buf) {
     int qubit_bit = n_qubits - 1 - qubit;
     size_t dim = 1ULL << n_qubits;
@@ -424,7 +424,7 @@ double qsun_launch_pauli(const cuDoubleComplex* sv, int n_qubits, int qubit,
 }
 
 // GPU depolarizing channel.  d_scratch must be at least dim doubles on device.
-void qsun_launch_depolarize(cuDoubleComplex* sv, int n_qubits, int qubit,
+void qforge_launch_depolarize(cuDoubleComplex* sv, int n_qubits, int qubit,
                              double p_noise, double* d_scratch) {
     int qubit_bit = n_qubits - 1 - qubit;
     size_t dim  = 1ULL << n_qubits;
