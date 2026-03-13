@@ -50,7 +50,7 @@ static void contract_left(
 // ============================================================
 // single_site_expectation: <psi|op_site|psi>
 // ============================================================
-std::complex<double> ops::single_site_expectation(
+std::complex<double> single_site_expectation(
     const MPS& mps, int site,
     const std::complex<double> op[4]
 ) {
@@ -75,7 +75,7 @@ std::complex<double> ops::single_site_expectation(
 // ============================================================
 // two_site_expectation: <psi|op_i * op_j|psi>, si < sj
 // ============================================================
-std::complex<double> ops::two_site_expectation(
+std::complex<double> two_site_expectation(
     const MPS& mps, int si, int sj,
     const std::complex<double> opi[4],
     const std::complex<double> opj[4]
@@ -102,15 +102,15 @@ std::complex<double> ops::two_site_expectation(
 // ============================================================
 // measure_prob0: P(qubit=|0>) = <psi|P0_site|psi>
 // ============================================================
-double ops::measure_prob0(const MPS& mps, int site) {
+double measure_prob0(const MPS& mps, int site) {
     const std::complex<double> P0[4] = {{1, 0}, {0, 0}, {0, 0}, {0, 0}};
-    return ops::single_site_expectation(mps, site, P0).real();
+    return single_site_expectation(mps, site, P0).real();
 }
 
 // ============================================================
 // norm: sqrt(<psi|psi>)
 // ============================================================
-double ops::norm(const MPS& mps) {
+double norm(const MPS& mps) {
     const int N = mps.n_qubits();
     std::vector<std::complex<double>> L = {1.0};
     int cb = 1, ck = 1;
@@ -128,7 +128,7 @@ double ops::norm(const MPS& mps) {
 // entanglement_entropy at bond (bond, bond+1)
 // Contract left and right halves, form theta matrix, SVD
 // ============================================================
-double ops::entanglement_entropy(const MPS& mps, int bond) {
+double entanglement_entropy(const MPS& mps, int bond) {
     const int N = mps.n_qubits();
     if (bond < 0 || bond >= N - 1)
         throw std::out_of_range("bond index out of range");

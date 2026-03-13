@@ -31,7 +31,7 @@ Quick start::
 
 from qforge.algo.hamiltonian import Hamiltonian
 from qforge.algo.gradient import parameter_shift, parallel_parameter_shift
-from qforge.algo.optimizers import GradientDescent, Adam
+from qforge.algo.optimizers import GradientDescent, Adam, SPSA, LBFGS
 from qforge.algo.ansatz import hardware_efficient_ansatz, strongly_entangling_ansatz
 from qforge.algo.vqa import VQA
 from qforge.algo.vqe import VQE
@@ -45,6 +45,8 @@ __all__ = [
     "parallel_parameter_shift",
     "GradientDescent",
     "Adam",
+    "SPSA",
+    "LBFGS",
     "hardware_efficient_ansatz",
     "strongly_entangling_ansatz",
     "VQA",

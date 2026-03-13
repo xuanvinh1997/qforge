@@ -8,9 +8,31 @@ __version__ = "3.0.0"
 __all__ = [
     "circuit", "gates", "measurement", "data", "encodings",
     "kernels", "wavefunction", "gate_walk", "algo",
-    "mps", "dmrg",
+    "mps", "dmrg", "ir",
+    "Circuit", "GateOp", "MeasureOp", "ConditionalOp",
+    "Parameter", "ParameterVector",
+    "StabilizerState",
+    "DensityMatrix",
+    "draw_circuit",
+    "circuit_to_json", "circuit_from_json",
+    "circuit_to_binary", "circuit_from_binary",
+    "transpiler", "noise", "mitigation", "chem", "qasm", "interfaces",
     "_HAS_CPP", "_HAS_CUDA", "_HAS_METAL", "_HAS_MPS",
 ]
+
+from qforge.ir import Circuit, GateOp, MeasureOp, ConditionalOp
+from qforge.parameters import Parameter, ParameterVector
+from qforge.stabilizer import StabilizerState
+from qforge.visualization import draw_circuit
+from qforge.serialization import (
+    circuit_to_json, circuit_from_json,
+    circuit_to_binary, circuit_from_binary,
+)
+
+try:
+    from qforge.density_matrix import DensityMatrix
+except ImportError:
+    pass
 
 try:
     from qforge._qforge_core import StateVector as _StateVector

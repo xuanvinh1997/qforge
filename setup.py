@@ -106,6 +106,10 @@ def _find_eigen3():
         "/usr/local/include/eigen3",
         "/usr/include/eigen3",
     ]
+    # Check conda environment
+    conda_prefix = os.environ.get('CONDA_PREFIX')
+    if conda_prefix:
+        candidates.insert(0, os.path.join(conda_prefix, "include", "eigen3"))
     try:
         result = subprocess.run(
             ["brew", "--prefix", "eigen"], capture_output=True, text=True)

@@ -27,6 +27,11 @@ def _is_mps(wavefunction) -> bool:
            and wavefunction._sv is None
 
 
+def _is_dm(wavefunction) -> bool:
+    """Check if wavefunction is a DensityMatrix."""
+    return getattr(wavefunction, '_is_density_matrix', False)
+
+
 # Visual circuit gate-type constants
 _VIS_SINGLE = 1         # Single-qubit gate (H, X, Y, Z, S, T, XS)
 _VIS_ROTATION = 1.5     # Parameterized single-qubit (RX, RY, RZ)
