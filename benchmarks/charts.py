@@ -265,99 +265,232 @@ def _chart_qml(data: dict, output_dir: Path) -> str | None:
 
 
 def _chart_framework(data: dict, output_dir: Path) -> str | None:
-    """Framework comparison chart (Qforge vs Qiskit vs PennyLane)."""
-    fig, axes = plt.subplots(1, 2, figsize=(14, 5), facecolor='white')
-    fig.suptitle('Framework Comparison', fontsize=14, fontweight='bold')
+    """Framework comparison chart (fair benchmark).
 
-    frameworks = list(data.keys())
-    if not frameworks:
+    Data format: {simulate: {qubit: {fw: {median, q25, q75, ...}}},
+                  gradient: {qubit: {fw: {method: {median, ...}}}},
+                  methodology: {...}}
+    """
+    sim_data = data.get("simulate", {})
+    grad_data = data.get("gradient", {})
+    if not sim_data and not grad_data:
         return None
 
-    # Circuit time
-    ax = axes[0]
-    for i, fw in enumerate(frameworks):
-        circuit = data[fw].get("circuit", {})
-        if not circuit:
-            continue
-        qs = sorted(circuit.keys(), key=int)
-        x = [int(q) for q in qs]
-        y = [circuit[q]["time"] for q in qs]
-        ax.semilogy(x, y, 'o-', color=COLORS[i % len(COLORS)], linewidth=2,
-                    label=fw, markersize=5)
-    ax.set_xlabel('Qubits')
-    ax.set_ylabel('Time (s)')
-    ax.set_title('Circuit Build + Execute')
-    ax.legend()
-    ax.grid(True, alpha=0.3, which='both')
+    FW_COLORS = {'qforge': '#1E88E5', 'qiskit': '#E53935', 'pennylane': '#43A047'}
+    FW_MARKERS = {'qforge': 'o', 'qiskit': 's', 'pennylane': 'D'}
+    META_KEYS = {'n_qubits', 'depth', 'n_params'}
+    charts_made = []
 
-    # Speedup vs first framework
-    ax = axes[1]
-    ref = frameworks[0] if frameworks else None
-    ref_circuit = data.get(ref, {}).get("circuit", {}) if ref else {}
-    for i, fw in enumerate(frameworks[1:], 1):
-        circuit = data[fw].get("circuit", {})
-        common_q = sorted(set(ref_circuit.keys()) & set(circuit.keys()), key=int)
-        if not common_q:
-            continue
-        x = [int(q) for q in common_q]
-        y = [circuit[q]["time"] / ref_circuit[q]["time"] if ref_circuit[q]["time"] > 0 else 1
-             for q in common_q]
-        ax.plot(x, y, 's-', color=COLORS[i % len(COLORS)], linewidth=2,
-                label=f'{fw} / {ref}', markersize=5)
-    ax.axhline(y=1, color='gray', linestyle=':', alpha=0.5)
-    ax.set_xlabel('Qubits')
-    ax.set_ylabel('Relative Time')
-    ax.set_title(f'Slowdown vs {ref}')
-    ax.legend()
-    ax.grid(True, alpha=0.3)
+    # ---- Chart 1: Simulation time (median + IQR) ----
+    if sim_data:
+        fig, axes = plt.subplots(1, 2, figsize=(14, 5), facecolor='white')
+        fig.suptitle('Framework Comparison — Simulation (median ± IQR, with warm-up)',
+                     fontsize=13, fontweight='bold')
 
-    path = output_dir / "framework_compare.png"
-    plt.tight_layout()
-    plt.savefig(path, dpi=150, bbox_inches='tight', facecolor='white')
-    plt.close(fig)
-    return str(path.name)
+        qubit_keys = sorted(sim_data.keys(), key=int)
+        frameworks = sorted(set().union(*(
+            {k for k in sim_data[q] if k not in META_KEYS}
+            for q in qubit_keys
+        )))
+
+        # Plot 1a: Absolute time
+        ax = axes[0]
+        for fw in frameworks:
+            qs, meds, lo, hi = [], [], [], []
+            for q in qubit_keys:
+                entry = sim_data[q].get(fw)
+                if isinstance(entry, dict) and 'median' in entry:
+                    qs.append(int(q))
+                    meds.append(entry['median'])
+                    lo.append(entry['q25'])
+                    hi.append(entry['q75'])
+            if qs:
+                meds, lo, hi = np.array(meds), np.array(lo), np.array(hi)
+                ax.semilogy(qs, meds, f'{FW_MARKERS.get(fw, "o")}-',
+                            color=FW_COLORS.get(fw, '#888'), linewidth=2,
+                            label=fw, markersize=6)
+                ax.fill_between(qs, lo, hi, alpha=0.15,
+                                color=FW_COLORS.get(fw, '#888'))
+        ax.set_xlabel('Qubits')
+        ax.set_ylabel('Time (s)')
+        ax.set_title('Simulation Time')
+        ax.legend()
+        ax.grid(True, alpha=0.3, which='both')
+
+        # Plot 1b: Slowdown vs qforge
+        ax = axes[1]
+        ref_fw = 'qforge'
+        for fw in frameworks:
+            if fw == ref_fw:
+                continue
+            qs, ratios = [], []
+            for q in qubit_keys:
+                r = sim_data[q].get(ref_fw)
+                f = sim_data[q].get(fw)
+                if (isinstance(r, dict) and isinstance(f, dict)
+                        and 'median' in r and 'median' in f and r['median'] > 0):
+                    qs.append(int(q))
+                    ratios.append(f['median'] / r['median'])
+            if qs:
+                ax.plot(qs, ratios, f'{FW_MARKERS.get(fw, "s")}-',
+                        color=FW_COLORS.get(fw, '#888'), linewidth=2,
+                        label=f'{fw} / {ref_fw}', markersize=6)
+        ax.axhline(y=1, color='gray', linestyle=':', alpha=0.5)
+        ax.set_xlabel('Qubits')
+        ax.set_ylabel(f'Slowdown vs {ref_fw}')
+        ax.set_title('Relative Simulation Time')
+        ax.legend()
+        ax.grid(True, alpha=0.3)
+
+        path = output_dir / "framework_simulate.png"
+        plt.tight_layout()
+        plt.savefig(path, dpi=150, bbox_inches='tight', facecolor='white')
+        plt.close(fig)
+        charts_made.append(str(path.name))
+
+    # ---- Chart 2: Gradient time by method ----
+    if grad_data:
+        # Discover all (framework, method) combinations
+        qubit_keys = sorted(grad_data.keys(), key=int)
+        fw_methods = set()
+        for q in qubit_keys:
+            for fw, fdata in grad_data[q].items():
+                if fw in META_KEYS:
+                    continue
+                if isinstance(fdata, dict):
+                    for method in fdata:
+                        if isinstance(fdata[method], dict) and 'median' in fdata[method]:
+                            fw_methods.add((fw, method))
+
+        if fw_methods:
+            METHOD_STYLES = {
+                'parameter_shift': '-',
+                'adjoint': '--',
+                'backprop': ':',
+            }
+
+            fig, axes = plt.subplots(1, 2, figsize=(14, 5), facecolor='white')
+            fig.suptitle('Framework Comparison — Gradient Methods (median ± IQR)',
+                         fontsize=13, fontweight='bold')
+
+            # Plot 2a: Absolute gradient time
+            ax = axes[0]
+            for fw, method in sorted(fw_methods):
+                qs, meds, lo, hi = [], [], [], []
+                for q in qubit_keys:
+                    entry = grad_data[q].get(fw, {})
+                    if isinstance(entry, dict):
+                        m = entry.get(method)
+                        if isinstance(m, dict) and 'median' in m:
+                            qs.append(int(q))
+                            meds.append(m['median'])
+                            lo.append(m['q25'])
+                            hi.append(m['q75'])
+                if qs:
+                    meds, lo, hi = np.array(meds), np.array(lo), np.array(hi)
+                    ls = METHOD_STYLES.get(method, '-')
+                    ax.semilogy(qs, meds,
+                                f'{FW_MARKERS.get(fw, "o")}{ls}',
+                                color=FW_COLORS.get(fw, '#888'), linewidth=2,
+                                label=f'{fw} ({method})', markersize=5)
+                    ax.fill_between(qs, lo, hi, alpha=0.1,
+                                    color=FW_COLORS.get(fw, '#888'))
+            ax.set_xlabel('Qubits')
+            ax.set_ylabel('Time (s)')
+            ax.set_title('Gradient Computation Time')
+            ax.legend(fontsize=8)
+            ax.grid(True, alpha=0.3, which='both')
+
+            # Plot 2b: Best gradient method per framework
+            ax = axes[1]
+            for fw in sorted(set(f for f, _ in fw_methods)):
+                qs, best_times = [], []
+                for q in qubit_keys:
+                    entry = grad_data[q].get(fw, {})
+                    if not isinstance(entry, dict):
+                        continue
+                    best = float('inf')
+                    for method, m in entry.items():
+                        if isinstance(m, dict) and 'median' in m:
+                            best = min(best, m['median'])
+                    if best < float('inf'):
+                        qs.append(int(q))
+                        best_times.append(best)
+                if qs:
+                    ax.semilogy(qs, best_times,
+                                f'{FW_MARKERS.get(fw, "o")}-',
+                                color=FW_COLORS.get(fw, '#888'), linewidth=2,
+                                label=f'{fw} (best)', markersize=6)
+            ax.set_xlabel('Qubits')
+            ax.set_ylabel('Time (s)')
+            ax.set_title('Best Gradient Method per Framework')
+            ax.legend()
+            ax.grid(True, alpha=0.3, which='both')
+
+            path = output_dir / "framework_gradient.png"
+            plt.tight_layout()
+            plt.savefig(path, dpi=150, bbox_inches='tight', facecolor='white')
+            plt.close(fig)
+            charts_made.append(str(path.name))
+
+    return ", ".join(charts_made) if charts_made else None
 
 
 def _chart_backend(data: dict, output_dir: Path) -> str | None:
-    """Backend comparison chart (CPU vs Metal vs CUDA)."""
+    """Backend comparison chart (CPU vs Metal vs CUDA).
+
+    Data format: {backends: [...], circuit: {qubit: {backend: time}},
+                  single_gate: {qubit: {backend: us}}, metal_crossover_qubits: int|None}
+    """
+    circuit_data = data.get("circuit", {})
+    single_gate = data.get("single_gate", {})
+    backend_list = data.get("backends", [])
+    if not circuit_data:
+        return None
+
+    BK_COLORS = {'cpu': '#1E88E5', 'metal': '#FB8C00', 'cuda': '#43A047'}
+
     fig, axes = plt.subplots(1, 2, figsize=(14, 5), facecolor='white')
     fig.suptitle('Backend Comparison', fontsize=14, fontweight='bold')
 
-    backends = list(data.keys())
-    if not backends:
-        return None
-
+    # Plot 1: Circuit time per backend
     ax = axes[0]
-    for i, backend in enumerate(backends):
-        circuit = data[backend].get("circuit", {})
-        if not circuit:
-            continue
-        qs = sorted(circuit.keys(), key=int)
-        x = [int(q) for q in qs]
-        y = [circuit[q]["time"] for q in qs]
-        ax.semilogy(x, y, 'o-', color=COLORS[i % len(COLORS)], linewidth=2,
-                    label=backend, markersize=5)
+    qubit_keys = sorted(circuit_data.keys(), key=int)
+    for i, backend in enumerate(backend_list):
+        qs, times = [], []
+        for q in qubit_keys:
+            t = circuit_data[q].get(backend)
+            if t is not None:
+                qs.append(int(q))
+                times.append(t)
+        if qs:
+            ax.semilogy(qs, times, 'o-', color=BK_COLORS.get(backend, COLORS[i]),
+                        linewidth=2, label=backend, markersize=5)
+    crossover = data.get("metal_crossover_qubits")
+    if crossover:
+        ax.axvline(x=crossover, color='#FB8C00', linestyle='--', alpha=0.6,
+                   label=f'Metal crossover ({crossover}q)')
     ax.set_xlabel('Qubits')
     ax.set_ylabel('Time (s)')
     ax.set_title('Circuit Time by Backend')
     ax.legend()
     ax.grid(True, alpha=0.3, which='both')
 
-    # Speedup vs CPU
+    # Plot 2: Speedup vs CPU
     ax = axes[1]
-    cpu_data = data.get("cpu", {}).get("circuit", {})
-    for i, backend in enumerate(backends):
-        if backend == "cpu":
+    for i, backend in enumerate(backend_list):
+        if backend == 'cpu':
             continue
-        circuit = data[backend].get("circuit", {})
-        common_q = sorted(set(cpu_data.keys()) & set(circuit.keys()), key=int)
-        if not common_q:
-            continue
-        x = [int(q) for q in common_q]
-        y = [cpu_data[q]["time"] / circuit[q]["time"] if circuit[q]["time"] > 0 else 1
-             for q in common_q]
-        ax.plot(x, y, 's-', color=COLORS[i % len(COLORS)], linewidth=2,
-                label=f'{backend} speedup', markersize=5)
+        qs, speedups = [], []
+        for q in qubit_keys:
+            t_cpu = circuit_data[q].get('cpu')
+            t_bk = circuit_data[q].get(backend)
+            if t_cpu and t_bk and t_bk > 0:
+                qs.append(int(q))
+                speedups.append(t_cpu / t_bk)
+        if qs:
+            ax.plot(qs, speedups, 's-', color=BK_COLORS.get(backend, COLORS[i]),
+                    linewidth=2, label=f'{backend} speedup', markersize=5)
     ax.axhline(y=1, color='gray', linestyle=':', alpha=0.5)
     ax.set_xlabel('Qubits')
     ax.set_ylabel('Speedup vs CPU')

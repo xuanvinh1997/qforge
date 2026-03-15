@@ -65,6 +65,31 @@ def _obj_ext():
     return '.obj' if _IS_WIN else '.o'
 
 
+def _has_metal():
+    """Auto-detect Metal support on macOS."""
+    if sys.platform != 'darwin':
+        return False
+    # Check Metal framework exists
+    import ctypes.util
+    return ctypes.util.find_library('Metal') is not None
+
+
+def _has_cuda():
+    """Auto-detect CUDA by probing for nvcc."""
+    cuda_home = _find_cuda_home()
+    nvcc = os.path.join(cuda_home, 'bin', 'nvcc')
+    if _IS_WIN:
+        nvcc += '.exe'
+    if os.path.isfile(nvcc):
+        return True
+    # Also check PATH
+    try:
+        subprocess.run(['nvcc', '--version'], capture_output=True, check=True)
+        return True
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        return False
+
+
 class CustomBuildExt(pybind11_build_ext):
     """Custom build_ext that handles .mm (Objective-C++) and .cu (CUDA) sources,
     and falls back gracefully when the compiler is unavailable."""
@@ -244,8 +269,14 @@ ext_modules.append(
     )
 )
 
-# --- Metal backend (macOS only, opt-in via QFORGE_METAL=1) ---
-if sys.platform == 'darwin' and os.environ.get('QFORGE_METAL', '0') == '1':
+# --- Print auto-detection results ---
+print(f"[qforge] Metal auto-detect: {_has_metal() if sys.platform == 'darwin' else 'N/A (not macOS)'}")
+print(f"[qforge] CUDA auto-detect:  {_has_cuda()}")
+
+# --- Metal backend (macOS, auto-detected; disable with QFORGE_METAL=0) ---
+_metal_env = os.environ.get('QFORGE_METAL')
+_build_metal = (_metal_env == '1') or (_metal_env is None and _has_metal())
+if _build_metal:
     pybind11_includes = []
     try:
         import pybind11
@@ -274,8 +305,10 @@ if sys.platform == 'darwin' and os.environ.get('QFORGE_METAL', '0') == '1':
         )
     )
 
-# --- CUDA backend (opt-in via QFORGE_CUDA=1) ---
-if os.environ.get('QFORGE_CUDA', '0') == '1':
+# --- CUDA backend (auto-detected; disable with QFORGE_CUDA=0) ---
+_cuda_env = os.environ.get('QFORGE_CUDA')
+_build_cuda = (_cuda_env == '1') or (_cuda_env is None and _has_cuda())
+if _build_cuda:
     _cuda_home = _find_cuda_home()
     _cuda_include = os.path.join(_cuda_home, 'include')
     _cuda_lib = _cuda_lib_dir(_cuda_home)

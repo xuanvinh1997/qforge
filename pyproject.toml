@@ -7,4 +7,4 @@ name = "qforge"
 version = "3.0.0"
 description = "qforge - Large-Scale Quantum Simulation Framework"
 requires-python = ">=3.8"
-dependencies = ["numpy"]
+dependencies = ["numpy", "scipy", "matplotlib", "numba", "pybind11", "pytest", "pytest-cov"]

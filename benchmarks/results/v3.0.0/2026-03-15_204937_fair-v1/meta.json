@@ -1,0 +1,62 @@
+{
+  "version": "3.0.0",
+  "timestamp": "2026-03-15T20:49:37",
+  "suites": [
+    "framework"
+  ],
+  "backends": [
+    "cpu",
+    "metal"
+  ],
+  "config": {
+    "depth": 10,
+    "repeats": 3,
+    "steps": 30,
+    "qubit_range": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14
+    ],
+    "grad_qubits": [
+      2,
+      4,
+      6,
+      8,
+      10
+    ],
+    "qml_qubits": [
+      2,
+      4,
+      8
+    ],
+    "vqe_qubits": [
+      2,
+      4,
+      6
+    ],
+    "qaoa_nodes": [
+      3,
+      4,
+      5,
+      6
+    ],
+    "tol": 1e-06
+  },
+  "system_info": {
+    "platform": "macOS-26.3.1-arm64-arm-64bit-Mach-O",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.13.9",
+    "qforge": "3.0.0",
+    "cpp": "True",
+    "metal": "True",
+    "cuda": "False",
+    "pennylane": "0.44.1",
+    "qiskit": "2.3.1"
+  },
+  "total_time_seconds": 434.4045363329933
+}
