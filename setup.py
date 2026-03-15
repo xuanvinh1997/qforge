@@ -7,18 +7,77 @@ import tempfile
 
 cpp_dir = os.path.join("qforge", "cpp")
 
+_IS_WIN = sys.platform == "win32"
+
+
+def _compile_args_base():
+    """Optimization flags for the current compiler."""
+    if _IS_WIN:
+        return ["/O2", "/fp:fast", "/EHsc"]
+    return ["-O3", "-march=native", "-ffast-math"]
+
+
+def _compile_args_cpp17():
+    """Optimization + C++17 flags for the current compiler."""
+    if _IS_WIN:
+        return ["/O2", "/fp:fast", "/EHsc", "/std:c++17"]
+    return ["-O3", "-march=native", "-ffast-math", "-std=c++17"]
+
+
+def _find_cuda_home():
+    """Locate the CUDA toolkit installation directory."""
+    # Explicit env vars (highest priority)
+    for var in ('CUDA_HOME', 'CUDA_PATH'):
+        val = os.environ.get(var)
+        if val and os.path.isdir(val):
+            return val
+    # Windows: scan Program Files for versioned CUDA installs
+    if _IS_WIN:
+        import glob
+        pattern = r'C:\Program Files\NVIDIA GPU Computing Toolkit\CUDA\v*'
+        matches = sorted(glob.glob(pattern))
+        if matches:
+            return matches[-1]  # newest version
+    # Linux/macOS fallbacks
+    for path in ('/usr/local/cuda', '/opt/cuda'):
+        if os.path.isdir(path):
+            return path
+    return '/usr/local/cuda'
+
+
+def _cuda_lib_dir(cuda_home):
+    """Return the CUDA library directory for the current platform."""
+    if _IS_WIN:
+        return os.path.join(cuda_home, 'lib', 'x64')
+    return os.path.join(cuda_home, 'lib64')
+
+
+def _nvcc_host_flags():
+    """Return nvcc --compiler-options flags appropriate for the host compiler."""
+    if _IS_WIN:
+        # MSVC: use /MD (dynamic CRT, matches Python's build)
+        return ['--compiler-options', '/MD']
+    return ['--compiler-options', '-fPIC']
+
+
+def _obj_ext():
+    """Object file extension for the current platform."""
+    return '.obj' if _IS_WIN else '.o'
+
 
 class CustomBuildExt(pybind11_build_ext):
-    """Custom build_ext that handles .mm (Objective-C++) and .cu (CUDA) source files."""
+    """Custom build_ext that handles .mm (Objective-C++) and .cu (CUDA) sources,
+    and falls back gracefully when the compiler is unavailable."""
 
     def build_extension(self, ext):
-        # --- CUDA: pre-compile .cu files with nvcc and add .o to extra_objects ---
+        # --- CUDA: pre-compile .cu files with nvcc and add objects to linker ---
         cu_sources = [s for s in getattr(ext, 'cuda_sources', [])]
         if cu_sources:
-            cuda_home = os.environ.get('CUDA_HOME', '/usr/local/cuda')
+            cuda_home = _find_cuda_home()
             nvcc = os.path.join(cuda_home, 'bin', 'nvcc')
+            if _IS_WIN:
+                nvcc += '.exe'
 
-            # Find pybind11 include dirs
             pybind11_incs = []
             try:
                 import pybind11
@@ -26,20 +85,19 @@ class CustomBuildExt(pybind11_build_ext):
             except ImportError:
                 pass
 
-            # Collect all include dirs for the extension
             inc_dirs = list(ext.include_dirs or []) + pybind11_incs
-
-            # Build directory for object files
             build_temp = self.build_temp
             os.makedirs(build_temp, exist_ok=True)
 
             extra_objects = list(ext.extra_objects or [])
             for cu_src in cu_sources:
-                obj = os.path.join(build_temp,
-                                   os.path.basename(cu_src).replace('.cu', '.o'))
+                obj = os.path.join(
+                    build_temp,
+                    os.path.basename(cu_src).replace('.cu', _obj_ext()),
+                )
                 cmd = [
                     nvcc, '-O3', '-std=c++17',
-                    '--compiler-options', '-fPIC',
+                    *_nvcc_host_flags(),
                     '-DQFORGE_HAS_CUDA',
                     '-arch=native',
                     '-c', cu_src,
@@ -52,7 +110,6 @@ class CustomBuildExt(pybind11_build_ext):
 
         # --- Metal: handle .mm (Objective-C++) source files ---
         if any(src.endswith('.mm') for src in ext.sources):
-            original_src_extensions = self.compiler.src_extensions
             if '.mm' not in self.compiler.src_extensions:
                 self.compiler.src_extensions.append('.mm')
 
@@ -71,10 +128,24 @@ class CustomBuildExt(pybind11_build_ext):
 
             self.compiler._compile = patched_compile
 
-        super().build_extension(ext)
+        try:
+            super().build_extension(ext)
+        except Exception as e:
+            print(f"\n  [WARNING] Could not build C++ extension '{ext.name}':")
+            print(f"  {e}")
+            print("  Qforge will run in pure-Python mode for this extension.")
+            print("  To enable C++ acceleration on Windows, install Microsoft C++ Build Tools:")
+            print("  https://visualstudio.microsoft.com/visual-cpp-build-tools/\n")
+
+    def run(self):
+        try:
+            super().run()
+        except Exception as e:
+            print(f"\n  [WARNING] C++ build step failed: {e}")
+            print("  Package will be installed without C++ extensions.\n")
 
 
-# --- CPU backend (always built) ---
+# --- CPU backend ---
 cpu_sources = [
     os.path.join(cpp_dir, "src", f)
     for f in [
@@ -94,22 +165,44 @@ ext_modules = [
         "qforge._qforge_core",
         cpu_sources,
         include_dirs=[os.path.join(cpp_dir, "include")],
-        extra_compile_args=["-O3", "-march=native", "-ffast-math"],
+        extra_compile_args=_compile_args_base(),
         language="c++",
     ),
 ]
 
-# --- MPS/DMRG backend (requires Eigen3, always attempted) ---
+# --- MPS/DMRG backend (requires Eigen3) ---
 def _find_eigen3():
     candidates = [
         "/opt/homebrew/include/eigen3",
         "/usr/local/include/eigen3",
         "/usr/include/eigen3",
     ]
-    # Check conda environment
+
+    # Windows: vcpkg, conda, common install locations
+    if _IS_WIN:
+        candidates += [
+            r"C:\vcpkg\installed\x64-windows\include\eigen3",
+            r"C:\vcpkg\installed\x86-windows\include\eigen3",
+            r"C:\tools\eigen3",
+            r"C:\eigen3",
+        ]
+        # Conan cache
+        local_app = os.environ.get("LOCALAPPDATA", "")
+        if local_app:
+            candidates.append(os.path.join(local_app, "conan", "data", "eigen", "include"))
+        # vcpkg root env var
+        vcpkg_root = os.environ.get("VCPKG_ROOT", "")
+        if vcpkg_root:
+            candidates.insert(0, os.path.join(vcpkg_root, "installed", "x64-windows", "include", "eigen3"))
+            candidates.insert(0, os.path.join(vcpkg_root, "installed", "x64-windows", "include"))
+
+    # conda/mamba environment
     conda_prefix = os.environ.get('CONDA_PREFIX')
     if conda_prefix:
         candidates.insert(0, os.path.join(conda_prefix, "include", "eigen3"))
+        candidates.insert(0, os.path.join(conda_prefix, "Library", "include", "eigen3"))  # Windows conda
+
+    # Homebrew (macOS)
     try:
         result = subprocess.run(
             ["brew", "--prefix", "eigen"], capture_output=True, text=True)
@@ -118,10 +211,12 @@ def _find_eigen3():
             candidates.insert(0, os.path.join(prefix, "include", "eigen3"))
     except Exception:
         pass
+
     for path in candidates:
         if os.path.isdir(os.path.join(path, "Eigen")):
             return path
     return None
+
 
 _eigen_dir = _find_eigen3()
 _mps_sources = [
@@ -144,7 +239,7 @@ ext_modules.append(
         "qforge._qforge_mps",
         _mps_sources,
         include_dirs=_mps_include_dirs,
-        extra_compile_args=["-O3", "-march=native", "-ffast-math", "-std=c++17"],
+        extra_compile_args=_compile_args_cpp17(),
         language="c++",
     )
 )
@@ -159,18 +254,14 @@ if sys.platform == 'darwin' and os.environ.get('QFORGE_METAL', '0') == '1':
     except ImportError:
         pass
 
-    metal_sources = [
-        os.path.join(cpp_dir, "src", "metal_backend.mm"),
-        os.path.join(cpp_dir, "bindings", "py_metal.mm"),
-    ]
-
     ext_modules.append(
         Extension(
             "qforge._qforge_metal",
-            metal_sources,
-            include_dirs=[
-                os.path.join(cpp_dir, "include"),
-            ] + pybind11_includes,
+            sources=[
+                os.path.join(cpp_dir, "src", "metal_backend.mm"),
+                os.path.join(cpp_dir, "bindings", "py_metal.mm"),
+            ],
+            include_dirs=[os.path.join(cpp_dir, "include")] + pybind11_includes,
             extra_compile_args=[
                 "-O3", "-std=c++17", "-ffast-math",
                 "-fobjc-arc",
@@ -185,9 +276,9 @@ if sys.platform == 'darwin' and os.environ.get('QFORGE_METAL', '0') == '1':
 
 # --- CUDA backend (opt-in via QFORGE_CUDA=1) ---
 if os.environ.get('QFORGE_CUDA', '0') == '1':
-    cuda_home = os.environ.get('CUDA_HOME', '/usr/local/cuda')
-    cuda_include = os.path.join(cuda_home, 'include')
-    cuda_lib = os.path.join(cuda_home, 'lib64')
+    _cuda_home = _find_cuda_home()
+    _cuda_include = os.path.join(_cuda_home, 'include')
+    _cuda_lib = _cuda_lib_dir(_cuda_home)
 
     cuda_ext = Pybind11Extension(
         "qforge._qforge_cuda",
@@ -195,20 +286,15 @@ if os.environ.get('QFORGE_CUDA', '0') == '1':
             os.path.join(cpp_dir, "src", "cuda_backend.cpp"),
             os.path.join(cpp_dir, "bindings", "py_cuda.cpp"),
         ],
-        include_dirs=[
-            os.path.join(cpp_dir, "include"),
-            cuda_include,
-        ],
-        library_dirs=[cuda_lib],
+        include_dirs=[os.path.join(cpp_dir, "include"), _cuda_include],
+        library_dirs=[_cuda_lib],
         libraries=["cudart"],
-        extra_compile_args=["-O3", "-DQFORGE_HAS_CUDA"],
+        extra_compile_args=_compile_args_base() + ["/DQFORGE_HAS_CUDA" if _IS_WIN else "-DQFORGE_HAS_CUDA"],
         language="c++",
     )
-    # Attach .cu sources for the custom build step
-    cuda_ext.cuda_sources = [
-        os.path.join(cpp_dir, "src", "cuda_kernels.cu"),
-    ]
+    cuda_ext.cuda_sources = [os.path.join(cpp_dir, "src", "cuda_kernels.cu")]
     ext_modules.append(cuda_ext)
+
 
 setup(
     name="qforge",
@@ -217,6 +303,6 @@ setup(
     packages=find_packages(),
     ext_modules=ext_modules,
     cmdclass={"build_ext": CustomBuildExt},
-    install_requires=["numpy", "pybind11>=2.10"],
+    install_requires=["numpy"],
     python_requires=">=3.8",
 )
