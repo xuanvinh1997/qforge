@@ -59,6 +59,20 @@ def kolmogorov_complex(dataset):
 
 
 class PauliZExpectation:
+    """Compute Pauli-Z expectation values (n-body) from a wavefunction.
+
+    Supports 1- through 4-body Z-correlators: ``<Z_i>``, ``<Z_i Z_j>``, etc.
+    Uses C++ acceleration when available.
+
+    Args:
+        wavefunction: A ``Wavefunction`` or ``MatrixProductState`` instance.
+
+    Example:
+        >>> pz = PauliZExpectation(wf)
+        >>> pz.one_body(0)      # <Z_0>
+        >>> pz.two_body(0, 1)   # <Z_0 Z_1>
+    """
+
     def __init__(self, wavefunction):
         self.wavefunction = wavefunction
         self.state = wavefunction.state 
@@ -111,6 +125,14 @@ class PauliZExpectation:
                 raise ValueError(f"Index {idx} out of range [0, {self.n_qubits-1}]")
 
     def one_body(self, i):
+        """Compute single-qubit expectation value ``<Z_i>``.
+
+        Args:
+            i: Qubit index.
+
+        Returns:
+            float: Expectation value in ``[-1, 1]``.
+        """
         self._validate_indices(i)
         if _HAS_CPP:
             return _qforge_core.pauli_z_one_body(self.probs, self.n_qubits, i)
@@ -124,6 +146,15 @@ class PauliZExpectation:
         return probs_0 - probs_1
 
     def two_body(self, i, j):
+        """Compute two-body expectation value ``<Z_i Z_j>``.
+
+        Args:
+            i: First qubit index.
+            j: Second qubit index.
+
+        Returns:
+            float: Expectation value in ``[-1, 1]``.
+        """
         self._validate_indices(i, j)
         if _HAS_CPP:
             return _qforge_core.pauli_z_two_body(self.probs, self.n_qubits, i, j)
@@ -137,6 +168,16 @@ class PauliZExpectation:
         return probs_same - probs_diff
 
     def three_body(self, i, j, k):
+        """Compute three-body expectation value ``<Z_i Z_j Z_k>``.
+
+        Args:
+            i: First qubit index.
+            j: Second qubit index.
+            k: Third qubit index.
+
+        Returns:
+            float: Expectation value in ``[-1, 1]``.
+        """
         self._validate_indices(i, j, k)
         if _HAS_CPP:
             return _qforge_core.pauli_z_three_body(self.probs, self.n_qubits, i, j, k)
@@ -151,6 +192,17 @@ class PauliZExpectation:
         return probs_even - probs_odd
 
     def four_body(self, i, j, k, l):
+        """Compute four-body expectation value ``<Z_i Z_j Z_k Z_l>``.
+
+        Args:
+            i: First qubit index.
+            j: Second qubit index.
+            k: Third qubit index.
+            l: Fourth qubit index.
+
+        Returns:
+            float: Expectation value in ``[-1, 1]``.
+        """
         self._validate_indices(i, j, k, l)
         if _HAS_CPP:
             return _qforge_core.pauli_z_four_body(self.probs, self.n_qubits, i, j, k, l)
@@ -166,11 +218,25 @@ class PauliZExpectation:
     
 
 class ConnectedCorrelator:
+    """Compute connected (cumulant) correlation functions of Pauli-Z operators.
+
+    Connected correlators subtract disconnected parts to isolate genuine
+    multi-body quantum correlations.
+
+    Args:
+        wavefunction: A ``Wavefunction`` or ``MatrixProductState`` instance.
+
+    Example:
+        >>> cc = ConnectedCorrelator(wf)
+        >>> cc.u2(0, 1)   # <Z_0 Z_1> - <Z_0><Z_1>
+    """
+
     def __init__(self, wavefunction):
         self.wavefunction = wavefunction
         self.exp_val = PauliZExpectation(wavefunction)
 
     def u2(self, i, j):
+        """Two-point connected correlator: ``<Z_i Z_j> - <Z_i><Z_j>``."""
         two_body = self.exp_val.two_body(i, j)  # ⟨ZiZj⟩
         one_body_i = self.exp_val.one_body(i)   # ⟨Zi⟩
         one_body_j = self.exp_val.one_body(j)   # ⟨Zj⟩
@@ -178,6 +244,7 @@ class ConnectedCorrelator:
         return two_body - one_body_i * one_body_j
     
     def u3(self, i, j, k):
+        """Three-point connected correlator (third cumulant of Z_i, Z_j, Z_k)."""
         three_body = self.exp_val.three_body(i, j, k)
     
         two_ij = self.exp_val.two_body(i, j)
@@ -197,6 +264,7 @@ class ConnectedCorrelator:
         return result
     
     def u4(self, i, j, k, l):
+        """Four-point connected correlator (fourth cumulant of Z_i, Z_j, Z_k, Z_l)."""
         four_body = self.exp_val.four_body(i, j, k, l)
         
         term_31_1 = self.u3(i, j, k) * self.exp_val.one_body(l)
@@ -233,12 +301,35 @@ class ConnectedCorrelator:
 
 
 class EntanglementEntropy:
-    
+    """Compute entanglement entropy and reduced density matrices.
+
+    Provides von Neumann entropy, reduced density matrices via partial trace,
+    and bipartite entanglement entropy. Uses C++ acceleration when available.
+
+    Args:
+        wavefunction: A ``Wavefunction`` instance.
+
+    Example:
+        >>> ee = EntanglementEntropy(wf)
+        >>> ee.entanglement_entropy([0])          # entropy of qubit 0 vs rest
+        >>> ee.von_neumann_entropy([0, 1])        # entropy of subsystem {0,1}
+        >>> ee.reduced_density_matrix([0])         # 2x2 reduced density matrix
+    """
+
     def __init__(self, wavefunction):
         self.wavefunction = wavefunction
         self.n_qubits = len(wavefunction.state[0])
     
     def reduced_density_matrix(self, keep_qubits):
+        """Compute the reduced density matrix by tracing out all other qubits.
+
+        Args:
+            keep_qubits: List of qubit indices to keep.
+
+        Returns:
+            numpy.ndarray: Complex density matrix of shape ``(2^k, 2^k)``
+                where ``k = len(keep_qubits)``.
+        """
         amplitudes = self.wavefunction.amplitude
 
         if not all(0 <= q < self.n_qubits for q in keep_qubits):
@@ -271,6 +362,16 @@ class EntanglementEntropy:
         return reduced_rho
     
     def von_neumann_entropy(self, keep_qubits=None, base=2):
+        """Compute the von Neumann entropy of a subsystem.
+
+        Args:
+            keep_qubits: Qubit indices defining the subsystem. If ``None``,
+                computes the entropy of the full state (zero for pure states).
+            base: Logarithm base (default 2, giving entropy in bits).
+
+        Returns:
+            float: Von Neumann entropy ``S = -Tr(rho * log(rho))``.
+        """
         if keep_qubits is None:
             rho = np.outer(self.wavefunction.amplitude, np.conj(self.wavefunction.amplitude))
         else:
@@ -289,6 +390,16 @@ class EntanglementEntropy:
         return entropy
     
     def entanglement_entropy(self, bipartition, base=2):
+        """Compute the bipartite entanglement entropy.
+
+        Args:
+            bipartition: Either a tuple ``(qubits_A, qubits_B)`` or just
+                ``qubits_A`` (the complement is inferred).
+            base: Logarithm base (default 2).
+
+        Returns:
+            float: Entanglement entropy across the bipartition.
+        """
         if isinstance(bipartition, tuple) and len(bipartition) == 2:
             qubits_A, qubits_B = bipartition
             qubits_A = list(qubits_A)

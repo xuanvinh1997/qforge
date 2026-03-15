@@ -9,7 +9,31 @@ from qforge._utils import (
 
 
 class Wavefunction(object):
-    """a wavefunction representing a quantum state"""
+    """Quantum state represented as a complex amplitude vector over computational basis states.
+
+    A Wavefunction holds a 2^n-dimensional complex vector (amplitudes) and the
+    corresponding n-qubit basis-state labels. It transparently wraps either a
+    pure-Python numpy backend or a C++ ``StateVector`` for accelerated simulation.
+
+    Args:
+        states: List of basis-state strings, e.g. ``['00', '01', '10', '11']``.
+        amplitude_vector: Complex amplitude array of length 2^n.
+        _sv: Optional C++ ``StateVector`` backend (set automatically by ``Qubit()``).
+
+    Attributes:
+        state: List of basis-state label strings.
+        amplitude: Complex amplitude vector (numpy array). When using the C++
+            backend this is a zero-copy view into the ``StateVector``.
+        visual: List of gate operations applied, used by ``visual_circuit()``.
+
+    Example:
+        >>> from Qforge.circuit import Qubit
+        >>> from Qforge.gates import H, CNOT
+        >>> wf = Qubit(2)          # |00>
+        >>> H(wf, 0)               # (|00> + |10>) / sqrt(2)
+        >>> CNOT(wf, 0, 1)         # Bell state (|00> + |11>) / sqrt(2)
+        >>> wf.probabilities()     # array([0.5, 0. , 0. , 0.5])
+    """
 
     def __init__(self, states, amplitude_vector, _sv=None):
         self.state = states
@@ -35,11 +59,19 @@ class Wavefunction(object):
             self._amplitude = value
 
     def probabilities(self):
-        """returns a dictionary of associated probabilities."""
+        """Return the probability of each basis state as a numpy array.
+
+        Returns:
+            numpy.ndarray: Array of ``|amplitude|^2`` values, indexed by basis state.
+        """
         return np.abs(self.amplitude) ** 2
 
     def print_state(self):
-        """represent a quantum state in bra-ket notations"""
+        """Return the quantum state as a human-readable bra-ket string.
+
+        Returns:
+            str: State in the form ``(0.707+0j)|00> + (0.707+0j)|11>``.
+        """
         states = self.state
         amp = self.amplitude
         string = str(amp[0]) + '|' + states[0] + '>'
@@ -48,7 +80,7 @@ class Wavefunction(object):
         return string
 
     def visual_circuit(self):
-        """Visualization of a ciruict"""
+        """Print an ASCII circuit diagram of all gates applied to this wavefunction."""
         n = len((self.state)[0])
         a = self.visual
         b = [[]]*(2*n)

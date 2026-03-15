@@ -8,12 +8,34 @@ import numpy as np
 import math
 
 def amplitude_encode(sample):
+    """Encode a classical vector directly into quantum amplitudes.
+
+    The sample is normalized and mapped to the amplitude vector of a
+    ``ceil(log2(len(sample)))``-qubit state.
+
+    Args:
+        sample: Real-valued array of length up to 2^n.
+
+    Returns:
+        Wavefunction: Initialized quantum state.
+    """
     qubit_num = int(math.ceil(np.log2(len(sample))))
     circuit_initial = Qubit(qubit_num)
     circuit_initial.amplitude[0:len(sample)] = sample/np.sqrt(np.sum(sample**2))
     return circuit_initial
 
 def qubit_encode(sample):
+    """Encode each feature into one qubit via rotation angles.
+
+    Each feature ``x_i`` maps to ``cos(x_i/2)|0> - sin(x_i/2)|1>``
+    on qubit *i*, combined as a tensor product.
+
+    Args:
+        sample: Array of rotation angles (radians), one per qubit.
+
+    Returns:
+        Wavefunction: Encoded quantum state with ``len(sample)`` qubits.
+    """
     circuit_initial = Qubit(len(sample))
     ampli_vec = np.array([np.cos(sample[0]/2), -np.sin(sample[0]/2)])
     for i in range(1, len(sample)):
@@ -22,6 +44,17 @@ def qubit_encode(sample):
     return circuit_initial
 
 def dense_encode(sample):
+    """Dense angle encoding using pairs of features per qubit.
+
+    Uses ``len(sample)/2`` qubits, encoding two features per qubit
+    via combined RY and RZ rotations in the amplitude.
+
+    Args:
+        sample: Array of length ``2*n_qubits``.
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     qubit_num = int(len(sample)/2)
     circuit_initial = Qubit(qubit_num)
     ampli_vec = np.array([np.cos(sample[0+qubit_num]/2)*np.cos(sample[0]/2) - 1j*np.sin(sample[0+qubit_num]/2)*np.sin(sample[0]/2),
@@ -42,7 +75,15 @@ def unit_encode(sample):
     return circuit_initial
 
 def entangle(circuit, entanglement):
-    ''' Add entanglement to the qubits'''
+    """Apply CNOT entanglement layer to a circuit.
+
+    Args:
+        circuit: Wavefunction to entangle.
+        entanglement: Connectivity pattern — ``"linear"``, ``"circular"``, or ``"full"``.
+
+    Returns:
+        Wavefunction: The same circuit object (modified in-place).
+    """
     circuit_layer = circuit
     qubit_num = int(math.ceil(np.log2(len(circuit_layer.state))))
     if entanglement == "linear":
@@ -60,6 +101,20 @@ def entangle(circuit, entanglement):
 
 
 def yz_cx_encode(sample, params=None, n_layers=2):
+    """Variational encoding with RY-RZ rotations and CNOT entanglement.
+
+    Each layer applies ``RY(param + 2*x)`` and ``RZ(param + 2*x)`` per qubit,
+    followed by a staggered CNOT ladder.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        params: Trainable parameters. If ``None``, initialized randomly.
+            Expected length: ``n_qubits * 2 * n_layers``.
+        n_layers: Number of variational layers (default 2).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     expected_params = n_qubit * 2 * n_layers    
@@ -90,6 +145,14 @@ def yz_cx_encode(sample, params=None, n_layers=2):
     return circuit_initial
 
 def high_dim_encode(sample):
+    """High-dimensional feature map with H-RZ-RY-RZ layers and SISWAP entanglement.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -116,6 +179,17 @@ def high_dim_encode(sample):
     return circuit_initial
 
 def hzy_cz_encode(sample, params=None, n_layers=2, closed=True):
+    """Variational encoding with H, RZ(feature), RY(param), CRZ(param) layers.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        params: Trainable parameters. If ``None``, initialized randomly.
+        n_layers: Number of variational layers (default 2).
+        closed: If ``True``, CRZ entanglement wraps around (circular topology).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     feature_vector = np.array([sample[i % n_qubit] for i in range(n_qubit)])
@@ -147,6 +221,18 @@ def hzy_cz_encode(sample, params=None, n_layers=2, closed=True):
     return circuit_initial
 
 def chebyshev_encode(sample, params=None, n_layers=2):
+    """Chebyshev polynomial encoding with trainable frequency scaling.
+
+    Encodes features via ``RX(param * arccos(x))`` rotations with CRZ entanglement.
+
+    Args:
+        sample: Feature vector with values in ``[-1, 1]``.
+        params: Trainable parameters. If ``None``, initialized randomly.
+        n_layers: Number of encoding layers (default 2).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -182,6 +268,19 @@ def chebyshev_encode(sample, params=None, n_layers=2):
     return circuit_initial
 
 def param_z_feature_map_encode(sample, params=None, n_layers=2):
+    """Parameterized Z-feature map with trainable scaling.
+
+    Each layer applies ``H`` then ``Phase(param * x)`` per qubit, followed
+    by a linear CNOT chain.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        params: Trainable parameters. If ``None``, initialized randomly.
+        n_layers: Number of layers (default 2).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -202,6 +301,14 @@ def param_z_feature_map_encode(sample, params=None, n_layers=2):
     return circuit_initial
 
 def separable_rx_encode(sample):
+    """Separable encoding using two RX rotations per qubit (no entanglement).
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -212,6 +319,15 @@ def separable_rx_encode(sample):
     return circuit_initial
 
 def hardware_efficient_embed_encode(sample, n_layers=2):
+    """Hardware-efficient embedding with RX(feature) rotations and linear CNOT layers.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        n_layers: Number of RX + CNOT layers (default 2).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -224,6 +340,17 @@ def hardware_efficient_embed_encode(sample, n_layers=2):
     return circuit_initial
 
 def z_feature_map_encode(sample, n_layers=2):
+    """First-order Z-feature map encoding.
+
+    Each layer applies ``H`` then ``Phase(2*x)`` per qubit (no entanglement).
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        n_layers: Number of layers (default 2).
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)
@@ -235,6 +362,19 @@ def z_feature_map_encode(sample, n_layers=2):
     return circuit_initial
 
 def zz_feature_map_encode(sample, n_layers=2, entanglement="linear"):
+    """Second-order ZZ-feature map encoding with pairwise entanglement.
+
+    Each layer applies ``H``, ``Phase(2*x_i)``, then ZZ interaction terms
+    ``Phase(2*(pi - x_i)*(pi - x_j))`` via CNOT-Phase-CNOT blocks.
+
+    Args:
+        sample: Feature vector (one feature per qubit).
+        n_layers: Number of layers (default 2).
+        entanglement: Connectivity — ``"linear"``, ``"circular"``, or ``"full"``.
+
+    Returns:
+        Wavefunction: Encoded quantum state.
+    """
     sample = np.array(sample)
     n_qubit = len(sample)
     circuit_initial = Qubit(n_qubit)

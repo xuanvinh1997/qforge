@@ -1,0 +1,133 @@
+site_name: Qforge Documentation
+site_description: Wavefunction-based quantum circuit simulator with C++/CUDA/Metal acceleration
+site_url: https://qforge.readthedocs.io
+repo_url: https://github.com/vinhpx/Quantum_Virtual_Machine
+
+theme:
+  name: material
+  features:
+    - navigation.tabs
+    - navigation.sections
+    - navigation.expand
+    - navigation.top
+    - content.code.copy
+    - content.tabs.link
+    - search.highlight
+    - search.suggest
+  palette:
+    - scheme: default
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-7
+        name: Switch to dark mode
+    - scheme: slate
+      primary: indigo
+      accent: indigo
+      toggle:
+        icon: material/brightness-4
+        name: Switch to light mode
+
+plugins:
+  - search
+  - mkdocstrings:
+      handlers:
+        python:
+          options:
+            show_source: false
+            show_root_heading: true
+            members_order: source
+            docstring_style: google
+
+markdown_extensions:
+  - admonition
+  - pymdownx.details
+  - pymdownx.superfences
+  - pymdownx.tabbed:
+      alternate_style: true
+  - pymdownx.highlight:
+      anchor_linenums: true
+  - pymdownx.inlinehilite
+  - pymdownx.arithmatex:
+      generic: true
+  - toc:
+      permalink: true
+  - attr_list
+  - md_in_html
+  - tables
+
+extra_javascript:
+  - https://polyfill.io/v3/polyfill.min.js?features=es6
+  - https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js
+
+nav:
+  - Home: index.md
+  - Getting Started:
+    - Installation: getting-started/installation.md
+    - Quickstart: getting-started/quickstart.md
+    - Core Concepts: getting-started/concepts.md
+  - Tutorials:
+    - Your First Circuit: tutorials/01-first-circuit.md
+    - Gates and Rotations: tutorials/02-gates-and-rotations.md
+    - Measurement: tutorials/03-measurement.md
+    - Entanglement: tutorials/04-entanglement.md
+    - Circuit IR: tutorials/05-circuit-ir.md
+    - VQE: tutorials/06-vqe.md
+    - QAOA: tutorials/07-qaoa.md
+    - Quantum Machine Learning: tutorials/08-quantum-ml.md
+    - Noise and Mitigation: tutorials/09-noise-and-mitigation.md
+    - Large-Scale with MPS: tutorials/10-mps-large-scale.md
+    - Quantum Chemistry: tutorials/11-chemistry.md
+  - How-To Guides:
+    - Choose a Backend: how-to/choose-backend.md
+    - Parameter-Shift Gradients: how-to/parameter-shift-gradients.md
+    - Custom Gates: how-to/custom-gates.md
+    - Transpile Circuits: how-to/transpile-circuits.md
+    - Serialize Circuits: how-to/serialize-circuits.md
+    - Standard Algorithms: how-to/standard-algorithms.md
+    - Density Matrix: how-to/density-matrix.md
+  - API Reference:
+    - Overview: api/index.md
+    - Qforge.circuit: api/circuit.md
+    - Qforge.wavefunction: api/wavefunction.md
+    - Qforge.gates: api/gates.md
+    - Qforge.measurement: api/measurement.md
+    - Qforge.encodings: api/encodings.md
+    - Qforge.data: api/data.md
+    - Qforge.kernels: api/kernels.md
+    - Qforge.ir: api/ir.md
+    - Qforge.parameters: api/parameters.md
+    - Qforge.visualization: api/visualization.md
+    - Qforge.serialization: api/serialization.md
+    - Qforge.mps: api/mps.md
+    - Qforge.dmrg: api/dmrg.md
+    - Algorithms:
+      - Overview: api/algo/index.md
+      - Hamiltonian: api/algo/hamiltonian.md
+      - Gradients: api/algo/gradient.md
+      - Optimizers: api/algo/optimizers.md
+      - Ansatz: api/algo/ansatz.md
+      - VQE: api/algo/vqe.md
+      - QAOA: api/algo/qaoa.md
+      - Standard Algorithms: api/algo/standard.md
+    - Noise:
+      - Overview: api/noise/index.md
+      - Channels: api/noise/channels.md
+      - NoiseModel: api/noise/model.md
+    - Chemistry:
+      - Overview: api/chem/index.md
+      - Molecule: api/chem/molecule.md
+      - Fermion Operators: api/chem/fermion.md
+      - UCC Ansatz: api/chem/ucc.md
+    - Transpiler:
+      - Overview: api/transpiler/index.md
+      - DAGCircuit: api/transpiler/dag.md
+      - Passes: api/transpiler/passes.md
+    - Error Mitigation: api/mitigation.md
+    - OpenQASM: api/qasm.md
+    - ML Interfaces: api/interfaces.md
+  - Reference:
+    - Gate Catalog: reference/gate-catalog.md
+    - Encoding Catalog: reference/encoding-catalog.md
+    - Backend Comparison: reference/backend-comparison.md
+  - Changelog: changelog.md

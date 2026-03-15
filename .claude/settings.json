@@ -67,7 +67,12 @@
       "Bash(ls qforge/*.py)",
       "Bash(python -m pytest tests/ -v)",
       "Bash(python -m pytest tests/test_mps.py::TestSingleQubitGates::test_H_qubit0 -v)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(grep -E \"\\\\.py$|^d\")",
+      "Bash(find /Users/vinhpx/Workspaces/Learning/Quantum_Virtual_Machine -name README.md -o -name *.rst)",
+      "Bash(find /Users/vinhpx/Workspaces/Learning/Quantum_Virtual_Machine/docs -name \"*.md\" -exec sed -i '' 's/from qforge\\\\./from Qforge./g; s/import qforge/import Qforge/g; s/qforge\\\\.\\\\\\([a-z]\\\\\\)/Qforge.\\\\1/g' {} +)",
+      "Bash(grep \"\\\\.md$\" /Users/vinhpx/Workspaces/Learning/Quantum_Virtual_Machine/mkdocs.yml)",
+      "Bash(find /Users/vinhpx/Workspaces/Learning/Quantum_Virtual_Machine/docs -name \"*.md\" -exec cat {} +)"
     ],
     "additionalDirectories": [
       "/root/qforge/Qforge",

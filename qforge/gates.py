@@ -170,7 +170,14 @@ def _mps_nonlocal2(wavefunction, ci: int, ti: int, gate) -> None:
 
 
 def H(wavefunction, n: int) -> None:
-    """Hadamard gate."""
+    """Hadamard gate — creates equal superposition.
+
+    Maps ``|0> -> (|0>+|1>)/sqrt(2)`` and ``|1> -> (|0>-|1>)/sqrt(2)``.
+
+    Args:
+        wavefunction: Target quantum state.
+        n: Qubit index.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.H(n)
@@ -231,7 +238,15 @@ def Z(wavefunction, n: int) -> None:
 
 
 def RX(wavefunction, n: int, phi: float = 0) -> None:
-    """Rotation around X-axis gate."""
+    """Rotation around the X-axis by angle ``phi``.
+
+    Matrix: ``[[cos(phi/2), -i*sin(phi/2)], [-i*sin(phi/2), cos(phi/2)]]``.
+
+    Args:
+        wavefunction: Target quantum state.
+        n: Qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.RX(n, phi)
@@ -249,7 +264,15 @@ def RX(wavefunction, n: int, phi: float = 0) -> None:
 
 
 def RY(wavefunction, n: int, phi: float = 0) -> None:
-    """Rotation around Y-axis gate."""
+    """Rotation around the Y-axis by angle ``phi``.
+
+    Matrix: ``[[cos(phi/2), -sin(phi/2)], [sin(phi/2), cos(phi/2)]]``.
+
+    Args:
+        wavefunction: Target quantum state.
+        n: Qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.RY(n, phi)
@@ -267,7 +290,15 @@ def RY(wavefunction, n: int, phi: float = 0) -> None:
 
 
 def RZ(wavefunction, n: int, phi: float = 0) -> None:
-    """Rotation around Z-axis gate."""
+    """Rotation around the Z-axis by angle ``phi``.
+
+    Matrix: ``[[exp(-i*phi/2), 0], [0, exp(i*phi/2)]]``.
+
+    Args:
+        wavefunction: Target quantum state.
+        n: Qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.RZ(n, phi)
@@ -285,7 +316,15 @@ def RZ(wavefunction, n: int, phi: float = 0) -> None:
 
 
 def Phase(wavefunction, n: int, phi: float = 0) -> None:
-    """Phase gate."""
+    """Phase gate — applies ``exp(i*phi)`` to the ``|1>`` component.
+
+    Matrix: ``[[1, 0], [0, exp(i*phi)]]``.
+
+    Args:
+        wavefunction: Target quantum state.
+        n: Qubit index.
+        phi: Phase angle in radians.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.Phase(n, phi)
@@ -367,7 +406,13 @@ def _mps_ctrl_target_gate(wavefunction, control, target, gate4x4):
 
 
 def CNOT(wavefunction, control: int, target: int) -> None:
-    """Controlled-NOT gate."""
+    """Controlled-NOT (CX) gate — flips target qubit when control is ``|1>``.
+
+    Args:
+        wavefunction: Target quantum state.
+        control: Control qubit index.
+        target: Target qubit index.
+    """
     _validate_ctrl_target(control, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CNOT(control, target)
@@ -382,7 +427,14 @@ def CNOT(wavefunction, control: int, target: int) -> None:
 
 
 def CRX(wavefunction, control: int, target: int, phi: float = 0) -> None:
-    """Controlled RX gate."""
+    """Controlled RX gate — applies RX(phi) to target when control is ``|1>``.
+
+    Args:
+        wavefunction: Target quantum state.
+        control: Control qubit index.
+        target: Target qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_ctrl_target(control, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CRX(control, target, phi)
@@ -403,7 +455,14 @@ def CRX(wavefunction, control: int, target: int, phi: float = 0) -> None:
 
 
 def CRY(wavefunction, control: int, target: int, phi: float = 0) -> None:
-    """Controlled RY gate."""
+    """Controlled RY gate — applies RY(phi) to target when control is ``|1>``.
+
+    Args:
+        wavefunction: Target quantum state.
+        control: Control qubit index.
+        target: Target qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_ctrl_target(control, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CRY(control, target, phi)
@@ -423,7 +482,14 @@ def CRY(wavefunction, control: int, target: int, phi: float = 0) -> None:
 
 
 def CRZ(wavefunction, control: int, target: int, phi: float = 0) -> None:
-    """Controlled RZ gate."""
+    """Controlled RZ gate — applies RZ(phi) to target when control is ``|1>``.
+
+    Args:
+        wavefunction: Target quantum state.
+        control: Control qubit index.
+        target: Target qubit index.
+        phi: Rotation angle in radians.
+    """
     _validate_ctrl_target(control, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CRZ(control, target, phi)
@@ -444,7 +510,14 @@ def CRZ(wavefunction, control: int, target: int, phi: float = 0) -> None:
 
 
 def CPhase(wavefunction, control: int, target: int, phi: float = 0) -> None:
-    """Controlled Phase gate."""
+    """Controlled Phase gate — applies ``exp(i*phi)`` to ``|11>`` component.
+
+    Args:
+        wavefunction: Target quantum state.
+        control: Control qubit index.
+        target: Target qubit index.
+        phi: Phase angle in radians.
+    """
     _validate_ctrl_target(control, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CPhase(control, target, phi)
@@ -477,7 +550,14 @@ def _validate_three_distinct(a: int, b: int, c: int, qubit_num: int) -> None:
 
 
 def CCNOT(wavefunction, control_1: int, control_2: int, target: int) -> None:
-    """Toffoli (double-controlled-X) gate."""
+    """Toffoli (double-controlled-X) gate — flips target when both controls are ``|1>``.
+
+    Args:
+        wavefunction: Target quantum state.
+        control_1: First control qubit index.
+        control_2: Second control qubit index.
+        target: Target qubit index.
+    """
     _validate_three_distinct(control_1, control_2, target, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.CCNOT(control_1, control_2, target)
@@ -545,7 +625,13 @@ def _validate_swap(t1: int, t2: int, qubit_num: int) -> None:
 
 
 def SWAP(wavefunction, target_1: int, target_2: int) -> None:
-    """Swap gate."""
+    """Swap gate — exchanges the states of two qubits.
+
+    Args:
+        wavefunction: Target quantum state.
+        target_1: First qubit index.
+        target_2: Second qubit index.
+    """
     _validate_swap(target_1, target_2, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.SWAP(target_1, target_2)
@@ -692,7 +778,15 @@ def SISWAP(wavefunction, target_1: int, target_2: int) -> None:
 # ============================================================
 
 def E(wavefunction, p: float, n: int) -> None:
-    """Single-qubit depolarizing channel."""
+    """Single-qubit depolarizing channel.
+
+    Applies depolarizing noise with probability ``p`` to qubit ``n``.
+
+    Args:
+        wavefunction: Target quantum state.
+        p: Depolarizing probability (0 = no noise, 1 = fully depolarized).
+        n: Qubit index.
+    """
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
         wavefunction._sv.E(p, n)
@@ -720,7 +814,13 @@ def E(wavefunction, p: float, n: int) -> None:
 
 
 def E_all(wavefunction, p_noise: float, qubit_num: int) -> None:
-    """Apply depolarizing channel to all qubits."""
+    """Apply depolarizing channel to all qubits.
+
+    Args:
+        wavefunction: Target quantum state.
+        p_noise: Depolarizing probability per qubit.
+        qubit_num: Total number of qubits.
+    """
     if wavefunction._sv is not None:
         wavefunction._sv.E_all(p_noise)
         return

@@ -9,6 +9,15 @@ import math
 import cmath
 
 def shift_walk(wavefunction, dim):
+    """Apply the conditional shift operator for a discrete-time quantum walk.
+
+    Args:
+        wavefunction: Quantum walk state (coin + position registers).
+        dim: Spatial dimension of the walk (``1`` or ``2``).
+
+    Raises:
+        TypeError: If ``dim`` is not 1 or 2.
+    """
     states = wavefunction.state
     amplitude = wavefunction.amplitude
     new_amplitude = np.zeros(len(amplitude), dtype = complex)
@@ -38,6 +47,17 @@ def shift_walk(wavefunction, dim):
     wavefunction.amplitude = new_amplitude
     
 def h_coin(wavefunction, dim):
+    """Apply the Hadamard coin operator for a quantum walk.
+
+    Uses a 2x2 Hadamard for 1D walks or a 4x4 Grover-like matrix for 2D walks.
+
+    Args:
+        wavefunction: Quantum walk state.
+        dim: Spatial dimension (``1`` or ``2``).
+
+    Raises:
+        TypeError: If ``dim`` is not 1 or 2.
+    """
     states = wavefunction.state
     amplitude = wavefunction.amplitude
     new_amplitude = np.zeros(len(amplitude), dtype = complex)
@@ -78,6 +98,15 @@ def h_coin(wavefunction, dim):
     wavefunction.amplitude = new_amplitude
 
 def grover_coin(wavefunction, dim):
+    """Apply the Grover diffusion coin operator for a 2D quantum walk.
+
+    Args:
+        wavefunction: Quantum walk state.
+        dim: Must be ``2`` (Grover coin is only defined for 2D walks).
+
+    Raises:
+        TypeError: If ``dim`` is not 2.
+    """
     states = wavefunction.state
     amplitude = wavefunction.amplitude
     new_amplitude = np.zeros(len(amplitude), dtype = complex)
@@ -109,11 +138,29 @@ def grover_coin(wavefunction, dim):
     wavefunction.amplitude = new_amplitude
     
 def quantum_walk_hadamard(wavefunction, dim, iteration):
+    """Run a discrete-time quantum walk with a Hadamard coin.
+
+    Applies ``iteration`` steps of (Hadamard coin + shift).
+
+    Args:
+        wavefunction: Initial quantum walk state (created via ``Walk_Qubit``).
+        dim: Spatial dimension (``1`` or ``2``).
+        iteration: Number of walk steps.
+    """
     for i in range(iteration):
         h_coin(wavefunction, dim)
         shift_walk(wavefunction, dim)
         
 def quantum_walk_grover(wavefunction, dim, iteration):
+    """Run a discrete-time quantum walk with a Grover coin (2D only).
+
+    Applies ``iteration`` steps of (Grover coin + shift).
+
+    Args:
+        wavefunction: Initial quantum walk state (created via ``Walk_Qubit``).
+        dim: Must be ``2``.
+        iteration: Number of walk steps.
+    """
     for i in range(iteration):
         grover_coin(wavefunction, dim)
         shift_walk(wavefunction, dim)
