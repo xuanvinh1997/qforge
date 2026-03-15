@@ -17,7 +17,7 @@ __all__ = [
     "circuit_to_json", "circuit_from_json",
     "circuit_to_binary", "circuit_from_binary",
     "transpiler", "noise", "mitigation", "chem", "qasm", "interfaces",
-    "_HAS_CPP", "_HAS_CUDA", "_HAS_METAL", "_HAS_MPS",
+    "_HAS_CPP", "_HAS_CUDA", "_HAS_METAL", "_HAS_MPS", "_HAS_DISTRIBUTED",
 ]
 
 from qforge.ir import Circuit, GateOp, MeasureOp, ConditionalOp
@@ -57,3 +57,9 @@ try:
     _HAS_MPS = True
 except ImportError:
     _HAS_MPS = False
+
+try:
+    from qforge._qforge_distributed import DistributedStateVector as _DistSV
+    _HAS_DISTRIBUTED = True
+except ImportError:
+    _HAS_DISTRIBUTED = False

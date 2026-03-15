@@ -14,8 +14,8 @@ expressibility and entanglement properties.
 Encodes a normalized vector of length 2^n into the amplitudes of n qubits:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.encodings import amplitude_encode
+from qforge.circuit import Qubit
+from qforge.encodings import amplitude_encode
 import numpy as np
 
 # Encode a 4-element vector into 2 qubits
@@ -36,7 +36,7 @@ print(qc.wavefunction.amplitude)
 Maps each feature to a rotation angle on a dedicated qubit:
 
 ```python
-from Qforge.encodings import yz_cx_encode
+from qforge.encodings import yz_cx_encode
 
 # 4 features -> 4 qubits
 data = np.array([0.3, 1.2, 0.7, 2.1])
@@ -50,7 +50,7 @@ Creates entanglement between qubits based on pairwise feature products,
 similar to Qiskit's ZZFeatureMap:
 
 ```python
-from Qforge.encodings import zz_feature_map_encode
+from qforge.encodings import zz_feature_map_encode
 
 data = np.array([0.5, 1.0, 0.8])
 qc = Qubit(n_qubits=3)
@@ -71,7 +71,7 @@ Qforge provides two approaches: the swap test and projected quantum kernels.
 The swap test computes the overlap |<psi|phi>|^2 between two quantum states:
 
 ```python
-from Qforge.kernels import swap_test
+from qforge.kernels import swap_test
 
 x1 = np.array([0.3, 1.2, 0.7, 2.1])
 x2 = np.array([0.5, 1.0, 0.8, 1.9])
@@ -86,7 +86,7 @@ The `ProjectedQuantumKernel` computes kernel matrices compatible with
 scikit-learn estimators:
 
 ```python
-from Qforge.kernels import ProjectedQuantumKernel
+from qforge.kernels import ProjectedQuantumKernel
 
 # Create a quantum kernel with ZZ feature map encoding
 qkernel = ProjectedQuantumKernel(
@@ -111,7 +111,7 @@ from sklearn.svm import SVC
 from sklearn.datasets import make_moons
 from sklearn.model_selection import train_test_split
 from sklearn.metrics import accuracy_score
-from Qforge.kernels import ProjectedQuantumKernel
+from qforge.kernels import ProjectedQuantumKernel
 import numpy as np
 
 # Generate a 2D classification dataset
@@ -205,10 +205,10 @@ For a trainable approach, combine a parameterized circuit with a classical
 optimizer:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RY, RZ
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian, parameter_shift
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RY, RZ
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian, parameter_shift
 import numpy as np
 
 def variational_classifier(features, params, n_layers=2):

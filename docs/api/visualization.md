@@ -1,13 +1,13 @@
 # Qforge.visualization
 
 ASCII text circuit drawing for inspecting quantum circuits built with the
-`Qforge.ir.Circuit` intermediate representation.
+`qforge.ir.Circuit` intermediate representation.
 
 ## Usage
 
 ```python
-from Qforge.ir import Circuit, GateOp, MeasureOp
-from Qforge.visualization import draw_circuit
+from qforge.ir import Circuit, GateOp, MeasureOp
+from qforge.visualization import draw_circuit
 
 circ = Circuit(n_qubits=3)
 circ.append(GateOp('H', (0,)))
@@ -29,13 +29,13 @@ Draw a circuit diagram.
 
 **Parameters:**
 
-- `circuit` -- A `Circuit` object from `Qforge.ir`.
+- `circuit` -- A `Circuit` object from `qforge.ir`.
 - `output` -- Output format. Currently only `'text'` (ASCII art) is supported.
 
 **Returns:** `str` -- String representation of the circuit.
 
 ## Full API
 
-::: Qforge.visualization
+::: qforge.visualization
     options:
       show_source: false

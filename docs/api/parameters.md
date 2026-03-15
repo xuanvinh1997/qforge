@@ -6,8 +6,8 @@ with named, unbound parameters and later resolved via `Circuit.bind_parameters`.
 ## Usage
 
 ```python
-from Qforge.parameters import Parameter, ParameterVector
-from Qforge.ir import Circuit, GateOp
+from qforge.parameters import Parameter, ParameterVector
+from qforge.ir import Circuit, GateOp
 
 # Single parameter
 theta = Parameter('theta')
@@ -59,6 +59,6 @@ for p in pv:
 
 ## Full API
 
-::: Qforge.parameters
+::: qforge.parameters
     options:
       show_source: false

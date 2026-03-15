@@ -7,11 +7,11 @@ algorithms in Qforge.
 ## Basic Usage
 
 ```python
-from Qforge.algo import parameter_shift
-from Qforge.circuit import Qubit
-from Qforge.gates import RY, CNOT
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.algo import parameter_shift
+from qforge.circuit import Qubit
+from qforge.gates import RY, CNOT
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian
 import numpy as np
 
 # Define an observable
@@ -84,10 +84,10 @@ For convenience, use the built-in optimizers which call `parameter_shift`
 internally:
 
 ```python
-from Qforge.algo import Adam, SPSA
+from qforge.algo import Adam, SPSA
 
 # Adam optimizer (uses parameter_shift internally)
-from Qforge.algo import VQE
+from qforge.algo import VQE
 
 vqe = VQE(n_qubits=2, hamiltonian=obs, circuit_fn=my_ansatz, n_layers=1)
 result = vqe.optimize(optimizer=Adam(lr=0.05), n_iterations=200)
@@ -130,7 +130,7 @@ optimizer = SPSA(
 For circuits with many parameters, compute gradients in parallel:
 
 ```python
-from Qforge.algo import parallel_parameter_shift
+from qforge.algo import parallel_parameter_shift
 
 # Uses all available CPU cores (or GPU batching)
 grads = parallel_parameter_shift(
@@ -152,7 +152,7 @@ For Hamiltonians with multiple Pauli terms, `pauli_expectation` sums the
 contributions internally:
 
 ```python
-from Qforge.algo import Hamiltonian
+from qforge.algo import Hamiltonian
 
 h2_ham = Hamiltonian(
     coeffs=[-0.8105, 0.1721, -0.2257, 0.1721, 0.1235, 0.1235],

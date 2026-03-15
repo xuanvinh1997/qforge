@@ -6,7 +6,7 @@ from `TranspilerPass` and implements a `run(dag)` method.
 ## Usage
 
 ```python
-from Qforge.transpiler import PassManager, CancelInverses, Optimize1qRotations, BasisTranslator
+from qforge.transpiler import PassManager, CancelInverses, Optimize1qRotations, BasisTranslator
 
 pm = PassManager([
     CancelInverses(),
@@ -84,6 +84,6 @@ BasisTranslator(basis_gates=['H', 'CNOT', 'RZ', 'RX'])
 
 ## Full API
 
-::: Qforge.transpiler.passes
+::: qforge.transpiler.passes
     options:
       show_source: false

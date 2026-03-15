@@ -7,9 +7,9 @@ Hot-path computations dispatch to C++ when available.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.data import (
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.data import (
     PauliZExpectation, ConnectedCorrelator, EntanglementEntropy,
     intrinsic_dim_from_cov, spectral_complex_kernel, kolmogorov_complex,
 )
@@ -100,6 +100,6 @@ Estimate the Kolmogorov complexity of a dataset via compression ratios
 
 ## Full API
 
-::: Qforge.data
+::: qforge.data
     options:
       show_source: false

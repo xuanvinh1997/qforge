@@ -6,7 +6,7 @@ classical optimizers, parameterized ansatze, and standard quantum algorithms.
 ## Quick Start
 
 ```python
-from Qforge.algo import Hamiltonian, VQE, QAOA, Adam
+from qforge.algo import Hamiltonian, VQE, QAOA, Adam
 import numpy as np
 
 # VQE for a toy Hamiltonian
@@ -35,10 +35,10 @@ sol = qaoa.get_solution(params)
 
 ## Exported Names
 
-All key symbols are re-exported from `Qforge.algo`:
+All key symbols are re-exported from `qforge.algo`:
 
 ```python
-from Qforge.algo import (
+from qforge.algo import (
     Hamiltonian,
     parameter_shift, parallel_parameter_shift,
     GradientDescent, Adam, SPSA, LBFGS,

@@ -218,38 +218,45 @@ def _svd_decompose(amp: np.ndarray, n: int,
 
 
 def _entropy_py(tensors: list, bond: int) -> float:
-    """Von Neumann entropy at bond via contraction and SVD (Python fallback)."""
+    """Von Neumann entropy at bond via transfer matrices — O(N * chi^3).
+
+    For a general (non-canonical) MPS, the squared Schmidt coefficients
+    at a bipartition are the eigenvalues of T_L @ T_R, where T_L and T_R
+    are the left and right transfer matrices at the bond.
+    """
     n = len(tensors)
-    # Left-contract to [2^(bond+1), chi]
-    result = tensors[0][0, :, :]
-    chi = result.shape[1]
-    left_states = 2
+
+    # --- Left transfer matrix: sites 0..bond → T_L [chi, chi] ---
+    A0 = tensors[0][0, :, :]  # [d, chi_right]
+    T_L = A0.conj().T @ A0    # [chi, chi]
     for i in range(1, bond + 1):
-        A = tensors[i]
-        new_chi = A.shape[2]
-        tmp = np.tensordot(result, A, axes=([1], [0]))  # [states, d, new_chi]
-        result = tmp.reshape(left_states * 2, new_chi)
-        left_states *= 2
-        chi = new_chi
+        A = tensors[i]  # [chi_left, d, chi_right]
+        chi_r = A.shape[2]
+        T_new = np.zeros((chi_r, chi_r), dtype=complex)
+        for s in range(A.shape[1]):
+            As = A[:, s, :]
+            T_new += As.conj().T @ T_L @ As
+        T_L = T_new
 
-    # Right-contract to [chi, 2^(N-bond-1)]
-    right = tensors[-1][:, :, 0]  # [chi_last, d]
-    right_states = 2
+    # --- Right transfer matrix: sites bond+1..N-1 → T_R [chi, chi] ---
+    A_last = tensors[-1][:, :, 0]  # [chi_left, d]
+    T_R = A_last @ A_last.conj().T  # [chi, chi]
     for i in range(n - 2, bond, -1):
-        A = tensors[i]
-        new_chi = A.shape[0]
-        # right: [chi, states], A: [new_chi, d, chi]
-        tmp = np.tensordot(A, right, axes=([2], [0]))  # [new_chi, d, states]
-        right = tmp.reshape(new_chi, right_states * 2)
-        right_states *= 2
+        A = tensors[i]  # [chi_left, d, chi_right]
+        chi_l = A.shape[0]
+        T_new = np.zeros((chi_l, chi_l), dtype=complex)
+        for s in range(A.shape[1]):
+            As = A[:, s, :]
+            T_new += As @ T_R @ As.conj().T
+        T_R = T_new
 
-    # theta = result @ right: [left_states, right_states]
-    theta = result @ right
-    sv = np.linalg.svd(theta, compute_uv=False)
-    sv2 = sv ** 2
-    total = sv2.sum()
+    # Squared Schmidt coefficients = eigenvalues of T_L @ T_R
+    M = T_L @ T_R
+    ev = np.linalg.eigvals(M).real
+    ev = np.maximum(ev, 0.0)
+    total = ev.sum()
     if total < 1e-14:
         return 0.0
-    sv2 /= total
-    sv2 = sv2[sv2 > 1e-14]
-    return float(-np.sum(sv2 * np.log2(sv2)))
+    ev /= total
+    ev = ev[ev > 1e-14]
+    return float(-np.sum(ev * np.log2(ev)))

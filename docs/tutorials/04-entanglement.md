@@ -5,10 +5,10 @@ This tutorial covers creating entangled states and analyzing entanglement using 
 ## Setup
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, X
-from Qforge.measurement import measure_all, pauli_expectation
-from Qforge.data import PauliZExpectation, ConnectedCorrelator, EntanglementEntropy
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, X
+from qforge.measurement import measure_all, pauli_expectation
+from qforge.data import PauliZExpectation, ConnectedCorrelator, EntanglementEntropy
 import numpy as np
 ```
 
@@ -25,7 +25,7 @@ def make_bell(state_index):
     H(wf, 0)
     CNOT(wf, 0, 1)
     if state_index in (1, 3):
-        from Qforge.gates import Z
+        from qforge.gates import Z
         Z(wf, 0)               # Phase flip for - variants
     return wf
 
@@ -253,9 +253,9 @@ print(f"S (base-10) = {s_10:.4f}")  # 0.3010
 ## Full Example: Entanglement Profile of a GHZ State
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.data import PauliZExpectation, ConnectedCorrelator, EntanglementEntropy
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.data import PauliZExpectation, ConnectedCorrelator, EntanglementEntropy
 
 n = 6
 wf = Qubit(n)

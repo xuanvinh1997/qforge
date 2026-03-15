@@ -7,9 +7,9 @@ kernel suitable for use with classical SVMs and kernel ridge regression.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, RY
-from Qforge.kernels import state_product, swap_test, ProjectedQuantumKernel
+from qforge.circuit import Qubit
+from qforge.gates import H, RY
+from qforge.kernels import state_product, swap_test, ProjectedQuantumKernel
 import numpy as np
 
 wf1 = Qubit(2); H(wf1, 0); RY(wf1, 1, 0.5)
@@ -88,6 +88,6 @@ ProjectedQuantumKernel(
 
 ## Full API
 
-::: Qforge.kernels
+::: qforge.kernels
     options:
       show_source: false

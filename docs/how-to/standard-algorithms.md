@@ -9,9 +9,9 @@ The QFT transforms the computational basis into the Fourier basis. It is a
 key subroutine in phase estimation, Shor's algorithm, and more.
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import X
-from Qforge.algo.standard import qft, inverse_qft
+from qforge.circuit import Qubit
+from qforge.gates import X
+from qforge.algo.standard import qft, inverse_qft
 
 # Prepare state |5> = |101>
 qc = Qubit(n_qubits=3)
@@ -56,10 +56,10 @@ QPE estimates the eigenvalue phase of a unitary operator. Given U|psi> =
 e^(2*pi*i*phi)|psi>, QPE outputs phi in a register of counting qubits.
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import X, Phase
-from Qforge.algo.standard import qpe
-from Qforge.measurement import measure_all
+from qforge.circuit import Qubit
+from qforge.gates import X, Phase
+from qforge.algo.standard import qpe
+from qforge.measurement import measure_all
 import numpy as np
 
 # Estimate the phase of a T gate (phase = pi/4, so phi = 1/8)
@@ -95,7 +95,7 @@ print(f"Exact angle:     {np.pi / 4:.4f}")
 ### QPE with a Custom Unitary
 
 ```python
-from Qforge.gates import QubitUnitary
+from qforge.gates import QubitUnitary
 
 # Phase gate with theta = 2*pi * 0.3
 theta = 2 * np.pi * 0.3
@@ -132,13 +132,13 @@ Grover's algorithm finds a marked item in an unstructured database with
 quadratic speedup.
 
 ```python
-from Qforge.algo.standard import grover_search
-from Qforge.measurement import measure_all
+from qforge.algo.standard import grover_search
+from qforge.measurement import measure_all
 
 # Search for |101> in a 3-qubit space
 def oracle(qc, qubits):
     """Marks the state |101>."""
-    from Qforge.gates import X, CCNOT
+    from qforge.gates import X, CCNOT
     # Flip qubit 1 (so |101> becomes |111>)
     X(qc, target=qubits[1])
     # Apply multi-controlled Z via CCNOT + H
@@ -169,7 +169,7 @@ for bitstring, count in sorted(counts.items(), key=lambda x: -x[1]):
 ```python
 def multi_oracle(qc, qubits):
     """Marks |01> and |10> in a 2-qubit space."""
-    from Qforge.gates import CNOT, Z
+    from qforge.gates import CNOT, Z
     # This oracle flips the phase of states where qubits differ
     CNOT(qc, control=qubits[0], target=qubits[1])
     Z(qc, target=qubits[1])
@@ -196,7 +196,7 @@ The Harrow-Hassidim-Lloyd (HHL) algorithm solves linear systems Ax = b with
 exponential speedup for sparse, well-conditioned matrices.
 
 ```python
-from Qforge.algo.standard import hhl
+from qforge.algo.standard import hhl
 import numpy as np
 
 # Solve Ax = b where A is a 2x2 Hermitian matrix
@@ -234,9 +234,9 @@ print(f"Classical solution: {x_classical}")
 Use QPE as a subroutine in a larger computation:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, X
-from Qforge.algo.standard import qft, inverse_qft, qpe
+from qforge.circuit import Qubit
+from qforge.gates import H, X
+from qforge.algo.standard import qft, inverse_qft, qpe
 
 # Example: use QFT in a custom algorithm
 qc = Qubit(n_qubits=4)

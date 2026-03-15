@@ -7,8 +7,8 @@ analysis and rewriting.
 ## Usage
 
 ```python
-from Qforge.transpiler.dag import DAGCircuit, DAGNode
-from Qforge.ir import Circuit, GateOp
+from qforge.transpiler.dag import DAGCircuit, DAGNode
+from qforge.ir import Circuit, GateOp
 
 circ = Circuit(n_qubits=2)
 circ.append(GateOp('H', (0,)))
@@ -62,6 +62,6 @@ DAG representation of a quantum circuit.
 
 ## Full API
 
-::: Qforge.transpiler.dag
+::: qforge.transpiler.dag
     options:
       show_source: false

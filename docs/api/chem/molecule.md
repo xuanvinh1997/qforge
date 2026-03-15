@@ -5,7 +5,7 @@ Molecular Hamiltonian construction from atomic geometry and basis set.
 ## Usage
 
 ```python
-from Qforge.chem import Molecule
+from qforge.chem import Molecule
 
 mol = Molecule(
     atoms=[('H', (0, 0, 0)), ('H', (0, 0, 0.74))],
@@ -51,6 +51,6 @@ Molecule(atoms, basis='sto-3g', charge=0, multiplicity=1)
 
 ## Full API
 
-::: Qforge.chem.molecule
+::: qforge.chem.molecule
     options:
       show_source: false

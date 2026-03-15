@@ -1,6 +1,6 @@
 # Gate Catalog
 
-Complete reference for all gates in `Qforge.gates`. All gate functions take a
+Complete reference for all gates in `qforge.gates`. All gate functions take a
 `wavefunction` as the first argument and modify it in-place.
 
 ## Single-Qubit Gates

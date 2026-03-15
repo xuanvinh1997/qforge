@@ -11,8 +11,8 @@ for circuit visualization.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, X, CNOT, RY, SWAP, E
+from qforge.circuit import Qubit
+from qforge.gates import H, X, CNOT, RY, SWAP, E
 
 wf = Qubit(3)
 H(wf, 0)                  # Hadamard on qubit 0
@@ -179,6 +179,6 @@ Apply the depolarizing channel with probability `p` to all qubits.
 
 ## Full API
 
-::: Qforge.gates
+::: qforge.gates
     options:
       show_source: false

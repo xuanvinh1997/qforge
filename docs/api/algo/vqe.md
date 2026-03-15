@@ -6,7 +6,7 @@ quantum Hamiltonians using a parameterized ansatz.
 ## Usage
 
 ```python
-from Qforge.algo import Hamiltonian, VQE
+from qforge.algo import Hamiltonian, VQE
 import numpy as np
 
 # Toy H2 Hamiltonian (2 qubits)
@@ -59,6 +59,6 @@ VQE(
 
 ## Full API
 
-::: Qforge.algo.vqe
+::: qforge.algo.vqe
     options:
       show_source: false

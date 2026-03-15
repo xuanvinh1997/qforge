@@ -86,21 +86,22 @@ nav:
     - Serialize Circuits: how-to/serialize-circuits.md
     - Standard Algorithms: how-to/standard-algorithms.md
     - Density Matrix: how-to/density-matrix.md
+    - Distributed Simulation (MPI): how-to/distributed-simulation.md
   - API Reference:
     - Overview: api/index.md
-    - Qforge.circuit: api/circuit.md
-    - Qforge.wavefunction: api/wavefunction.md
-    - Qforge.gates: api/gates.md
-    - Qforge.measurement: api/measurement.md
-    - Qforge.encodings: api/encodings.md
-    - Qforge.data: api/data.md
-    - Qforge.kernels: api/kernels.md
-    - Qforge.ir: api/ir.md
-    - Qforge.parameters: api/parameters.md
-    - Qforge.visualization: api/visualization.md
-    - Qforge.serialization: api/serialization.md
-    - Qforge.mps: api/mps.md
-    - Qforge.dmrg: api/dmrg.md
+    - qforge.circuit: api/circuit.md
+    - qforge.wavefunction: api/wavefunction.md
+    - qforge.gates: api/gates.md
+    - qforge.measurement: api/measurement.md
+    - qforge.encodings: api/encodings.md
+    - qforge.data: api/data.md
+    - qforge.kernels: api/kernels.md
+    - qforge.ir: api/ir.md
+    - qforge.parameters: api/parameters.md
+    - qforge.visualization: api/visualization.md
+    - qforge.serialization: api/serialization.md
+    - qforge.mps: api/mps.md
+    - qforge.dmrg: api/dmrg.md
     - Algorithms:
       - Overview: api/algo/index.md
       - Hamiltonian: api/algo/hamiltonian.md
@@ -125,6 +126,7 @@ nav:
       - Passes: api/transpiler/passes.md
     - Error Mitigation: api/mitigation.md
     - OpenQASM: api/qasm.md
+    - qforge.distributed: api/distributed.md
     - ML Interfaces: api/interfaces.md
   - Reference:
     - Gate Catalog: reference/gate-catalog.md

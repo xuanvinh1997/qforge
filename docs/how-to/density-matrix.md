@@ -20,7 +20,7 @@ Use `DensityMatrix` instead of `Qubit` when you need:
 ## Creating a DensityMatrix
 
 ```python
-from Qforge import DensityMatrix
+from qforge import DensityMatrix
 
 # Start in |0...0> state
 dm = DensityMatrix(n_qubits=3)
@@ -34,8 +34,8 @@ print(f"Purity: {dm.purity():.1f}")         # 1.0 (pure state)
 Gates work identically to the wavefunction backend:
 
 ```python
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT, RX, RY, RZ
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT, RX, RY, RZ
 
 dm = DensityMatrix(n_qubits=2)
 H(dm, target=0)
@@ -62,7 +62,7 @@ print(f"Purity: {dm_pure.purity():.4f}")  # 1.0
 ### Mixed State (via noise)
 
 ```python
-from Qforge.noise import Depolarizing
+from qforge.noise import Depolarizing
 
 dm_mixed = DensityMatrix(n_qubits=1)
 H(dm_mixed, target=0)
@@ -88,8 +88,8 @@ print(f"Purity: {dm_max.purity():.4f}")  # 0.25 = 1/d
 Trace out qubits to get the reduced density matrix of a subsystem:
 
 ```python
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT
 
 # Create a Bell state
 dm = DensityMatrix(n_qubits=2)
@@ -110,8 +110,8 @@ print(f"Purity of subsystem: {np.trace(rho_0 @ rho_0).real:.4f}")  # 0.5
 ### Expectation Values
 
 ```python
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian
 
 dm = DensityMatrix(n_qubits=2)
 H(dm, target=0)
@@ -125,7 +125,7 @@ print(f"<ZZ> = {exp:.4f}")  # 1.0 for Bell state |00> + |11>
 ### Projective Measurement
 
 ```python
-from Qforge.measurement import measure_all, measure_one
+from qforge.measurement import measure_all, measure_one
 
 dm = DensityMatrix(n_qubits=2)
 H(dm, target=0)
@@ -142,9 +142,9 @@ print(f"Purity after measurement: {dm.purity():.4f}")  # 1.0 (collapsed)
 Compute the fidelity between two states:
 
 ```python
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT
-from Qforge.noise import Depolarizing
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT
+from qforge.noise import Depolarizing
 
 # Ideal Bell state
 dm_ideal = DensityMatrix(n_qubits=2)
@@ -186,9 +186,9 @@ print(f"Subsystem entropy: {S_sub:.4f}")  # 1.0
 ## Noise Model Integration
 
 ```python
-from Qforge import DensityMatrix
-from Qforge.noise import NoiseModel, Depolarizing, AmplitudeDamping
-from Qforge.gates import H, CNOT, RY
+from qforge import DensityMatrix
+from qforge.noise import NoiseModel, Depolarizing, AmplitudeDamping
+from qforge.gates import H, CNOT, RY
 
 noise_model = NoiseModel()
 noise_model.add_all_qubit_quantum_error(
@@ -213,11 +213,11 @@ print(f"Trace:  {dm.trace():.4f}")
 For noiseless circuits, both backends give the same results:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT, RY
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.circuit import Qubit
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT, RY
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian
 import numpy as np
 
 obs = Hamiltonian(coeffs=[1.0, 0.5], terms=[[('Z', 0)], [('X', 1)]])

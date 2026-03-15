@@ -6,8 +6,8 @@ qforge circuits and the standard OpenQASM representation.
 ## Usage
 
 ```python
-from Qforge.ir import Circuit, GateOp
-from Qforge.qasm import circuit_to_qasm2, circuit_to_qasm3, qasm2_to_circuit, qasm3_to_circuit
+from qforge.ir import Circuit, GateOp
+from qforge.qasm import circuit_to_qasm2, circuit_to_qasm3, qasm2_to_circuit, qasm3_to_circuit
 
 circ = Circuit(n_qubits=2)
 circ.append(GateOp('H', (0,)))
@@ -50,6 +50,6 @@ Parse an OpenQASM 3.0 string and return a qforge `Circuit`.
 
 ## Full API
 
-::: Qforge.qasm
+::: qforge.qasm
     options:
       show_source: false

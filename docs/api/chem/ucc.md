@@ -5,8 +5,8 @@ Unitary Coupled Cluster Singles and Doubles (UCCSD) ansatz for quantum chemistry
 ## Usage
 
 ```python
-from Qforge.chem import uccsd_ansatz, uccsd_n_params
-from Qforge.circuit import Qubit
+from qforge.chem import uccsd_ansatz, uccsd_n_params
+from qforge.circuit import Qubit
 import numpy as np
 
 n_electrons = 2
@@ -47,6 +47,6 @@ Return the number of variational parameters for a UCCSD ansatz.
 
 ## Full API
 
-::: Qforge.chem.ucc
+::: qforge.chem.ucc
     options:
       show_source: false

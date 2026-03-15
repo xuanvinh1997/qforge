@@ -8,9 +8,9 @@ interoperating with other quantum frameworks.
 Human-readable format, ideal for debugging and version control:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RZ
-from Qforge.serialization import circuit_to_json, circuit_from_json
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RZ
+from qforge.serialization import circuit_to_json, circuit_from_json
 
 # Build a circuit
 qc = Qubit(n_qubits=3)
@@ -72,7 +72,7 @@ print("Circuits match!")
 Compact binary format, ideal for storage and network transfer:
 
 ```python
-from Qforge.serialization import circuit_to_binary, circuit_from_binary
+from qforge.serialization import circuit_to_binary, circuit_from_binary
 
 # Serialize to bytes
 binary_data = circuit_to_binary(qc)
@@ -97,7 +97,7 @@ qc_restored = circuit_from_binary(binary_data)
 Export circuits in the widely supported OpenQASM 2.0 format:
 
 ```python
-from Qforge.qasm import circuit_to_qasm2
+from qforge.qasm import circuit_to_qasm2
 
 qasm_str = circuit_to_qasm2(qc)
 print(qasm_str)
@@ -130,7 +130,7 @@ with open('my_circuit.qasm', 'w') as f:
 Load circuits from OpenQASM 2.0 files:
 
 ```python
-from Qforge.qasm import qasm2_to_circuit
+from qforge.qasm import qasm2_to_circuit
 
 qasm_str = """
 OPENQASM 2.0;
@@ -164,7 +164,7 @@ qc_imported = qasm2_to_circuit(qasm_str)
 ### Export for IBM Qiskit
 
 ```python
-from Qforge.qasm import circuit_to_qasm2
+from qforge.qasm import circuit_to_qasm2
 
 qasm_str = circuit_to_qasm2(qc)
 
@@ -176,7 +176,7 @@ qasm_str = circuit_to_qasm2(qc)
 ### Import from Qiskit
 
 ```python
-from Qforge.qasm import qasm2_to_circuit
+from qforge.qasm import qasm2_to_circuit
 
 # In Qiskit:
 # qasm_str = qiskit_circuit.qasm()
@@ -187,7 +187,7 @@ from Qforge.qasm import qasm2_to_circuit
 
 ### Export for Cirq or other frameworks
 
-Any framework that supports OpenQASM 2.0 can import Qforge circuits:
+Any framework that supports OpenQASM 2.0 can import qforge circuits:
 
 ```python
 qasm_str = circuit_to_qasm2(qc)
@@ -199,10 +199,10 @@ qasm_str = circuit_to_qasm2(qc)
 Verify that serialization preserves the circuit:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RX, RY, RZ, Phase
-from Qforge.serialization import circuit_to_json, circuit_from_json
-from Qforge.qasm import circuit_to_qasm2, qasm2_to_circuit
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RX, RY, RZ, Phase
+from qforge.serialization import circuit_to_json, circuit_from_json
+from qforge.qasm import circuit_to_qasm2, qasm2_to_circuit
 import numpy as np
 
 # Build a circuit with various gate types

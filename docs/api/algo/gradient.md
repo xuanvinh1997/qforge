@@ -6,7 +6,7 @@ quantum circuits. Supports both sequential and parallel (threaded) evaluation.
 ## Usage
 
 ```python
-from Qforge.algo.gradient import parameter_shift, parallel_parameter_shift
+from qforge.algo.gradient import parameter_shift, parallel_parameter_shift
 import numpy as np
 
 def cost_fn(params):
@@ -58,6 +58,6 @@ threads overlap in practice.
 
 ## Full API
 
-::: Qforge.algo.gradient
+::: qforge.algo.gradient
     options:
       show_source: false

@@ -9,7 +9,7 @@ by a C++ `StateVector` for accelerated simulation.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit, Walk_Qubit
+from qforge.circuit import Qubit, Walk_Qubit
 
 # Standard circuit (auto-selects best backend)
 wf = Qubit(4)
@@ -23,7 +23,7 @@ walk = Walk_Qubit(qubit_num=3, dim=1)
 
 ## API
 
-::: Qforge.circuit
+::: qforge.circuit
     options:
       show_source: false
       members:

@@ -7,7 +7,7 @@ C++ and Python backends.
 ## Usage
 
 ```python
-from Qforge.dmrg import DMRG
+from qforge.dmrg import DMRG
 import numpy as np
 
 # Heisenberg chain (4 sites, open boundary conditions)
@@ -40,7 +40,7 @@ DMRG(mpo, n_sites: int, chi_max: int = 64)
 
 ## Full API
 
-::: Qforge.dmrg
+::: qforge.dmrg
     options:
       show_source: false
       members:

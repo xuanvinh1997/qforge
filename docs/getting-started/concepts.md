@@ -5,7 +5,7 @@
 Qforge simulates quantum circuits using the **statevector** (wavefunction) model. An n-qubit system is represented as a complex amplitude vector of length 2^n over the computational basis states.
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 wf = Qubit(3)  # 2^3 = 8 amplitudes, initialized to |000>
 print(len(wf.amplitude))  # 8
@@ -51,8 +51,8 @@ For example, in a 3-qubit system:
 This means `wf.amplitude[4]` corresponds to state `|100>` where qubit 0 is `|1>` and qubits 1, 2 are `|0>`.
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import X
+from qforge.circuit import Qubit
+from qforge.gates import X
 
 wf = Qubit(3)
 X(wf, 0)          # Flip qubit 0 (MSB)
@@ -71,8 +71,8 @@ Qforge provides two ways to build quantum programs.
 Gates are standalone functions that modify a wavefunction in place. This is the most direct way to work with Qforge.
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RY
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RY
 
 wf = Qubit(2)
 H(wf, 0)
@@ -87,7 +87,7 @@ Advantages: simple, immediate execution, full numpy access at every step.
 The `Circuit` class records gate operations as an instruction list that can be inspected, transformed, composed, and replayed.
 
 ```python
-from Qforge.ir import Circuit
+from qforge.ir import Circuit
 
 qc = Circuit(2)
 qc.h(0).ry(1, 0.5).cnot(0, 1)
@@ -122,7 +122,7 @@ Qforge automatically selects the fastest available backend.
 The default `backend='auto'` selects in priority order: CUDA > Metal > C++ > Python.
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 wf_auto   = Qubit(10)                    # Best available
 wf_cpu    = Qubit(10, backend='cpu')     # Force C++
@@ -132,7 +132,7 @@ wf_python = Qubit(10, backend='python') # Force pure Python
 You can check which backends are compiled:
 
 ```python
-from Qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL
+from qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL
 print(f"C++: {_HAS_CPP}, CUDA: {_HAS_CUDA}, Metal: {_HAS_METAL}")
 ```
 
@@ -153,7 +153,7 @@ All rotation angles are in **radians**. The phase convention is `exp(1j * phi)`.
 
 ```python
 import numpy as np
-from Qforge.gates import RX, Phase
+from qforge.gates import RX, Phase
 
 RX(wf, 0, phi=np.pi)       # pi rotation around X-axis
 Phase(wf, 0, phi=np.pi/2)  # Apply exp(i*pi/2) = i to |1> component

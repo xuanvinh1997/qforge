@@ -8,8 +8,8 @@ operations.
 Apply any unitary matrix as a gate:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import QubitUnitary
+from qforge.circuit import Qubit
+from qforge.gates import QubitUnitary
 import numpy as np
 
 # Define a custom single-qubit gate (must be 2x2 unitary)
@@ -46,7 +46,7 @@ QubitUnitary(qc, target=[0, 1], matrix=sqrt_swap)
 For gates you use repeatedly, register them with a name:
 
 ```python
-from Qforge.ir import CustomGate, register_gate
+from qforge.ir import CustomGate, register_gate
 import numpy as np
 
 # Define the gate
@@ -67,8 +67,8 @@ register_gate(sqrt_x_gate)
 Once registered, use the gate by name:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.ir import CustomGate
+from qforge.circuit import Qubit
+from qforge.ir import CustomGate
 
 qc = Qubit(n_qubits=2)
 CustomGate.apply(qc, 'SqrtX', target=0)
@@ -80,7 +80,7 @@ CustomGate.apply(qc, 'SqrtX', target=1)
 Define gates that accept rotation angles:
 
 ```python
-from Qforge.ir import CustomGate, register_gate
+from qforge.ir import CustomGate, register_gate
 import numpy as np
 
 def rxx_matrix(theta):
@@ -114,8 +114,8 @@ CustomGate.apply(qc, 'RXX', target=[0, 1], params=[np.pi / 4])
 Qforge provides multi-controlled versions of standard gates:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import mcx, mcz, mcp
+from qforge.circuit import Qubit
+from qforge.gates import mcx, mcz, mcp
 import numpy as np
 
 qc = Qubit(n_qubits=5)
@@ -139,8 +139,8 @@ mcp(qc, controls=[0, 1], target=2, theta=np.pi / 4)
 Compose multiple gates into a single reusable unit:
 
 ```python
-from Qforge.ir import CustomGate, register_gate
-from Qforge.gates import H, CNOT, RZ
+from qforge.ir import CustomGate, register_gate
+from qforge.gates import H, CNOT, RZ
 import numpy as np
 
 def bell_basis_matrix():
@@ -175,8 +175,8 @@ The matrix is passed to the C++ `apply_single_qubit_gate` or
 
 ```python
 # Check if C++ acceleration is active
-import Qforge
-print(f"C++ engine: {Qforge._HAS_CPP}")
+import qforge
+print(f"C++ engine: {qforge._HAS_CPP}")
 
 # Custom gates use C++ when available -- no extra setup needed
 qc = Qubit(n_qubits=10)
@@ -186,7 +186,7 @@ CustomGate.apply(qc, 'SqrtX', target=5)  # C++ accelerated
 ## Listing Registered Gates
 
 ```python
-from Qforge.ir import list_registered_gates
+from qforge.ir import list_registered_gates
 
 for gate in list_registered_gates():
     print(f"{gate.name}: {gate.n_qubits}-qubit, "

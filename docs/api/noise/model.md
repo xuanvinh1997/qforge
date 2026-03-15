@@ -6,7 +6,7 @@ after each matching gate during circuit execution.
 ## Usage
 
 ```python
-from Qforge.noise import NoiseModel, Depolarizing, ReadoutError
+from qforge.noise import NoiseModel, Depolarizing, ReadoutError
 
 model = NoiseModel()
 
@@ -41,6 +41,6 @@ NoiseModel()
 
 ## Full API
 
-::: Qforge.noise.model
+::: qforge.noise.model
     options:
       show_source: false

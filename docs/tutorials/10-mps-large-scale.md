@@ -8,7 +8,7 @@ bounded entanglement.
 ## 1. Creating an MPS
 
 ```python
-from Qforge.mps import MatrixProductState
+from qforge.mps import MatrixProductState
 
 # 50-qubit MPS with bond dimension 64
 mps = MatrixProductState(n_qubits=50, max_bond_dim=64)
@@ -33,7 +33,7 @@ accuracy and memory:
 MPS uses the same gate API as the wavefunction backend:
 
 ```python
-from Qforge.gates import H, CNOT, RX, RY, RZ, SWAP
+from qforge.gates import H, CNOT, RX, RY, RZ, SWAP
 
 # GHZ-like state preparation
 H(mps, target=0)
@@ -59,8 +59,8 @@ CNOT(mps, control=0, target=49)
 ## 3. Measurement
 
 ```python
-from Qforge.measurement import measure_all, measure_one, pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.measurement import measure_all, measure_one, pauli_expectation
+from qforge.algo import Hamiltonian
 
 # Measure all qubits (collapses the state)
 mps_copy = MatrixProductState(n_qubits=50, max_bond_dim=64)
@@ -138,8 +138,8 @@ Verify that your bond dimension is sufficient by running the same circuit at
 multiple chi values:
 
 ```python
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian
 
 obs = Hamiltonian(coeffs=[1.0], terms=[[('Z', 10)]])
 
@@ -173,7 +173,7 @@ The Density Matrix Renormalization Group (DMRG) finds ground states of 1D
 Hamiltonians directly in MPS form, without building a circuit:
 
 ```python
-from Qforge.dmrg import DMRG
+from qforge.dmrg import DMRG
 
 # Heisenberg model: H = J * sum_i (X_i X_{i+1} + Y_i Y_{i+1} + Z_i Z_{i+1})
 dmrg = DMRG.heisenberg(

@@ -7,7 +7,7 @@ for quantum chemistry simulations.
 ## Usage
 
 ```python
-from Qforge.chem import (
+from qforge.chem import (
     Molecule, FermionicOperator,
     jordan_wigner, bravyi_kitaev,
     uccsd_ansatz, uccsd_n_params,

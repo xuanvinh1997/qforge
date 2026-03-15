@@ -6,8 +6,8 @@ Grover's search, and the HHL algorithm for linear systems.
 ## Usage
 
 ```python
-from Qforge.algo.standard import qft, inverse_qft, qpe, grover_search, hhl
-from Qforge.circuit import Qubit
+from qforge.algo.standard import qft, inverse_qft, qpe, grover_search, hhl
+from qforge.circuit import Qubit
 
 # QFT
 wf = Qubit(4)
@@ -86,6 +86,6 @@ HHL algorithm for solving the linear system `Ax = b`.
 
 ## Full API
 
-::: Qforge.algo.standard
+::: qforge.algo.standard
     options:
       show_source: false

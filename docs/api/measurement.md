@@ -7,9 +7,9 @@ C++ kernels when available.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.measurement import measure_all, measure_one, collapse_one, pauli_expectation
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.measurement import measure_all, measure_one, collapse_one, pauli_expectation
 
 wf = Qubit(2)
 H(wf, 0)
@@ -30,6 +30,6 @@ exp_val = pauli_expectation(wf, [('Z', 0), ('Z', 1)])
 
 ## API
 
-::: Qforge.measurement
+::: qforge.measurement
     options:
       show_source: false

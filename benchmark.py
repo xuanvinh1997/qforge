@@ -8,7 +8,10 @@ import sys
 from qforge import _HAS_CPP, _HAS_METAL
 print(f"C++ engine available: {_HAS_CPP}")
 
-from qforge import Qcircuit, Qgates, Qmeas, Qdata
+from qforge import circuit as Qcircuit
+from qforge import gates as Qgates
+from qforge import measurement as Qmeas
+from qforge import data as Qdata
 
 # Metal uses float32 internally — use relaxed tolerance
 _DEFAULT_TOL = 1e-6 if _HAS_METAL else 1e-12

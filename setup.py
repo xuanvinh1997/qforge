@@ -295,6 +295,42 @@ if os.environ.get('QFORGE_CUDA', '0') == '1':
     cuda_ext.cuda_sources = [os.path.join(cpp_dir, "src", "cuda_kernels.cu")]
     ext_modules.append(cuda_ext)
 
+# --- MPI distributed backend (opt-in via QFORGE_MPI=1) ---
+if os.environ.get('QFORGE_MPI', '0') == '1':
+    try:
+        mpi_compile_args = subprocess.check_output(
+            ['mpicxx', '--showme:compile'], stderr=subprocess.DEVNULL
+        ).decode().strip().split()
+        mpi_link_args = subprocess.check_output(
+            ['mpicxx', '--showme:link'], stderr=subprocess.DEVNULL
+        ).decode().strip().split()
+    except (subprocess.CalledProcessError, FileNotFoundError):
+        # Try mpiCC or fall back to pkg-config
+        try:
+            mpi_compile_args = subprocess.check_output(
+                ['pkg-config', '--cflags', 'mpi-cxx'], stderr=subprocess.DEVNULL
+            ).decode().strip().split()
+            mpi_link_args = subprocess.check_output(
+                ['pkg-config', '--libs', 'mpi-cxx'], stderr=subprocess.DEVNULL
+            ).decode().strip().split()
+        except (subprocess.CalledProcessError, FileNotFoundError):
+            mpi_compile_args = []
+            mpi_link_args = ['-lmpi']
+
+    ext_modules.append(
+        Pybind11Extension(
+            "qforge._qforge_distributed",
+            sources=[
+                os.path.join(cpp_dir, "src", "distributed_sv.cpp"),
+                os.path.join(cpp_dir, "bindings", "py_distributed.cpp"),
+            ],
+            include_dirs=[os.path.join(cpp_dir, "include")],
+            extra_compile_args=_compile_args_cpp17() + mpi_compile_args + ["-DQFORGE_USE_MPI"],
+            extra_link_args=mpi_link_args,
+            language="c++",
+        )
+    )
+
 
 setup(
     name="qforge",

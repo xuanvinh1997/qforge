@@ -20,14 +20,14 @@ right one for your workload.
 ### Global Default
 
 ```python
-import Qforge
-Qforge.set_backend('cpu')  # All subsequent circuits use C++ CPU
+import qforge
+qforge.set_backend('cpu')  # All subsequent circuits use C++ CPU
 ```
 
 ### Per-Circuit
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 qc = Qubit(n_qubits=10, backend='cuda')
 ```
@@ -41,7 +41,7 @@ The `'auto'` backend (default) selects in this order:
 4. Python -- fallback
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 qc = Qubit(n_qubits=10)  # Uses 'auto'
 print(qc.backend)         # Shows which backend was selected
@@ -122,7 +122,7 @@ print(qc.backend)         # Shows which backend was selected
 ### MPS (separate backend)
 
 ```python
-from Qforge.mps import MatrixProductState
+from qforge.mps import MatrixProductState
 
 mps = MatrixProductState(n_qubits=50, max_bond_dim=64)
 # Same gate API as Qubit
@@ -135,7 +135,7 @@ mps = MatrixProductState(n_qubits=50, max_bond_dim=64)
 ### DensityMatrix (separate backend)
 
 ```python
-from Qforge import DensityMatrix
+from qforge import DensityMatrix
 
 dm = DensityMatrix(n_qubits=4, noise_model=noise_model)
 # Same gate API as Qubit
@@ -148,11 +148,11 @@ dm = DensityMatrix(n_qubits=4, noise_model=noise_model)
 ## Checking Backend Availability
 
 ```python
-import Qforge
+import qforge
 
-print(f"C++ engine: {Qforge._HAS_CPP}")
-print(f"CUDA:       {Qforge.has_cuda()}")
-print(f"Metal:      {Qforge.has_metal()}")
+print(f"C++ engine: {qforge._HAS_CPP}")
+print(f"CUDA:       {qforge.has_cuda()}")
+print(f"Metal:      {qforge.has_metal()}")
 ```
 
 ## Summary

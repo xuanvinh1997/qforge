@@ -2,7 +2,6 @@
 
 Qforge is a wavefunction-based quantum virtual machine (QVM) for simulating quantum circuits on classical hardware. It provides native tools for variational quantum algorithms, quantum differentiable programming via the parameter-shift rule, and quantum machine learning applications.
 
-Published in *Machine Learning: Science and Technology* ([DOI: 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac5997)).
 
 ## Key Features
 
@@ -20,9 +19,9 @@ Published in *Machine Learning: Science and Technology* ([DOI: 10.1088/2632-2153
 ## Quick Example: Bell State
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.measurement import measure_all
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.measurement import measure_all
 
 # Create a 2-qubit circuit in |00>
 wf = Qubit(2)
@@ -59,19 +58,6 @@ wf.visual_circuit()
 | [Measurement](tutorials/03-measurement.md) | Sampling, probabilities, collapse, expectation values |
 | [Entanglement](tutorials/04-entanglement.md) | Bell states, GHZ, entropy, correlators |
 | [Circuit IR](tutorials/05-circuit-ir.md) | Build, compose, adjoint, parameterize, and replay circuits |
-
-## Citation
-
-If you use Qforge in your research, please cite:
-
-```bibtex
-@article{qforge2022,
-  title={Qforge: A quantum virtual machine for quantum computing simulation},
-  journal={Machine Learning: Science and Technology},
-  year={2022},
-  doi={10.1088/2632-2153/ac5997}
-}
-```
 
 ## License
 

@@ -7,7 +7,7 @@ Jordan-Wigner transformation and a UCCSD ansatz optimized with VQE.
 ## 1. Define a Molecule
 
 ```python
-from Qforge.chem import Molecule
+from qforge.chem import Molecule
 
 # Hydrogen molecule at equilibrium bond length
 h2 = Molecule(
@@ -28,7 +28,7 @@ The Jordan-Wigner transformation maps the fermionic Hamiltonian to a qubit
 Hamiltonian:
 
 ```python
-from Qforge.chem import jordan_wigner
+from qforge.chem import jordan_wigner
 
 qubit_hamiltonian = jordan_wigner(h2)
 
@@ -51,7 +51,7 @@ The Unitary Coupled Cluster Singles and Doubles (UCCSD) ansatz is a
 chemically motivated variational circuit:
 
 ```python
-from Qforge.chem import uccsd_ansatz
+from qforge.chem import uccsd_ansatz
 
 # Generate the UCCSD circuit function
 ansatz_fn, n_params = uccsd_ansatz(
@@ -70,7 +70,7 @@ The UCCSD ansatz:
 ## 4. VQE for H2
 
 ```python
-from Qforge.algo import VQE, Adam
+from qforge.algo import VQE, Adam
 import numpy as np
 
 vqe = VQE(
@@ -121,7 +121,7 @@ for r in bond_lengths:
     )
 
     # Hartree-Fock energy (zero parameters)
-    from Qforge.measurement import pauli_expectation
+    from qforge.measurement import pauli_expectation
     qc_hf = ansatz(np.zeros(n_p))
     hf_energies.append(pauli_expectation(qc_hf, ham))
 
@@ -222,8 +222,8 @@ print(f"Hamiltonian terms: {len(ham_beh2.terms)}")
 Here is the complete workflow for a molecular simulation:
 
 ```python
-from Qforge.chem import Molecule, jordan_wigner, uccsd_ansatz
-from Qforge.algo import VQE, Adam
+from qforge.chem import Molecule, jordan_wigner, uccsd_ansatz
+from qforge.algo import VQE, Adam
 import numpy as np
 
 # 1. Define molecule

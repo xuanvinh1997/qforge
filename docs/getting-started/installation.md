@@ -34,11 +34,11 @@ The `pip install -e .` command compiles the C++ extension (`_qforge_core`) autom
 
 ```python
 # Check that the C++ engine loaded
-from Qforge import _HAS_CPP
+from qforge import _HAS_CPP
 print(f"C++ engine available: {_HAS_CPP}")
 
 # Full check
-from Qforge._qforge_core import StateVector
+from qforge._qforge_core import StateVector
 print("C++ StateVector loaded successfully")
 ```
 
@@ -48,8 +48,8 @@ If `_HAS_CPP` is `False`, Qforge falls back to pure Python automatically. All fu
 
 ```bash
 python -c "
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
 wf = Qubit(2)
 H(wf, 0)
 CNOT(wf, 0, 1)

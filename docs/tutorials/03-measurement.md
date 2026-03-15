@@ -5,9 +5,9 @@ This tutorial covers all measurement operations in Qforge: sampling, single-qubi
 ## Setup
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, X, RY
-from Qforge.measurement import measure_all, measure_one, collapse_one, pauli_expectation
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, X, RY
+from qforge.measurement import measure_all, measure_one, collapse_one, pauli_expectation
 import numpy as np
 ```
 
@@ -185,7 +185,7 @@ print(pauli_expectation(wf, 0, 'X'))  # 0.0
 print(pauli_expectation(wf, 1, 'X'))  # 0.0
 ```
 
-> **Tip:** For multi-body correlators like `<Z_0 Z_1>`, use `PauliZExpectation` from `Qforge.data` (covered in the [Entanglement tutorial](04-entanglement.md)).
+> **Tip:** For multi-body correlators like `<Z_0 Z_1>`, use `PauliZExpectation` from `qforge.data` (covered in the [Entanglement tutorial](04-entanglement.md)).
 
 ## Comparing `probabilities()` with Measurement Functions
 
@@ -200,9 +200,9 @@ print(pauli_expectation(wf, 1, 'X'))  # 0.0
 ## Full Example: Variational State Analysis
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import RY, CNOT
-from Qforge.measurement import measure_all, measure_one, pauli_expectation
+from qforge.circuit import Qubit
+from qforge.gates import RY, CNOT
+from qforge.measurement import measure_all, measure_one, pauli_expectation
 import numpy as np
 
 # Parameterized 2-qubit state

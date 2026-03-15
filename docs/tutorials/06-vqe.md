@@ -16,7 +16,7 @@ The H2 molecular Hamiltonian in the STO-3G basis, after qubit mapping, can be
 expressed as a sum of Pauli terms:
 
 ```python
-from Qforge.algo import Hamiltonian
+from qforge.algo import Hamiltonian
 
 # H2 at equilibrium bond length (0.735 Angstrom)
 # Coefficients from Jordan-Wigner transformation
@@ -46,9 +46,9 @@ A hardware-efficient ansatz alternates single-qubit rotations with entangling
 layers:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RX, RY, RZ
-from Qforge import Parameter, ParameterVector
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RX, RY, RZ
+from qforge import Parameter, ParameterVector
 
 def h2_ansatz(params):
     """Two-qubit ansatz for H2."""
@@ -71,7 +71,7 @@ def h2_ansatz(params):
 You can also use the built-in hardware-efficient ansatz:
 
 ```python
-from Qforge.algo import hardware_efficient_ansatz
+from qforge.algo import hardware_efficient_ansatz
 
 # Generates a parameterized ansatz automatically
 ansatz_fn = hardware_efficient_ansatz(n_qubits=2, n_layers=2, rotation_gates=['RY', 'RZ'])
@@ -80,7 +80,7 @@ ansatz_fn = hardware_efficient_ansatz(n_qubits=2, n_layers=2, rotation_gates=['R
 ## 3. Set Up and Run VQE
 
 ```python
-from Qforge.algo import VQE, Adam
+from qforge.algo import VQE, Adam
 import numpy as np
 
 vqe = VQE(
@@ -130,7 +130,7 @@ For noisy or shot-based simulations, the Simultaneous Perturbation Stochastic
 Approximation (SPSA) optimizer is more robust:
 
 ```python
-from Qforge.algo import SPSA
+from qforge.algo import SPSA
 
 result_spsa = vqe.optimize(
     optimizer=SPSA(a=0.1, c=0.1),
@@ -152,8 +152,8 @@ If you want full control over the optimization loop, use `parameter_shift`
 directly:
 
 ```python
-from Qforge.algo import parameter_shift
-from Qforge.measurement import pauli_expectation
+from qforge.algo import parameter_shift
+from qforge.measurement import pauli_expectation
 
 def cost_fn(params):
     qc = h2_ansatz(params)
@@ -180,7 +180,7 @@ for step in range(200):
 Scan the bond length to map the full potential energy surface:
 
 ```python
-from Qforge.chem import Molecule, jordan_wigner
+from qforge.chem import Molecule, jordan_wigner
 
 bond_lengths = np.linspace(0.3, 2.5, 30)
 vqe_energies = []

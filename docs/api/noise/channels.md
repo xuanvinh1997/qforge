@@ -6,7 +6,7 @@ the trace-preservation condition: sum_k K_k^dagger K_k = I.
 ## Usage
 
 ```python
-from Qforge.noise.channels import BitFlip, Depolarizing, AmplitudeDamping
+from qforge.noise.channels import BitFlip, Depolarizing, AmplitudeDamping
 
 bf = BitFlip(p=0.05)
 print(bf.kraus_ops)              # [sqrt(0.95)*I, sqrt(0.05)*X]
@@ -105,6 +105,6 @@ User-defined channel from an explicit list of Kraus operators.
 
 ## Full API
 
-::: Qforge.noise.channels
+::: qforge.noise.channels
     options:
       show_source: false

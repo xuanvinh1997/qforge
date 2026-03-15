@@ -6,8 +6,8 @@ a common `.step(params, grad)` interface.
 ## Usage
 
 ```python
-from Qforge.algo.optimizers import Adam, GradientDescent, SPSA, LBFGS
-from Qforge.algo.gradient import parameter_shift
+from qforge.algo.optimizers import Adam, GradientDescent, SPSA, LBFGS
+from qforge.algo.gradient import parameter_shift
 import numpy as np
 
 opt = Adam(lr=0.01)
@@ -79,6 +79,6 @@ LBFGS(maxiter=100)
 
 ## Full API
 
-::: Qforge.algo.optimizers
+::: qforge.algo.optimizers
     options:
       show_source: false

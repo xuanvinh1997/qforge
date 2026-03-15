@@ -6,8 +6,8 @@ loading, and transmitting quantum circuits.
 ## Usage
 
 ```python
-from Qforge.ir import Circuit, GateOp
-from Qforge.serialization import (
+from qforge.ir import Circuit, GateOp
+from qforge.serialization import (
     circuit_to_json, circuit_from_json,
     circuit_to_binary, circuit_from_binary,
 )
@@ -53,6 +53,6 @@ Deserialize a `Circuit` from binary data produced by `circuit_to_binary`.
 
 ## Full API
 
-::: Qforge.serialization
+::: qforge.serialization
     options:
       show_source: false

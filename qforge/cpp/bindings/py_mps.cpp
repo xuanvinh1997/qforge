@@ -10,10 +10,15 @@
 
 namespace py = pybind11;
 
-// Forward declare dmrg_sweep from dmrg_sweep.cpp
+// Forward declare dmrg functions from dmrg_sweep.cpp
 namespace qforge { namespace dmrg {
 double dmrg_sweep(mps::MPS& psi, const mpo::MPO& H,
                   int max_chi, double eps, int lanczos_dim);
+double dmrg_sweep_1site(mps::MPS& psi, const mpo::MPO& H,
+                        int max_chi, double eps, int lanczos_dim);
+double dmrg_sweep_excited(mps::MPS& psi, const mpo::MPO& H,
+                          int max_chi, double eps, int lanczos_dim,
+                          const std::vector<mps::MPS*>& prev_states, double weight);
 }}
 
 PYBIND11_MODULE(_qforge_mps, m) {
@@ -202,4 +207,39 @@ PYBIND11_MODULE(_qforge_mps, m) {
           py::arg("max_chi") = 32, py::arg("eps") = 1e-10,
           py::arg("lanczos_dim") = 20,
           "Run one full two-site DMRG sweep (left→right + right→left). Returns energy.");
+
+    // ================================================================
+    // Single-site DMRG sweep
+    // ================================================================
+    m.def("dmrg_sweep_1site",
+          [](qforge::mps::MPS& psi, const qforge::mpo::MPO& H,
+             int max_chi, double eps, int lanczos_dim) {
+              py::gil_scoped_release rel;
+              return qforge::dmrg::dmrg_sweep_1site(psi, H, max_chi, eps, lanczos_dim);
+          },
+          py::arg("psi"), py::arg("H"),
+          py::arg("max_chi") = 32, py::arg("eps") = 1e-10,
+          py::arg("lanczos_dim") = 20,
+          "Run one full single-site DMRG sweep. Returns energy.");
+
+    // ================================================================
+    // Excited-state DMRG sweep (penalty method)
+    // ================================================================
+    m.def("dmrg_sweep_excited",
+          [](qforge::mps::MPS& psi, const qforge::mpo::MPO& H,
+             int max_chi, double eps, int lanczos_dim,
+             py::list prev_states_py, double weight) {
+              std::vector<qforge::mps::MPS*> prev;
+              for (auto& s : prev_states_py)
+                  prev.push_back(s.cast<qforge::mps::MPS*>());
+              py::gil_scoped_release rel;
+              return qforge::dmrg::dmrg_sweep_excited(
+                  psi, H, max_chi, eps, lanczos_dim, prev, weight);
+          },
+          py::arg("psi"), py::arg("H"),
+          py::arg("max_chi") = 32, py::arg("eps") = 1e-10,
+          py::arg("lanczos_dim") = 20,
+          py::arg("prev_states") = py::list(),
+          py::arg("weight") = 10.0,
+          "Run one excited-state DMRG sweep with penalty projections. Returns energy.");
 }

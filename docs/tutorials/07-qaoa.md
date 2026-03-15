@@ -27,7 +27,7 @@ n_qubits = 4
 ## 2. Set Up QAOA
 
 ```python
-from Qforge.algo import QAOA
+from qforge.algo import QAOA
 
 qaoa = QAOA(
     n_qubits=n_qubits,
@@ -45,7 +45,7 @@ Under the hood, QAOA constructs:
 ## 3. Optimize the Parameters
 
 ```python
-from Qforge.algo import Adam
+from qforge.algo import Adam
 
 result = qaoa.optimize(
     optimizer=Adam(lr=0.1),
@@ -65,8 +65,8 @@ print(f"Optimal parameters: {result.optimal_params}")
 After optimization, sample the circuit to find the most probable bitstrings:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.measurement import measure_all
+from qforge.circuit import Qubit
+from qforge.measurement import measure_all
 
 # Build the optimized circuit
 qc = qaoa.build_circuit(result.optimal_params)

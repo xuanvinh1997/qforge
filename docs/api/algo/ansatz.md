@@ -5,8 +5,8 @@ Pre-built parameterized ansatz circuits for variational quantum algorithms.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.algo.ansatz import hardware_efficient_ansatz, strongly_entangling_ansatz
+from qforge.circuit import Qubit
+from qforge.algo.ansatz import hardware_efficient_ansatz, strongly_entangling_ansatz
 import numpy as np
 
 wf = Qubit(4)
@@ -49,6 +49,6 @@ with stride that varies by layer.
 
 ## Full API
 
-::: Qforge.algo.ansatz
+::: qforge.algo.ansatz
     options:
       show_source: false

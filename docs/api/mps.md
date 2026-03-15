@@ -8,15 +8,15 @@ standard `Wavefunction` backend.
 ## Usage
 
 ```python
-from Qforge.mps import MatrixProductState
-from Qforge.gates import H, CNOT
+from qforge.mps import MatrixProductState
+from qforge.gates import H, CNOT
 
 mps = MatrixProductState(n_qubits=8, chi_max=32)
 H(mps, 0)
 CNOT(mps, 0, 1)
 
 # Measure
-from Qforge.measurement import measure_one
+from qforge.measurement import measure_one
 probs = measure_one(mps, 0)  # [P(|0>), P(|1>)]
 ```
 
@@ -47,7 +47,7 @@ MatrixProductState(n_qubits: int, chi_max: int = 64)
 
 ## Full API
 
-::: Qforge.mps
+::: qforge.mps
     options:
       show_source: false
       members:

@@ -126,98 +126,91 @@ double norm(const MPS& mps) {
 
 // ============================================================
 // entanglement_entropy at bond (bond, bond+1)
-// Contract left and right halves, form theta matrix, SVD
+// Uses transfer matrices that stay at chi x chi size — O(N * chi^3)
+// instead of expanding to the full 2^N Hilbert space.
+//
+// For a general (non-canonical) MPS, the squared Schmidt coefficients
+// at the bipartition are the eigenvalues of T_L @ T_R, where T_L and
+// T_R are the left and right transfer matrices at the bond.
 // ============================================================
 double entanglement_entropy(const MPS& mps, int bond) {
     const int N = mps.n_qubits();
     if (bond < 0 || bond >= N - 1)
         throw std::out_of_range("bond index out of range");
 
-    // --- Left contraction: shape [left_states, chi_bond] ---
+    using C = std::complex<double>;
+    using CMatrix = Eigen::Matrix<C, Eigen::Dynamic, Eigen::Dynamic, Eigen::RowMajor>;
+
+    // --- Left transfer matrix: sites 0..bond → T_L [chi_bond, chi_bond] ---
     const Tensor& t0 = mps.site(0);
     int chi = t0.chi_right;
-    std::vector<std::complex<double>> left(2 * chi);
+    CMatrix T_L = CMatrix::Zero(chi, chi);
     for (int s = 0; s < 2; ++s)
-        for (int cr = 0; cr < chi; ++cr)
-            left[s * chi + cr] = t0.at(0, s, cr);
-    int left_states = 2;
+        for (int a = 0; a < chi; ++a)
+            for (int b = 0; b < chi; ++b)
+                T_L(a, b) += t0.at(0, s, a) * std::conj(t0.at(0, s, b));
 
     for (int i = 1; i <= bond; ++i) {
         const Tensor& A = mps.site(i);
         int new_chi = A.chi_right;
-        int new_states = left_states * 2;
-        std::vector<std::complex<double>> new_left(new_states * new_chi, {0, 0});
-        for (int os = 0; os < left_states; ++os)
-            for (int c = 0; c < chi; ++c) {
-                std::complex<double> r = left[os * chi + c];
-                if (r == std::complex<double>(0, 0)) continue;
+        CMatrix T_new = CMatrix::Zero(new_chi, new_chi);
+        for (int a = 0; a < chi; ++a)
+            for (int b = 0; b < chi; ++b) {
+                auto t = T_L(a, b);
+                if (std::abs(t) < 1e-15) continue;
                 for (int s = 0; s < 2; ++s)
-                    for (int nc = 0; nc < new_chi; ++nc)
-                        new_left[(os * 2 + s) * new_chi + nc] += r * A.at(c, s, nc);
+                    for (int ap = 0; ap < new_chi; ++ap) {
+                        auto ta = t * A.at(a, s, ap);
+                        if (std::abs(ta) < 1e-15) continue;
+                        for (int bp = 0; bp < new_chi; ++bp)
+                            T_new(ap, bp) += ta * std::conj(A.at(b, s, bp));
+                    }
             }
-        left = std::move(new_left);
-        left_states = new_states;
+        T_L = std::move(T_new);
         chi = new_chi;
     }
-    // left: [left_states, chi_bond]
     int chi_bond = chi;
 
-    // --- Right contraction: shape [chi_bond, right_states] ---
+    // --- Right transfer matrix: sites bond+1..N-1 → T_R [chi_bond, chi_bond] ---
     const Tensor& tLast = mps.site(N - 1);
-    int right_chi = tLast.chi_left;
-    int right_states = 2;
-    std::vector<std::complex<double>> right(right_chi * right_states);
-    for (int cl = 0; cl < right_chi; ++cl)
-        for (int s = 0; s < 2; ++s)
-            right[cl * right_states + s] = tLast.at(cl, s, 0);
+    int rchi = tLast.chi_left;
+    CMatrix T_R = CMatrix::Zero(rchi, rchi);
+    for (int s = 0; s < 2; ++s)
+        for (int a = 0; a < rchi; ++a)
+            for (int b = 0; b < rchi; ++b)
+                T_R(a, b) += tLast.at(a, s, 0) * std::conj(tLast.at(b, s, 0));
 
     for (int i = N - 2; i >= bond + 1; --i) {
         const Tensor& A = mps.site(i);
         int new_chi = A.chi_left;
-        int new_states = right_states * 2;
-        std::vector<std::complex<double>> new_right(new_chi * new_states, {0, 0});
-        for (int cl = 0; cl < new_chi; ++cl)
-            for (int s = 0; s < 2; ++s)
-                for (int c = 0; c < right_chi; ++c) {
-                    std::complex<double> a = A.at(cl, s, c);
-                    if (a == std::complex<double>(0, 0)) continue;
-                    for (int rs = 0; rs < right_states; ++rs)
-                        new_right[cl * new_states + s * right_states + rs] +=
-                            a * right[c * right_states + rs];
-                }
-        right = std::move(new_right);
-        right_chi = new_chi;
-        right_states = new_states;
-    }
-    // right: [chi_bond, right_states]
-
-    // --- theta = left @ right: [left_states, right_states] ---
-    using CMatrix = Eigen::Matrix<std::complex<double>,
-                                  Eigen::Dynamic, Eigen::Dynamic,
-                                  Eigen::RowMajor>;
-
-    // Check chi_bond == right_chi
-    if (chi_bond != right_chi) {
-        // fallback: can happen if bond+1 == N-1 and right not contracted
-        // should not happen with correct logic above
-        return 0.0;
+        CMatrix T_new = CMatrix::Zero(new_chi, new_chi);
+        for (int a = 0; a < new_chi; ++a)
+            for (int b = 0; b < new_chi; ++b) {
+                C val(0, 0);
+                for (int s = 0; s < 2; ++s)
+                    for (int cr = 0; cr < rchi; ++cr)
+                        for (int cr2 = 0; cr2 < rchi; ++cr2)
+                            val += A.at(a, s, cr) * T_R(cr, cr2)
+                                 * std::conj(A.at(b, s, cr2));
+                T_new(a, b) = val;
+            }
+        T_R = std::move(T_new);
+        rchi = new_chi;
     }
 
-    CMatrix L_mat = Eigen::Map<const CMatrix>(left.data(), left_states, chi_bond);
-    CMatrix R_mat = Eigen::Map<const CMatrix>(right.data(), chi_bond, right_states);
-    CMatrix theta = L_mat * R_mat;
-
-    Eigen::JacobiSVD<CMatrix> svd(theta, Eigen::ComputeThinU | Eigen::ComputeThinV);
-    const auto& sv = svd.singularValues();
+    // Squared Schmidt coefficients = eigenvalues of T_L * T_R
+    CMatrix M = T_L * T_R;
+    Eigen::ComplexEigenSolver<CMatrix> eig(M, false);
+    const auto& ev = eig.eigenvalues();
 
     double norm_sq = 0.0;
-    for (int i = 0; i < static_cast<int>(sv.size()); ++i)
-        norm_sq += sv[i] * sv[i];
+    for (int i = 0; i < static_cast<int>(ev.size()); ++i)
+        norm_sq += std::max(0.0, ev[i].real());
     if (norm_sq < 1e-14) return 0.0;
 
     double entropy = 0.0;
-    for (int i = 0; i < static_cast<int>(sv.size()); ++i) {
-        double p = sv[i] * sv[i] / norm_sq;
+    for (int i = 0; i < static_cast<int>(ev.size()); ++i) {
+        double p = std::max(0.0, ev[i].real()) / norm_sq;
         if (p > 1e-14) entropy -= p * std::log2(p);
     }
     return entropy;

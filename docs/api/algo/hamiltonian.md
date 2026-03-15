@@ -6,9 +6,9 @@ expectation value computation.
 ## Usage
 
 ```python
-from Qforge.algo.hamiltonian import Hamiltonian
-from Qforge.circuit import Qubit
-from Qforge.gates import H
+from qforge.algo.hamiltonian import Hamiltonian
+from qforge.circuit import Qubit
+from qforge.gates import H
 
 # H = -1.0 * Z_0 + 0.5 * X_0 X_1
 ham = Hamiltonian(
@@ -42,6 +42,6 @@ Hamiltonian(coeffs, terms)
 
 ## Full API
 
-::: Qforge.algo.hamiltonian
+::: qforge.algo.hamiltonian
     options:
       show_source: false

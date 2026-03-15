@@ -9,7 +9,7 @@ lazily imported -- only the frameworks installed in your environment are loaded.
 ### JAX
 
 ```python
-from Qforge.interfaces import qnode_jax
+from qforge.interfaces import qnode_jax
 import jax
 import jax.numpy as jnp
 
@@ -25,7 +25,7 @@ grads = grad_fn(params)
 ### PyTorch
 
 ```python
-from Qforge.interfaces import QNodeFunction
+from qforge.interfaces import QNodeFunction
 import torch
 
 qfn = QNodeFunction(n_qubits=2, circuit_fn=my_circuit, cost_fn=my_cost)
@@ -37,7 +37,7 @@ loss.backward()
 ### TensorFlow
 
 ```python
-from Qforge.interfaces import qnode_tf
+from qforge.interfaces import qnode_tf
 import tensorflow as tf
 
 @qnode_tf(n_qubits=2, n_layers=1)
@@ -80,6 +80,6 @@ Decorator that wraps a qforge circuit as a TensorFlow-differentiable function.
 
 ## Full API
 
-::: Qforge.interfaces
+::: qforge.interfaces
     options:
       show_source: false

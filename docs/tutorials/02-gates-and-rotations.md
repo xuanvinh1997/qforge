@@ -7,8 +7,8 @@ A complete walkthrough of every gate in Qforge with examples.
 All examples below start from:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import *
+from qforge.circuit import Qubit
+from qforge.gates import *
 import numpy as np
 ```
 

@@ -5,7 +5,7 @@ Fermionic operators and fermion-to-qubit mappings (Jordan-Wigner, Bravyi-Kitaev)
 ## Usage
 
 ```python
-from Qforge.chem import FermionicOperator, jordan_wigner, bravyi_kitaev
+from qforge.chem import FermionicOperator, jordan_wigner, bravyi_kitaev
 
 # Create a fermionic operator from one- and two-body integrals
 ferm_op = FermionicOperator(h1=one_body, h2=two_body)
@@ -41,7 +41,7 @@ Transform a `FermionicOperator` into a qubit `Hamiltonian` using the
 Jordan-Wigner mapping. Each fermionic mode maps to one qubit with
 Pauli-Z strings encoding the parity.
 
-**Returns:** `Qforge.algo.Hamiltonian`.
+**Returns:** `qforge.algo.Hamiltonian`.
 
 ---
 
@@ -51,10 +51,10 @@ Transform a `FermionicOperator` into a qubit `Hamiltonian` using the
 Bravyi-Kitaev mapping. Provides a balance between locality and qubit
 overhead compared to Jordan-Wigner.
 
-**Returns:** `Qforge.algo.Hamiltonian`.
+**Returns:** `qforge.algo.Hamiltonian`.
 
 ## Full API
 
-::: Qforge.chem.fermion
+::: qforge.chem.fermion
     options:
       show_source: false

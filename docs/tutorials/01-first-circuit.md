@@ -11,8 +11,8 @@ Create a 3-qubit GHZ state: (|000> + |111>) / sqrt(2).
 ### Step 1: Initialize
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
 
 wf = Qubit(3)
 ```
@@ -47,7 +47,7 @@ assert np.isclose(probs.sum(), 1.0)
 ### Step 4: Measure and Visualize
 
 ```python
-from Qforge.measurement import measure_all
+from qforge.measurement import measure_all
 
 states, counts = measure_all(wf, 1000)
 print(dict(zip(states, counts)))
@@ -63,7 +63,7 @@ The same circuit built with the IR. Instead of calling gate functions directly, 
 ### Step 1: Build the Circuit
 
 ```python
-from Qforge.ir import Circuit
+from qforge.ir import Circuit
 
 qc = Circuit(3)
 qc.h(0)
@@ -106,7 +106,7 @@ print(wf.probabilities())
 If you already have a wavefunction, use the circuit as a callable:
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 wf2 = Qubit(3)
 qc(wf2)  # Apply circuit in-place
@@ -119,9 +119,9 @@ print(wf2.probabilities())
 You can capture functional API calls into a Circuit using the `record` context manager:
 
 ```python
-from Qforge.ir import record
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
+from qforge.ir import record
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
 
 with record(3) as qc:
     wf = Qubit(3)
@@ -142,10 +142,10 @@ This is useful when you want to use the functional API's syntax but still need t
 ## Full Example
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.measurement import measure_all
-from Qforge.ir import Circuit
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.measurement import measure_all
+from qforge.ir import Circuit
 
 # --- Functional API ---
 wf = Qubit(3)

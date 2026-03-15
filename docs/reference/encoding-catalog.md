@@ -1,6 +1,6 @@
 # Encoding Catalog
 
-Complete reference for all data encoding strategies in `Qforge.encodings`.
+Complete reference for all data encoding strategies in `qforge.encodings`.
 Each encoding maps classical data to a quantum state (Wavefunction).
 
 ## Summary Table

@@ -6,12 +6,12 @@ representation, applies transformation passes, and produces optimized circuits.
 ## Usage
 
 ```python
-from Qforge.transpiler import (
+from qforge.transpiler import (
     DAGCircuit, PassManager,
     Decompose, CancelInverses, Optimize1qRotations,
     CommutationAnalysis, BasisTranslator,
 )
-from Qforge.ir import Circuit, GateOp
+from qforge.ir import Circuit, GateOp
 
 circ = Circuit(n_qubits=3)
 circ.append(GateOp('H', (0,)))
@@ -32,7 +32,7 @@ optimized = pm.run(circ)
 ## Exported Names
 
 ```python
-from Qforge.transpiler import (
+from qforge.transpiler import (
     DAGCircuit, DAGNode,
     PassManager, TranspilerPass,
     Decompose, CancelInverses, Optimize1qRotations,

@@ -1,13 +1,13 @@
 # Qforge.encodings
 
 Quantum data encoding strategies for mapping classical data into quantum states.
-All encodings return a `Wavefunction` and compose existing gates from `Qforge.gates`,
+All encodings return a `Wavefunction` and compose existing gates from `qforge.gates`,
 so they automatically benefit from C++ acceleration.
 
 ## Usage
 
 ```python
-from Qforge.encodings import amplitude_encode, qubit_encode, yz_cx_encode
+from qforge.encodings import amplitude_encode, qubit_encode, yz_cx_encode
 import numpy as np
 
 data = np.array([1.0, 2.0, 3.0, 4.0])
@@ -166,6 +166,6 @@ ZZ feature map encoding (second-order Pauli-ZZ expansion with entanglement).
 
 ## Full API
 
-::: Qforge.encodings
+::: qforge.encodings
     options:
       show_source: false

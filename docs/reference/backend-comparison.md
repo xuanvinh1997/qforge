@@ -58,7 +58,7 @@ The C++ engine achieves **100-200x speedup** over pure Python through:
 The `Qubit()` constructor accepts a `backend` parameter:
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 wf = Qubit(10, backend='auto')    # CUDA > Metal > CPU > Python
 wf = Qubit(10, backend='cpu')     # Force C++ CPU backend

@@ -5,8 +5,8 @@ The Circuit Intermediate Representation (IR) lets you build quantum programs as 
 ## Setup
 
 ```python
-from Qforge.ir import Circuit, GateOp, record, CustomGate, register_gate
-from Qforge.circuit import Qubit
+from qforge.ir import Circuit, GateOp, record, CustomGate, register_gate
+from qforge.circuit import Qubit
 import numpy as np
 ```
 
@@ -212,7 +212,7 @@ def cost_function(params):
     """Evaluate the cost function for given parameters."""
     ansatz = Circuit(2).ry(0, 0.0).ry(1, 0.0).cnot(0, 1).ry(0, 0.0).ry(1, 0.0)
     wf = ansatz.run(params=params)
-    from Qforge.measurement import pauli_expectation
+    from qforge.measurement import pauli_expectation
     return pauli_expectation(wf, 0, 'Z')
 
 # Evaluate at different parameter values
@@ -238,7 +238,7 @@ Define reusable gates from matrices or sub-circuits.
 ### Matrix-Defined Gate
 
 ```python
-from Qforge.ir import CustomGate, register_gate
+from qforge.ir import CustomGate, register_gate
 
 # Define a sqrt(Z) gate
 sqrt_z_matrix = np.array([[1, 0], [0, 1j]])
@@ -269,7 +269,7 @@ register_gate(CustomGate(
 ### Unregistering Custom Gates
 
 ```python
-from Qforge.ir import unregister_gate
+from qforge.ir import unregister_gate
 unregister_gate('SqrtZ')
 ```
 
@@ -344,8 +344,8 @@ print("Final probabilities:", np.round(wf.probabilities(), 4))
 The `record` context manager captures functional API calls into a Circuit.
 
 ```python
-from Qforge.ir import record
-from Qforge.gates import H, CNOT, RY
+from qforge.ir import record
+from qforge.gates import H, CNOT, RY
 
 with record(3) as qc:
     wf = Qubit(3)
@@ -368,8 +368,8 @@ wf2 = qc.run()
 ## Full Example: Parameterized Ansatz with Adjoint Verification
 
 ```python
-from Qforge.ir import Circuit
-from Qforge.measurement import pauli_expectation
+from qforge.ir import Circuit
+from qforge.measurement import pauli_expectation
 import numpy as np
 
 # Build a parameterized ansatz

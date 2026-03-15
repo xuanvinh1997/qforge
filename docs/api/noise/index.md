@@ -7,7 +7,7 @@ gate operations.
 ## Usage
 
 ```python
-from Qforge.noise import NoiseModel, Depolarizing, BitFlip, AmplitudeDamping
+from qforge.noise import NoiseModel, Depolarizing, BitFlip, AmplitudeDamping
 
 # Build a noise model
 model = NoiseModel()
@@ -26,7 +26,7 @@ model.add_quantum_error(AmplitudeDamping(0.02), ['RX', 'RY'], [0, 1])
 ## Exported Names
 
 ```python
-from Qforge.noise import (
+from qforge.noise import (
     QuantumChannel,
     BitFlip, PhaseFlip, Depolarizing,
     AmplitudeDamping, PhaseDamping, ThermalRelaxation,

@@ -6,7 +6,7 @@ with built-in support for the Max-Cut problem.
 ## Usage
 
 ```python
-from Qforge.algo import QAOA
+from qforge.algo import QAOA
 import numpy as np
 
 # 4-cycle graph
@@ -57,6 +57,6 @@ params[p_layers:]  = beta   (mixer Hamiltonian angles)
 
 ## Full API
 
-::: Qforge.algo.qaoa
+::: qforge.algo.qaoa
     options:
       show_source: false

@@ -10,9 +10,9 @@ The transpiler works on a Directed Acyclic Graph (DAG) representation of the
 circuit:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, RZ, X, S, T
-from Qforge.transpiler import DAGCircuit
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, RZ, X, S, T
+from qforge.transpiler import DAGCircuit
 
 # Build a circuit
 qc = Qubit(n_qubits=3)
@@ -37,7 +37,7 @@ print(f"DAG depth: {dag.depth()}")
 Removes adjacent gate pairs that cancel (e.g., X-X, H-H, CNOT-CNOT):
 
 ```python
-from Qforge.transpiler import CancelInverses
+from qforge.transpiler import CancelInverses
 
 optimized_dag = CancelInverses().run(dag)
 print(f"Before: {dag.n_nodes} gates")
@@ -49,7 +49,7 @@ print(f"After:  {optimized_dag.n_nodes} gates")
 Merges consecutive single-qubit rotation gates:
 
 ```python
-from Qforge.transpiler import Optimize1qRotations
+from qforge.transpiler import Optimize1qRotations
 
 optimized_dag = Optimize1qRotations().run(dag)
 # RZ(0.3) + RZ(0.5) -> RZ(0.8)
@@ -60,7 +60,7 @@ optimized_dag = Optimize1qRotations().run(dag)
 Breaks complex gates into a basis gate set:
 
 ```python
-from Qforge.transpiler import Decompose
+from qforge.transpiler import Decompose
 
 # Decompose into {H, CNOT, RZ} basis
 decomposed_dag = Decompose(basis_gates=['H', 'CNOT', 'RZ']).run(dag)
@@ -75,7 +75,7 @@ decomposed_dag = Decompose(basis_gates=['H', 'CNOT', 'RZ']).run(dag)
 Combine multiple passes into a pipeline:
 
 ```python
-from Qforge.transpiler import PassManager, CancelInverses, Optimize1qRotations, Decompose
+from qforge.transpiler import PassManager, CancelInverses, Optimize1qRotations, Decompose
 
 # Create a pass manager with multiple optimization passes
 pm = PassManager([
@@ -125,9 +125,9 @@ optimized_dag = pm.run(dag)
 Optimize a hardware-efficient ansatz before running VQE:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import RY, RZ, CNOT
-from Qforge.transpiler import DAGCircuit, PassManager, CancelInverses, Optimize1qRotations
+from qforge.circuit import Qubit
+from qforge.gates import RY, RZ, CNOT
+from qforge.transpiler import DAGCircuit, PassManager, CancelInverses, Optimize1qRotations
 import numpy as np
 
 def build_ansatz(params):

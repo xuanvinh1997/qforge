@@ -7,7 +7,7 @@ transformed, serialized, and replayed on any backend.
 ## Usage
 
 ```python
-from Qforge.ir import Circuit, GateOp, MeasureOp, ConditionalOp, ClassicalRegister
+from qforge.ir import Circuit, GateOp, MeasureOp, ConditionalOp, ClassicalRegister
 
 # Build a circuit programmatically
 circ = Circuit(n_qubits=2)
@@ -92,6 +92,6 @@ and manipulation.
 
 ## Full API
 
-::: Qforge.ir
+::: qforge.ir
     options:
       show_source: false

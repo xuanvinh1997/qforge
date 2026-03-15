@@ -2,15 +2,13 @@
 
 All notable changes to Qforge are documented here.
 
-Published: [DOI 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac5997)
-
 ---
 
 ## v2.2.0 -- MPS, DMRG, and Tensor Network Methods
 
 ### Added
 
-- **Matrix Product State (MPS) backend** (`Qforge.mps.MatrixProductState`)
+- **Matrix Product State (MPS) backend** (`qforge.mps.MatrixProductState`)
   - Simulate 50+ qubits for circuits with bounded entanglement
   - Same gate API as the wavefunction backend: `H(mps, ...)`, `CNOT(mps, ...)`
   - Configurable maximum bond dimension (`max_bond_dim`)
@@ -19,7 +17,7 @@ Published: [DOI 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac59
   - Bond dimension profiling
   - C++ acceleration via pybind11 (`_qforge_mps` module)
 
-- **DMRG solver** (`Qforge.dmrg.DMRG`)
+- **DMRG solver** (`qforge.dmrg.DMRG`)
   - Find ground states of 1D Hamiltonians directly in MPS form
   - Factory methods: `DMRG.heisenberg()`, `DMRG.ising()`, `DMRG.xxz()`
   - Custom Hamiltonians via MPO specification
@@ -68,7 +66,7 @@ Published: [DOI 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac59
 - **Custom gates** -- `CustomGate`, `register_gate`, `QubitUnitary`
 - **Multi-backend support** -- `'auto'`, `'cpu'`, `'cuda'`, `'metal'`, `'python'` backends
   - Per-circuit backend selection: `Qubit(n_qubits=10, backend='cuda')`
-  - Global default: `Qforge.set_backend('cpu')`
+  - Global default: `qforge.set_backend('cpu')`
 
 ---
 
@@ -118,5 +116,3 @@ Published: [DOI 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac59
 - Quantum walk: `Walk_Qubit` (gate walk)
 - Quantum kernel methods
 - Entanglement entropy computation
-- Published in *Machine Learning: Science and Technology*
-  ([DOI: 10.1088/2632-2153/ac5997](https://doi.org/10.1088/2632-2153/ac5997))

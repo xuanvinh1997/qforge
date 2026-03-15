@@ -3,7 +3,7 @@
 """Quantum circuit initialization."""
 from __future__ import annotations
 from qforge.wavefunction import Wavefunction
-from qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL
+from qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL, _HAS_DISTRIBUTED
 import itertools
 import numpy as np
 
@@ -13,6 +13,8 @@ if _HAS_CUDA:
     from qforge._qforge_cuda import CudaStateVector as _CudaStateVector
 if _HAS_METAL:
     from qforge._qforge_metal import MetalStateVector as _MetalStateVector
+if _HAS_DISTRIBUTED:
+    from qforge._qforge_distributed import DistributedStateVector as _DistributedStateVector
 
 # https://stackoverflow.com/questions/4928297/all-permutations-of-a-binary-sequence-x-bits-long
 def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
@@ -42,6 +44,9 @@ def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
         return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
     elif backend == 'metal' and _HAS_METAL:
         sv = _MetalStateVector(qubit_num)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
+    elif backend == 'distributed' and _HAS_DISTRIBUTED:
+        sv = _DistributedStateVector(qubit_num)
         return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
     elif backend in ('cpu', 'auto') and _HAS_CPP:
         sv = _StateVector(qubit_num)

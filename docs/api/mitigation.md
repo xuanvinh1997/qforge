@@ -6,7 +6,7 @@ results without requiring additional qubits.
 ## Usage
 
 ```python
-from Qforge.mitigation import (
+from qforge.mitigation import (
     zero_noise_extrapolation, fold_circuit,
     probabilistic_error_cancellation, PEC,
     calibrate_readout, correct_readout,
@@ -92,6 +92,6 @@ Apply inverse calibration to raw measurement counts.
 
 ## Full API
 
-::: Qforge.mitigation
+::: qforge.mitigation
     options:
       show_source: false

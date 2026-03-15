@@ -27,8 +27,8 @@ class Wavefunction(object):
         visual: List of gate operations applied, used by ``visual_circuit()``.
 
     Example:
-        >>> from Qforge.circuit import Qubit
-        >>> from Qforge.gates import H, CNOT
+        >>> from qforge.circuit import Qubit
+        >>> from qforge.gates import H, CNOT
         >>> wf = Qubit(2)          # |00>
         >>> H(wf, 0)               # (|00> + |10>) / sqrt(2)
         >>> CNOT(wf, 0, 1)         # Bell state (|00> + |11>) / sqrt(2)

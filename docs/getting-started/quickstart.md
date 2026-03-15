@@ -5,7 +5,7 @@ This 5-minute tutorial walks you through creating a Bell state, inspecting the q
 ## Step 1: Create a Quantum Circuit
 
 ```python
-from Qforge.circuit import Qubit
+from qforge.circuit import Qubit
 
 # Create a 2-qubit system initialized to |00>
 wf = Qubit(2)
@@ -19,7 +19,7 @@ print(wf.print_state())
 ## Step 2: Apply Gates
 
 ```python
-from Qforge.gates import H, CNOT
+from qforge.gates import H, CNOT
 
 # Hadamard on qubit 0: |00> -> (|00> + |10>) / sqrt(2)
 H(wf, 0)
@@ -51,7 +51,7 @@ The probabilities confirm an equal 50/50 split between `|00>` and `|11>` -- this
 ## Step 4: Measure
 
 ```python
-from Qforge.measurement import measure_all, measure_one
+from qforge.measurement import measure_all, measure_one
 
 # Sample 1000 measurements
 states, counts = measure_all(wf, 1000)
@@ -86,9 +86,9 @@ The diagram shows the Hadamard gate on qubit 0, followed by a CNOT (control `o` 
 ## Putting It All Together
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
-from Qforge.measurement import measure_all
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
+from qforge.measurement import measure_all
 
 # Build
 wf = Qubit(2)

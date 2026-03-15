@@ -14,10 +14,10 @@ operation to simulate hardware imperfections.
 Flips the qubit state with probability p:
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT, X
-from Qforge.noise import BitFlip
-from Qforge import DensityMatrix
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT, X
+from qforge.noise import BitFlip
+from qforge import DensityMatrix
 
 # Create a density matrix backend (required for noise)
 qc = DensityMatrix(n_qubits=1)
@@ -34,7 +34,7 @@ print(qc.density_matrix)
 Replaces the qubit state with the maximally mixed state with probability p:
 
 ```python
-from Qforge.noise import Depolarizing
+from qforge.noise import Depolarizing
 
 qc = DensityMatrix(n_qubits=1)
 H(qc, target=0)
@@ -48,7 +48,7 @@ print(qc.density_matrix)
 Models energy relaxation (T1 decay):
 
 ```python
-from Qforge.noise import AmplitudeDamping
+from qforge.noise import AmplitudeDamping
 
 qc = DensityMatrix(n_qubits=1)
 X(qc, target=0)  # Prepare |1>
@@ -66,7 +66,7 @@ print(qc.density_matrix)
 A `NoiseModel` attaches noise channels to specific gates automatically:
 
 ```python
-from Qforge.noise import NoiseModel, Depolarizing, BitFlip, AmplitudeDamping
+from qforge.noise import NoiseModel, Depolarizing, BitFlip, AmplitudeDamping
 
 noise_model = NoiseModel()
 
@@ -95,9 +95,9 @@ noise_model.add_quantum_error(
 Use the noise model with the DensityMatrix backend:
 
 ```python
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT
-from Qforge.measurement import measure_all
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT
+from qforge.measurement import measure_all
 
 # Create a noisy Bell state
 qc = DensityMatrix(n_qubits=2, noise_model=noise_model)
@@ -128,11 +128,11 @@ for bitstring, count in sorted(counts.items()):
 ## 4. Comparing Ideal vs Noisy Circuits
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge import DensityMatrix
-from Qforge.gates import H, CNOT, RZ
-from Qforge.measurement import pauli_expectation
-from Qforge.algo import Hamiltonian
+from qforge.circuit import Qubit
+from qforge import DensityMatrix
+from qforge.gates import H, CNOT, RZ
+from qforge.measurement import pauli_expectation
+from qforge.algo import Hamiltonian
 import numpy as np
 
 obs = Hamiltonian(coeffs=[1.0], terms=[[('Z', 0), ('Z', 1)]])
@@ -160,7 +160,7 @@ ZNE runs the circuit at multiple noise levels and extrapolates to the
 zero-noise limit:
 
 ```python
-from Qforge.mitigation import zero_noise_extrapolation
+from qforge.mitigation import zero_noise_extrapolation
 
 def circuit_fn():
     """Returns a circuit for expectation measurement."""
@@ -194,7 +194,7 @@ PEC uses a quasi-probability decomposition to cancel noise exactly (in the
 limit of infinite samples):
 
 ```python
-from Qforge.mitigation import probabilistic_error_cancellation
+from qforge.mitigation import probabilistic_error_cancellation
 
 mitigated_pec = probabilistic_error_cancellation(
     circuit_fn=circuit_fn,
@@ -219,8 +219,8 @@ print(f"PEC error:  {abs(exp_ideal - mitigated_pec):.4f}")
 Combine noise simulation with VQE to study the effect of mitigation:
 
 ```python
-from Qforge.algo import VQE, Adam, Hamiltonian
-from Qforge.mitigation import zero_noise_extrapolation
+from qforge.algo import VQE, Adam, Hamiltonian
+from qforge.mitigation import zero_noise_extrapolation
 import numpy as np
 
 h2_ham = Hamiltonian(
@@ -237,7 +237,7 @@ h2_ham = Hamiltonian(
 
 def noisy_ansatz(params):
     qc = DensityMatrix(n_qubits=2, noise_model=noise_model)
-    from Qforge.gates import RY, CNOT
+    from qforge.gates import RY, CNOT
     RY(qc, target=0, theta=params[0])
     RY(qc, target=1, theta=params[1])
     CNOT(qc, control=0, target=1)
@@ -272,7 +272,7 @@ print(f"Exact energy:     -1.1373")
 Build a custom noise channel from Kraus operators:
 
 ```python
-from Qforge.noise import NoiseModel
+from qforge.noise import NoiseModel
 import numpy as np
 
 # Phase damping channel (T2 process)

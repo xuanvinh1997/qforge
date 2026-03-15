@@ -8,7 +8,9 @@ from qforge._utils import _validate_qubit, _nq, _is_mps
 
 
 def measure_all(wavefunction, n_samples: int):
-    inds = np.random.choice(len(wavefunction.state), n_samples, p=wavefunction.probabilities())
+    probs = wavefunction.probabilities().astype(np.float64)
+    probs /= probs.sum()
+    inds = np.random.choice(len(wavefunction.state), n_samples, p=probs)
     return np.unique(np.array(wavefunction.state[inds]), return_counts=True)
 
 def _mps_prob0(wavefunction, n: int) -> float:

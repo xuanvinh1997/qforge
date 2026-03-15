@@ -7,8 +7,8 @@ a C++ `StateVector` for 100-200x speedup.
 ## Usage
 
 ```python
-from Qforge.circuit import Qubit
-from Qforge.gates import H, CNOT
+from qforge.circuit import Qubit
+from qforge.gates import H, CNOT
 
 wf = Qubit(2)          # |00>
 H(wf, 0)               # (|00> + |10>) / sqrt(2)
@@ -22,7 +22,7 @@ print(wf.visual)          # list of gate operations applied
 
 ## API
 
-::: Qforge.wavefunction
+::: qforge.wavefunction
     options:
       show_source: false
       members:
