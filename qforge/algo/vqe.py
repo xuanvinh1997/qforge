@@ -2,6 +2,7 @@
 # author: vinhpx
 """VQE — Variational Quantum Eigensolver."""
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.algo.hamiltonian import Hamiltonian
 from qforge.algo.ansatz import hardware_efficient_ansatz
@@ -44,7 +45,7 @@ class VQE(VQA):
     """
 
     def __init__(self, n_qubits: int, hamiltonian: Hamiltonian,
-                 circuit_fn=None, n_layers: int = 1, backend: str = 'auto'):
+                 circuit_fn: Callable | None = None, n_layers: int = 1, backend: str = 'auto'):
         self.hamiltonian = hamiltonian
         self.n_layers = n_layers
         if circuit_fn is None:

@@ -2,6 +2,7 @@
 # author: vinhpx
 """VQA — general variational quantum algorithm framework."""
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.circuit import Qubit
 from qforge.algo.gradient import parameter_shift, parallel_parameter_shift
@@ -33,7 +34,7 @@ class VQA:
         params, history = vqa.optimize(np.zeros(2), steps=80)
     """
 
-    def __init__(self, n_qubits: int, circuit_fn, cost_fn, backend: str = 'auto'):
+    def __init__(self, n_qubits: int, circuit_fn: Callable, cost_fn: Callable, backend: str = 'auto'):
         self.n_qubits = n_qubits
         self.circuit_fn = circuit_fn
         self.cost_fn = cost_fn
@@ -71,9 +72,9 @@ class VQA:
     def optimize(
         self,
         params: np.ndarray,
-        optimizer=None,
+        optimizer: object = None,
         steps: int = 100,
-        callback=None,
+        callback: Callable | None = None,
         parallel: bool = False,
         max_workers: int | None = None,
     ) -> tuple[np.ndarray, list[float]]:

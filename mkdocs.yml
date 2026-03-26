@@ -132,4 +132,5 @@ nav:
     - Gate Catalog: reference/gate-catalog.md
     - Encoding Catalog: reference/encoding-catalog.md
     - Backend Comparison: reference/backend-comparison.md
+    - Benchmark Results: reference/benchmarks.md
   - Changelog: changelog.md

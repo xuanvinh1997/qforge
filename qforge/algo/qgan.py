@@ -24,6 +24,7 @@ Example::
     generated = qgan.sample(500)
 """
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.circuit import Qubit
 from qforge.gates import H, RY, RZ, CNOT
@@ -183,7 +184,7 @@ class QGAN:
         gen_lr: float = 0.05,
         disc_lr: float = 0.01,
         disc_steps: int = 3,
-        callback=None,
+        callback: Callable | None = None,
     ) -> tuple[list[float], list[float]]:
         """Train the QGAN.
 

@@ -3,11 +3,12 @@
 """Readout error calibration and correction."""
 from __future__ import annotations
 
+from typing import Callable
 import numpy as np
 
 
 def calibrate_readout(
-    executor,
+    executor: Callable[[list[int]], dict[str, int]],
     n_qubits: int,
     n_shots: int = 1000,
 ) -> np.ndarray:
@@ -27,7 +28,7 @@ def calibrate_readout(
         n_shots:   Number of measurement shots per calibration circuit.
 
     Returns:
-        Confusion matrix M of shape (2^n, 2^n) where M[i][j] = P(measure i | true state j).
+        Confusion matrix ``M`` of shape ``(2^n, 2^n)`` where ``M[i][j] = P(measure i | true state j)``.
     """
     n_states = 2 ** n_qubits
     confusion = np.zeros((n_states, n_states), dtype=float)
@@ -54,7 +55,7 @@ def calibrate_readout(
 
 
 def correct_readout(
-    counts: dict,
+    counts: dict[str, int],
     calibration_matrix: np.ndarray,
 ) -> dict:
     """Apply readout error correction to measurement counts.

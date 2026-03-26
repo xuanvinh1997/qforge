@@ -4,6 +4,10 @@ Performance comparison between the pure-Python and C++ backends for the Qforge
 quantum simulation engine. Benchmarks use a depth-10 circuit of alternating
 Hadamard and CNOT gates.
 
+!!! tip "Detailed Benchmarks"
+    For comprehensive benchmark results across all suites and backends (CPU, Metal, CUDA),
+    see the [Benchmark Results](benchmarks.md) page.
+
 ## Performance Table
 
 | Qubits | Python (s) | C++ (s) | Speedup |

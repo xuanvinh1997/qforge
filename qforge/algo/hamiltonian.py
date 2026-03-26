@@ -46,7 +46,7 @@ def _pauli_string_expectation_from_amp(
     return float(np.real(np.sum(np.conj(amp) * phase_arr * amp[j_arr])))
 
 
-def _pauli_string_expectation(wf, ops: list[tuple[str, int]]) -> float:
+def _pauli_string_expectation(wf: object, ops: list[tuple[str, int]]) -> float:
     """Compute <ψ|P₀⊗P₁⊗…|ψ> analytically from the amplitude vector.
 
     Args:
@@ -92,7 +92,7 @@ class Hamiltonian:
         self.coeffs = list(coeffs)
         self.terms = list(terms)
 
-    def expectation(self, wf) -> float:
+    def expectation(self, wf: object) -> float:
         """Compute <ψ|H|ψ>.
 
         Fetches the amplitude array once (triggering a single GPU→host sync

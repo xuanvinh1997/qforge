@@ -18,6 +18,7 @@ Example::
     preds = vqc.predict(X[50:])
 """
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.circuit import Qubit
 from qforge.gates import H, RX, RY, RZ, CNOT
@@ -61,12 +62,12 @@ class VQC:
     # Circuit
     # ------------------------------------------------------------------
 
-    def _encode(self, wf, x: np.ndarray) -> None:
+    def _encode(self, wf: object, x: np.ndarray) -> None:
         """Encode features into the circuit via RX rotations."""
         for q in range(min(len(x), self.n_qubits)):
             RX(wf, q, x[q])
 
-    def _variational_layer(self, wf, params_slice: np.ndarray) -> None:
+    def _variational_layer(self, wf: object, params_slice: np.ndarray) -> None:
         """One variational layer: RY + RZ rotations + CNOT ladder."""
         n = self.n_qubits
         for q in range(n):
@@ -120,10 +121,10 @@ class VQC:
         X: np.ndarray,
         y: np.ndarray,
         params: np.ndarray | None = None,
-        optimizer=None,
+        optimizer: object = None,
         steps: int = 100,
         batch_size: int | None = None,
-        callback=None,
+        callback: Callable | None = None,
     ) -> tuple[np.ndarray, list[float]]:
         """Train the classifier.
 

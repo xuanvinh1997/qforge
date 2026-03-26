@@ -70,7 +70,7 @@ class QSVM:
     # Feature maps
     # ------------------------------------------------------------------
 
-    def _zz_feature_map(self, wf, x: np.ndarray) -> None:
+    def _zz_feature_map(self, wf: object, x: np.ndarray) -> None:
         """ZZ feature map: H + Phase(2x) layers with ZZ entanglement."""
         n = self.n_qubits
         feats = np.zeros(n)
@@ -85,7 +85,7 @@ class QSVM:
                 from qforge.gates import CPhase
                 CPhase(wf, q, q + 1, 2.0 * (np.pi - feats[q]) * (np.pi - feats[q + 1]))
 
-    def _encode(self, x: np.ndarray):
+    def _encode(self, x: np.ndarray) -> object:
         """Encode a data point into a quantum state."""
         wf = Qubit(self.n_qubits, backend=self.backend)
         self._zz_feature_map(wf, x)

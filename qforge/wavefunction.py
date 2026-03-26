@@ -35,7 +35,7 @@ class Wavefunction(object):
         >>> wf.probabilities()     # array([0.5, 0. , 0. , 0.5])
     """
 
-    def __init__(self, states, amplitude_vector, _sv=None, backend: str = 'python'):
+    def __init__(self, states: np.ndarray, amplitude_vector: np.ndarray, _sv: object = None, backend: str = 'python'):
         self.state = states
         self._sv = _sv
         self._backend = backend
@@ -64,7 +64,7 @@ class Wavefunction(object):
         else:
             self._amplitude = value
 
-    def probabilities(self):
+    def probabilities(self) -> np.ndarray:
         """Return the probability of each basis state as a numpy array.
 
         Returns:
@@ -72,7 +72,7 @@ class Wavefunction(object):
         """
         return np.abs(self.amplitude) ** 2
 
-    def print_state(self):
+    def print_state(self) -> str:
         """Return the quantum state as a human-readable bra-ket string.
 
         Returns:

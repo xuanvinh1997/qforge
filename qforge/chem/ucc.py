@@ -71,7 +71,7 @@ def _get_excitations(n_electrons: int, n_orbitals: int):
 # ============================================================
 
 def uccsd_ansatz(
-    wf,
+    wf: object,
     params: np.ndarray,
     n_electrons: int,
     n_orbitals: int,
@@ -117,7 +117,7 @@ def uccsd_ansatz(
             _apply_double_excitation(wf, theta, p, q_virt, r, s)
 
 
-def _apply_single_excitation(wf, theta: float, p: int, q: int) -> None:
+def _apply_single_excitation(wf: object, theta: float, p: int, q: int) -> None:
     """Apply a single excitation e^{theta * (a†_p a_q - a†_q a_p)}.
 
     Implemented via a CNOT ladder with RY rotation:
@@ -141,7 +141,7 @@ def _apply_single_excitation(wf, theta: float, p: int, q: int) -> None:
 
 
 def _apply_double_excitation(
-    wf, theta: float, p: int, q: int, r: int, s: int,
+    wf: object, theta: float, p: int, q: int, r: int, s: int,
 ) -> None:
     """Apply a double excitation e^{theta * (a†_p a†_q a_r a_s - h.c.)}.
 

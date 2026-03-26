@@ -69,11 +69,11 @@ class PauliZExpectation:
         >>> pz.two_body(0, 1)   # <Z_0 Z_1>
     """
 
-    def __init__(self, wavefunction):
+    def __init__(self, wavefunction: object):
         self.wavefunction = wavefunction
-        self.state = wavefunction.state 
-        self.amplitudes = wavefunction.amplitude  
-        self.probs = wavefunction.probabilities()  
+        self.state = wavefunction.state
+        self.amplitudes = wavefunction.amplitude
+        self.probs = wavefunction.probabilities()
         self.n_qubits = len(self.state[0])
         
     def _bit_at_position(self, bitstring, position):
@@ -120,7 +120,7 @@ class PauliZExpectation:
             if idx < 0 or idx >= self.n_qubits:
                 raise ValueError(f"Index {idx} out of range [0, {self.n_qubits-1}]")
 
-    def one_body(self, i):
+    def one_body(self, i: int) -> float:
         """Compute single-qubit expectation value ``<Z_i>``.
 
         Args:
@@ -141,7 +141,7 @@ class PauliZExpectation:
                 probs_1 += self.probs[idx]
         return probs_0 - probs_1
 
-    def two_body(self, i, j):
+    def two_body(self, i: int, j: int) -> float:
         """Compute two-body expectation value ``<Z_i Z_j>``.
 
         Args:
@@ -163,7 +163,7 @@ class PauliZExpectation:
                 probs_diff += self.probs[idx]
         return probs_same - probs_diff
 
-    def three_body(self, i, j, k):
+    def three_body(self, i: int, j: int, k: int) -> float:
         """Compute three-body expectation value ``<Z_i Z_j Z_k>``.
 
         Args:
@@ -187,7 +187,7 @@ class PauliZExpectation:
                 probs_odd += self.probs[idx]
         return probs_even - probs_odd
 
-    def four_body(self, i, j, k, l):
+    def four_body(self, i: int, j: int, k: int, l: int) -> float:
         """Compute four-body expectation value ``<Z_i Z_j Z_k Z_l>``.
 
         Args:
@@ -227,7 +227,7 @@ class ConnectedCorrelator:
         >>> cc.u2(0, 1)   # <Z_0 Z_1> - <Z_0><Z_1>
     """
 
-    def __init__(self, wavefunction):
+    def __init__(self, wavefunction: object):
         self.wavefunction = wavefunction
         self.exp_val = PauliZExpectation(wavefunction)
 
@@ -312,11 +312,11 @@ class EntanglementEntropy:
         >>> ee.reduced_density_matrix([0])         # 2x2 reduced density matrix
     """
 
-    def __init__(self, wavefunction):
+    def __init__(self, wavefunction: object):
         self.wavefunction = wavefunction
         self.n_qubits = len(wavefunction.state[0])
     
-    def reduced_density_matrix(self, keep_qubits):
+    def reduced_density_matrix(self, keep_qubits: list[int]) -> np.ndarray:
         """Compute the reduced density matrix by tracing out all other qubits.
 
         Args:
@@ -357,7 +357,7 @@ class EntanglementEntropy:
 
         return reduced_rho
     
-    def von_neumann_entropy(self, keep_qubits=None, base=2):
+    def von_neumann_entropy(self, keep_qubits: list[int] | None = None, base: int = 2) -> float:
         """Compute the von Neumann entropy of a subsystem.
 
         Args:
@@ -385,7 +385,7 @@ class EntanglementEntropy:
         
         return entropy
     
-    def entanglement_entropy(self, bipartition, base=2):
+    def entanglement_entropy(self, bipartition: tuple | list, base: int = 2) -> float:
         """Compute the bipartite entanglement entropy.
 
         Args:

@@ -3,6 +3,7 @@
 """Zero Noise Extrapolation (ZNE) for error mitigation."""
 from __future__ import annotations
 
+from typing import Callable
 import numpy as np
 from qforge.ir import Circuit, GateOp, MeasureOp, ConditionalOp
 
@@ -98,8 +99,8 @@ _EXTRAPOLATORS = {
 
 
 def zero_noise_extrapolation(
-    circuit_fn,
-    executor,
+    circuit_fn: Callable[[], Circuit],
+    executor: Callable[[Circuit], float],
     scale_factors: list[int],
     extrapolator: str = 'linear',
 ) -> float:

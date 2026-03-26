@@ -3,11 +3,12 @@
 """Parameter-shift Hessian computation for variational quantum circuits."""
 from __future__ import annotations
 
+from typing import Callable
 import numpy as np
 
 
 def parameter_shift_hessian(
-    cost_fn,
+    cost_fn: Callable[[np.ndarray], float],
     params: np.ndarray,
     shift: float = np.pi / 2,
 ) -> np.ndarray:

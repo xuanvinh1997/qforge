@@ -73,7 +73,7 @@ class QuantumReservoir:
         self._bias = None
         self._n_classes = None
 
-    def _reservoir_circuit(self, x: np.ndarray):
+    def _reservoir_circuit(self, x: np.ndarray) -> np.ndarray:
         """Run the fixed reservoir circuit and extract features."""
         wf = Qubit(self.n_qubits, backend=self.backend)
 

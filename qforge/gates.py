@@ -169,7 +169,7 @@ def _mps_nonlocal2(wavefunction, ci: int, ti: int, gate) -> None:
         _mps_apply2(wavefunction, k, _GATE_SWAP, chi, ep)
 
 
-def H(wavefunction, n: int) -> None:
+def H(wavefunction: object, n: int) -> None:
     """Hadamard gate — creates equal superposition.
 
     Maps ``|0> -> (|0>+|1>)/sqrt(2)`` and ``|1> -> (|0>-|1>)/sqrt(2)``.
@@ -192,7 +192,7 @@ def H(wavefunction, n: int) -> None:
     _record_op('H', (n,))
 
 
-def X(wavefunction, n: int) -> None:
+def X(wavefunction: object, n: int) -> None:
     """Pauli-X gate."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -207,7 +207,7 @@ def X(wavefunction, n: int) -> None:
     _record_op('X', (n,))
 
 
-def Y(wavefunction, n: int) -> None:
+def Y(wavefunction: object, n: int) -> None:
     """Pauli-Y gate."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -222,7 +222,7 @@ def Y(wavefunction, n: int) -> None:
     _record_op('Y', (n,))
 
 
-def Z(wavefunction, n: int) -> None:
+def Z(wavefunction: object, n: int) -> None:
     """Pauli-Z gate."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -237,7 +237,7 @@ def Z(wavefunction, n: int) -> None:
     _record_op('Z', (n,))
 
 
-def RX(wavefunction, n: int, phi: float = 0) -> None:
+def RX(wavefunction: object, n: int, phi: float = 0) -> None:
     """Rotation around the X-axis by angle ``phi``.
 
     Matrix: ``[[cos(phi/2), -i*sin(phi/2)], [-i*sin(phi/2), cos(phi/2)]]``.
@@ -263,7 +263,7 @@ def RX(wavefunction, n: int, phi: float = 0) -> None:
     _record_op('RX', (n,), (phi,))
 
 
-def RY(wavefunction, n: int, phi: float = 0) -> None:
+def RY(wavefunction: object, n: int, phi: float = 0) -> None:
     """Rotation around the Y-axis by angle ``phi``.
 
     Matrix: ``[[cos(phi/2), -sin(phi/2)], [sin(phi/2), cos(phi/2)]]``.
@@ -289,7 +289,7 @@ def RY(wavefunction, n: int, phi: float = 0) -> None:
     _record_op('RY', (n,), (phi,))
 
 
-def RZ(wavefunction, n: int, phi: float = 0) -> None:
+def RZ(wavefunction: object, n: int, phi: float = 0) -> None:
     """Rotation around the Z-axis by angle ``phi``.
 
     Matrix: ``[[exp(-i*phi/2), 0], [0, exp(i*phi/2)]]``.
@@ -315,7 +315,7 @@ def RZ(wavefunction, n: int, phi: float = 0) -> None:
     _record_op('RZ', (n,), (phi,))
 
 
-def Phase(wavefunction, n: int, phi: float = 0) -> None:
+def Phase(wavefunction: object, n: int, phi: float = 0) -> None:
     """Phase gate — applies ``exp(i*phi)`` to the ``|1>`` component.
 
     Matrix: ``[[1, 0], [0, exp(i*phi)]]``.
@@ -340,7 +340,7 @@ def Phase(wavefunction, n: int, phi: float = 0) -> None:
     _record_op('Phase', (n,), (phi,))
 
 
-def S(wavefunction, n: int) -> None:
+def S(wavefunction: object, n: int) -> None:
     """S gate — Phase(pi/2)."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -355,7 +355,7 @@ def S(wavefunction, n: int) -> None:
     _record_op('S', (n,))
 
 
-def T(wavefunction, n: int) -> None:
+def T(wavefunction: object, n: int) -> None:
     """T gate — Phase(pi/4)."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -370,7 +370,7 @@ def T(wavefunction, n: int) -> None:
     _record_op('T', (n,))
 
 
-def Xsquare(wavefunction, n: int) -> None:
+def Xsquare(wavefunction: object, n: int) -> None:
     """Square root of NOT gate."""
     _validate_qubit(n, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -405,7 +405,7 @@ def _mps_ctrl_target_gate(wavefunction, control, target, gate4x4):
         _mps_nonlocal2(wavefunction, control, target, gate4x4)
 
 
-def CNOT(wavefunction, control: int, target: int) -> None:
+def CNOT(wavefunction: object, control: int, target: int) -> None:
     """Controlled-NOT (CX) gate — flips target qubit when control is ``|1>``.
 
     Args:
@@ -426,7 +426,7 @@ def CNOT(wavefunction, control: int, target: int) -> None:
     _record_op('CNOT', (control, target))
 
 
-def CRX(wavefunction, control: int, target: int, phi: float = 0) -> None:
+def CRX(wavefunction: object, control: int, target: int, phi: float = 0) -> None:
     """Controlled RX gate — applies RX(phi) to target when control is ``|1>``.
 
     Args:
@@ -454,7 +454,7 @@ def CRX(wavefunction, control: int, target: int, phi: float = 0) -> None:
     _record_op('CRX', (control, target), (phi,))
 
 
-def CRY(wavefunction, control: int, target: int, phi: float = 0) -> None:
+def CRY(wavefunction: object, control: int, target: int, phi: float = 0) -> None:
     """Controlled RY gate — applies RY(phi) to target when control is ``|1>``.
 
     Args:
@@ -481,7 +481,7 @@ def CRY(wavefunction, control: int, target: int, phi: float = 0) -> None:
     _record_op('CRY', (control, target), (phi,))
 
 
-def CRZ(wavefunction, control: int, target: int, phi: float = 0) -> None:
+def CRZ(wavefunction: object, control: int, target: int, phi: float = 0) -> None:
     """Controlled RZ gate — applies RZ(phi) to target when control is ``|1>``.
 
     Args:
@@ -509,7 +509,7 @@ def CRZ(wavefunction, control: int, target: int, phi: float = 0) -> None:
     _record_op('CRZ', (control, target), (phi,))
 
 
-def CPhase(wavefunction, control: int, target: int, phi: float = 0) -> None:
+def CPhase(wavefunction: object, control: int, target: int, phi: float = 0) -> None:
     """Controlled Phase gate — applies ``exp(i*phi)`` to ``|11>`` component.
 
     Args:
@@ -549,7 +549,7 @@ def _validate_three_distinct(a: int, b: int, c: int, qubit_num: int) -> None:
         raise ValueError("Control qubit and target qubit must be distinct")
 
 
-def CCNOT(wavefunction, control_1: int, control_2: int, target: int) -> None:
+def CCNOT(wavefunction: object, control_1: int, control_2: int, target: int) -> None:
     """Toffoli (double-controlled-X) gate — flips target when both controls are ``|1>``.
 
     Args:
@@ -580,7 +580,7 @@ def CCNOT(wavefunction, control_1: int, control_2: int, target: int) -> None:
     _record_op('CCNOT', (control_1, control_2, target))
 
 
-def OR(wavefunction, control_1: int, control_2: int, target: int) -> None:
+def OR(wavefunction: object, control_1: int, control_2: int, target: int) -> None:
     """OR gate — flip target if control_1 OR control_2 is |1>."""
     _validate_three_distinct(control_1, control_2, target, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -624,7 +624,7 @@ def _validate_swap(t1: int, t2: int, qubit_num: int) -> None:
         raise ValueError("Target qubits must be distinct")
 
 
-def SWAP(wavefunction, target_1: int, target_2: int) -> None:
+def SWAP(wavefunction: object, target_1: int, target_2: int) -> None:
     """Swap gate — exchanges the states of two qubits.
 
     Args:
@@ -669,7 +669,7 @@ def SWAP(wavefunction, target_1: int, target_2: int) -> None:
     _record_op('SWAP', (target_1, target_2))
 
 
-def CSWAP(wavefunction, control: int, target_1: int, target_2: int) -> None:
+def CSWAP(wavefunction: object, control: int, target_1: int, target_2: int) -> None:
     """Controlled Swap (Fredkin) gate."""
     _validate_three_distinct(control, target_1, target_2, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -696,7 +696,7 @@ def CSWAP(wavefunction, control: int, target_1: int, target_2: int) -> None:
     _record_op('CSWAP', (control, target_1, target_2))
 
 
-def ISWAP(wavefunction, target_1: int, target_2: int) -> None:
+def ISWAP(wavefunction: object, target_1: int, target_2: int) -> None:
     """iSWAP gate."""
     _validate_swap(target_1, target_2, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -730,7 +730,7 @@ def ISWAP(wavefunction, target_1: int, target_2: int) -> None:
     _record_op('ISWAP', (target_1, target_2))
 
 
-def SISWAP(wavefunction, target_1: int, target_2: int) -> None:
+def SISWAP(wavefunction: object, target_1: int, target_2: int) -> None:
     """sqrt(iSWAP) gate."""
     _validate_swap(target_1, target_2, _nq(wavefunction))
     if wavefunction._sv is not None:
@@ -777,7 +777,7 @@ def SISWAP(wavefunction, target_1: int, target_2: int) -> None:
 # Noise channels
 # ============================================================
 
-def E(wavefunction, p: float, n: int) -> None:
+def E(wavefunction: object, p: float, n: int) -> None:
     """Single-qubit depolarizing channel.
 
     Applies depolarizing noise with probability ``p`` to qubit ``n``.
@@ -813,7 +813,7 @@ def E(wavefunction, p: float, n: int) -> None:
     wavefunction.amplitude = new_amplitude
 
 
-def E_all(wavefunction, p_noise: float, qubit_num: int) -> None:
+def E_all(wavefunction: object, p_noise: float, qubit_num: int) -> None:
     """Apply depolarizing channel to all qubits.
 
     Args:
@@ -870,7 +870,7 @@ def _apply_two_qubit_unitary_py(wavefunction, q0: int, q1: int,
     wavefunction.amplitude = new_amplitude
 
 
-def QubitUnitary(wavefunction, matrix, qubits) -> None:
+def QubitUnitary(wavefunction: object, matrix: np.ndarray, qubits: list[int]) -> None:
     """Apply an arbitrary unitary matrix to the specified qubits.
 
     Args:
@@ -930,7 +930,7 @@ def QubitUnitary(wavefunction, matrix, qubits) -> None:
 # Multi-controlled gate wrapper
 # ============================================================
 
-def ctrl(gate_fn, controls, target, *args) -> None:
+def ctrl(gate_fn: object, controls: list[int], target: int, *args: float) -> None:
     """Apply a multi-controlled version of a single-target gate.
 
     Args:
@@ -951,7 +951,7 @@ def ctrl(gate_fn, controls, target, *args) -> None:
     )
 
 
-def mcx(wavefunction, controls: list[int], target: int) -> None:
+def mcx(wavefunction: object, controls: list[int], target: int) -> None:
     """Multi-controlled X gate (generalized Toffoli).
 
     Decomposes into O(n) elementary gates for n controls.
@@ -974,7 +974,7 @@ def mcx(wavefunction, controls: list[int], target: int) -> None:
         _mcx_recursive(wavefunction, controls, target)
 
 
-def _mcx_recursive(wavefunction, controls: list[int], target: int) -> None:
+def _mcx_recursive(wavefunction: object, controls: list[int], target: int) -> None:
     """Decompose n-controlled X into CCNOT gates recursively.
 
     Uses the standard decomposition that requires no ancilla qubits:
@@ -1015,7 +1015,7 @@ def _mcx_recursive(wavefunction, controls: list[int], target: int) -> None:
     wavefunction.amplitude = new_amplitude
 
 
-def mcz(wavefunction, controls: list[int], target: int) -> None:
+def mcz(wavefunction: object, controls: list[int], target: int) -> None:
     """Multi-controlled Z gate."""
     controls = list(controls)
     nq = _nq(wavefunction)

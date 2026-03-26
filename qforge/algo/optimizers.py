@@ -2,6 +2,7 @@
 # author: vinhpx
 """Classical optimizers for variational quantum algorithms."""
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 
 
@@ -88,7 +89,7 @@ class SPSA:
         """
         return np.asarray(params, dtype=float) - self.lr * np.asarray(grad, dtype=float)
 
-    def estimate_and_step(self, params: np.ndarray, cost_fn) -> np.ndarray:
+    def estimate_and_step(self, params: np.ndarray, cost_fn: Callable[[np.ndarray], float]) -> np.ndarray:
         """Estimate gradient via SPSA and take a step.
 
         Uses two cost function evaluations to estimate the full gradient.
@@ -123,7 +124,7 @@ class LBFGS:
 
     def minimize(
         self,
-        cost_fn,
+        cost_fn: Callable[[np.ndarray], float],
         params: np.ndarray,
         maxiter: int = 100,
     ) -> tuple[np.ndarray, float]:

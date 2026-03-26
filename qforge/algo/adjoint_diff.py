@@ -12,7 +12,7 @@ from qforge.circuit import Qubit
 from qforge.ir import Circuit, GateOp, _dispatch_op, _adjoint_op
 
 
-def adjoint_differentiation(circuit: Circuit, hamiltonian,
+def adjoint_differentiation(circuit: Circuit, hamiltonian: object,
                              params: np.ndarray,
                              backend: str = 'auto') -> np.ndarray:
     """Compute the gradient of ⟨H⟩ w.r.t. circuit parameters using adjoint method.
@@ -79,7 +79,7 @@ def adjoint_differentiation(circuit: Circuit, hamiltonian,
     return gradient
 
 
-def _apply_hamiltonian(hamiltonian, wf) -> np.ndarray:
+def _apply_hamiltonian(hamiltonian: object, wf: object) -> np.ndarray:
     """Apply H|ψ⟩ and return the resulting amplitude array.
 
     Works with qforge.algo.hamiltonian.Hamiltonian which stores
@@ -132,7 +132,7 @@ def _apply_pauli_to_amp(amp: np.ndarray, pauli: str, qubit: int,
     return result
 
 
-def _compute_gate_gradient(bra, ket, op: GateOp, param_idx: int,
+def _compute_gate_gradient(bra: object, ket: object, op: GateOp, param_idx: int,
                             n_qubits: int) -> float:
     """Compute the gradient contribution of a parameterised gate.
 
@@ -187,7 +187,7 @@ def _compute_gate_gradient(bra, ket, op: GateOp, param_idx: int,
     return 0.0
 
 
-def _numerical_gate_gradient(bra, ket, op: GateOp, param_idx: int,
+def _numerical_gate_gradient(bra: object, ket: object, op: GateOp, param_idx: int,
                               n_qubits: int, eps: float = 1e-7) -> float:
     """Numerical gradient as fallback for unsupported gates."""
     # This shouldn't normally be needed but provides a safety net

@@ -200,7 +200,7 @@ def jordan_wigner(fop: FermionicOperator) -> Hamiltonian:
     - a_j  = (X_j + iY_j)/2 * Z_{j-1} * ... * Z_0
 
     Args:
-        fop: A :class:`FermionicOperator`.
+        fop (FermionicOperator): A :class:`FermionicOperator`.
 
     Returns:
         A :class:`~qforge.algo.hamiltonian.Hamiltonian` in the Pauli basis.
@@ -345,7 +345,7 @@ def bravyi_kitaev(fop: FermionicOperator) -> Hamiltonian:
     ladder operator instead of O(n) for Jordan-Wigner.
 
     Args:
-        fop: A :class:`FermionicOperator`.
+        fop (FermionicOperator): A :class:`FermionicOperator`.
 
     Returns:
         A :class:`~qforge.algo.hamiltonian.Hamiltonian` in the Pauli basis.

@@ -6,7 +6,7 @@ import numpy as np
 from qforge.gates import RY, RZ, CNOT
 
 
-def hardware_efficient_ansatz(wf, params: np.ndarray, n_layers: int = 1) -> None:
+def hardware_efficient_ansatz(wf: object, params: np.ndarray, n_layers: int = 1) -> None:
     """Hardware-efficient ansatz: alternating RY blocks and CNOT ladders.
 
     Structure: ``(n_layers + 1)`` RY blocks separated by ``n_layers``
@@ -34,7 +34,7 @@ def hardware_efficient_ansatz(wf, params: np.ndarray, n_layers: int = 1) -> None
                 CNOT(wf, q, q + 1)
 
 
-def strongly_entangling_ansatz(wf, params: np.ndarray, n_layers: int = 1) -> None:
+def strongly_entangling_ansatz(wf: object, params: np.ndarray, n_layers: int = 1) -> None:
     """Strongly entangling ansatz: RZ/RY/RZ rotations + long-range CNOT ring.
 
     Each layer applies RZ/RY/RZ to every qubit, then a CNOT ring with a

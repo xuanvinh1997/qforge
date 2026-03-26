@@ -3,13 +3,14 @@
 from __future__ import annotations
 
 import math
+from typing import Callable
 import numpy as np
 from qforge import gates
 from qforge.circuit import Qubit
 from qforge.measurement import measure_all
 
 
-def grover_oracle(wavefunction, marked_states: list[int], n_qubits: int) -> None:
+def grover_oracle(wavefunction: object, marked_states: list[int], n_qubits: int) -> None:
     """Apply the Grover oracle: flip the sign of marked states.
 
     Args:
@@ -23,7 +24,7 @@ def grover_oracle(wavefunction, marked_states: list[int], n_qubits: int) -> None
     wavefunction.amplitude = amp
 
 
-def grover_diffusion(wavefunction, qubits: list[int]) -> None:
+def grover_diffusion(wavefunction: object, qubits: list[int]) -> None:
     """Apply the Grover diffusion operator: 2|ψ⟩⟨ψ| - I where |ψ⟩ = H⊗n|0⟩.
 
     This is: H⊗n · (2|0⟩⟨0| - I) · H⊗n
@@ -59,7 +60,7 @@ def grover_diffusion(wavefunction, qubits: list[int]) -> None:
         gates.H(wavefunction, q)
 
 
-def grover_search(oracle_fn, n_qubits: int, n_iterations: int | None = None,
+def grover_search(oracle_fn: Callable, n_qubits: int, n_iterations: int | None = None,
                    backend: str = 'auto', n_samples: int = 1000) -> dict:
     """Run Grover's search algorithm.
 

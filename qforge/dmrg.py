@@ -59,7 +59,7 @@ class DMRG:
     def __init__(
         self,
         n_sites: int,
-        hamiltonian,
+        hamiltonian: object,
         max_bond_dim: int = 32,
         eps: float = 1e-10,
         lanczos_dim: int = 20,
@@ -124,7 +124,7 @@ class DMRG:
 
     @classmethod
     def custom(cls, n_sites: int, terms: list = None,
-               builder=None, max_bond_dim: int = 32, **kwargs) -> 'DMRG':
+               builder: object = None, max_bond_dim: int = 32, **kwargs) -> 'DMRG':
         """Custom Hamiltonian from MPOBuilder terms.
 
         Args:

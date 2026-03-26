@@ -555,7 +555,7 @@ class Circuit:
 
     # ---- execution --------------------------------------------------
 
-    def run(self, backend: str = 'auto', params: np.ndarray | None = None):
+    def run(self, backend: str = 'auto', params: np.ndarray | None = None) -> object:
         """Execute the circuit and return the final ``Wavefunction``.
 
         Supports mid-circuit measurements (MeasureOp) and conditional gates
@@ -593,7 +593,7 @@ class Circuit:
         wf.classical_register = creg
         return wf
 
-    def __call__(self, wf, params: np.ndarray | None = None) -> None:
+    def __call__(self, wf: object, params: np.ndarray | None = None) -> None:
         """Apply this circuit to an existing wavefunction (VQA-compatible).
 
         Args:

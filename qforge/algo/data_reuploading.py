@@ -21,6 +21,7 @@ Example::
     preds = clf.predict(X[50:])
 """
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.circuit import Qubit
 from qforge.gates import RX, RY, RZ, CNOT
@@ -115,10 +116,10 @@ class DataReuploadingClassifier:
         X: np.ndarray,
         y: np.ndarray,
         params: np.ndarray | None = None,
-        optimizer=None,
+        optimizer: object = None,
         steps: int = 100,
         batch_size: int | None = None,
-        callback=None,
+        callback: Callable | None = None,
     ) -> tuple[np.ndarray, list[float]]:
         """Train the classifier.
 

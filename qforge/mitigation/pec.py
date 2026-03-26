@@ -3,6 +3,7 @@
 """Probabilistic Error Cancellation (PEC) for error mitigation."""
 from __future__ import annotations
 
+from typing import Callable
 import numpy as np
 from qforge.ir import Circuit, GateOp
 
@@ -88,7 +89,7 @@ class PEC:
     def mitigate(
         self,
         circuit: Circuit,
-        executor,
+        executor: Callable[[Circuit], float],
         n_samples: int = 1000,
     ) -> float:
         """Mitigate errors in a circuit using PEC.
@@ -157,7 +158,7 @@ class PEC:
 def probabilistic_error_cancellation(
     ideal_circuit: Circuit,
     noise_model: DepolarizingNoiseModel | None = None,
-    executor=None,
+    executor: Callable[[Circuit], float] | None = None,
     n_samples: int = 1000,
 ) -> float:
     """Functional interface for Probabilistic Error Cancellation.

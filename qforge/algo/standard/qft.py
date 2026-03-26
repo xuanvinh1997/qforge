@@ -6,7 +6,7 @@ import numpy as np
 from qforge import gates
 
 
-def qft(wavefunction, qubits: list[int] | None = None) -> None:
+def qft(wavefunction: object, qubits: list[int] | None = None) -> None:
     """Apply the Quantum Fourier Transform to the given qubits.
 
     Args:
@@ -30,7 +30,7 @@ def qft(wavefunction, qubits: list[int] | None = None) -> None:
         gates.SWAP(wavefunction, qubits[i], qubits[n - 1 - i])
 
 
-def inverse_qft(wavefunction, qubits: list[int] | None = None) -> None:
+def inverse_qft(wavefunction: object, qubits: list[int] | None = None) -> None:
     """Apply the inverse Quantum Fourier Transform.
 
     Args:

@@ -21,6 +21,7 @@ Example::
     preds = qcnn.predict(X[30:])
 """
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from qforge.circuit import Qubit
 from qforge.gates import RX, RY, RZ, CNOT, H
@@ -80,7 +81,7 @@ class QCNN:
     # Circuit building blocks
     # ------------------------------------------------------------------
 
-    def _conv_block(self, wf, q0: int, q1: int, params6: np.ndarray) -> None:
+    def _conv_block(self, wf: object, q0: int, q1: int, params6: np.ndarray) -> None:
         """Two-qubit convolutional unitary with 6 parameters."""
         RY(wf, q0, params6[0])
         RZ(wf, q0, params6[1])
@@ -90,13 +91,13 @@ class QCNN:
         RY(wf, q1, params6[4])
         RZ(wf, q1, params6[5])
 
-    def _pool_block(self, wf, q_measure: int, q_keep: int, params2: np.ndarray) -> None:
+    def _pool_block(self, wf: object, q_measure: int, q_keep: int, params2: np.ndarray) -> None:
         """Pooling: conditional rotation to transfer info, then discard q_measure."""
         CNOT(wf, q_measure, q_keep)
         RY(wf, q_keep, params2[0])
         RZ(wf, q_keep, params2[1])
 
-    def _encode(self, wf, x: np.ndarray) -> None:
+    def _encode(self, wf: object, x: np.ndarray) -> None:
         """Encode features via RX rotations."""
         for q in range(min(len(x), self.n_qubits)):
             RX(wf, q, x[q])
@@ -158,10 +159,10 @@ class QCNN:
         X: np.ndarray,
         y: np.ndarray,
         params: np.ndarray | None = None,
-        optimizer=None,
+        optimizer: object = None,
         steps: int = 100,
         batch_size: int | None = None,
-        callback=None,
+        callback: Callable | None = None,
     ) -> tuple[np.ndarray, list[float]]:
         """Train the QCNN classifier.
 

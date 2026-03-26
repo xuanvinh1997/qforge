@@ -2,12 +2,13 @@
 # author: vinhpx
 """Parameter-shift gradient rule for variational quantum circuits."""
 from __future__ import annotations
+from typing import Callable
 import numpy as np
 from concurrent.futures import ThreadPoolExecutor
 
 
 def parameter_shift(
-    cost_fn,
+    cost_fn: Callable[[np.ndarray], float],
     params: np.ndarray,
     shift: float = np.pi / 2,
 ) -> np.ndarray:
@@ -38,7 +39,7 @@ def parameter_shift(
 
 
 def parallel_parameter_shift(
-    cost_fn,
+    cost_fn: Callable[[np.ndarray], float],
     params: np.ndarray,
     shift: float = np.pi / 2,
     max_workers: int | None = None,

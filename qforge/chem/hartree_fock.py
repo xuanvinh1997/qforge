@@ -11,7 +11,7 @@ from __future__ import annotations
 from qforge import gates
 
 
-def hartree_fock_state(wf, n_electrons: int) -> None:
+def hartree_fock_state(wf: object, n_electrons: int) -> None:
     """Prepare the Hartree-Fock reference state on a wavefunction.
 
     In the Jordan-Wigner mapping, the HF state |1...10...0> is obtained
