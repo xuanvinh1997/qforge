@@ -4,7 +4,43 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "qforge"
-version = "3.0.0"
-description = "qforge - Large-Scale Quantum Simulation Framework"
+version = "0.1b1"
+description = "Wavefunction-based quantum circuit simulator with C++/CUDA/Metal acceleration"
+readme = "README.md"
+license = {text = "MIT"}
 requires-python = ">=3.8"
-dependencies = ["numpy", "scipy", "matplotlib", "numba", "pybind11", "pytest", "pytest-cov"]
+authors = [
+    {name = "Vinh Pham Xuan", email = "xuanvinh1997@gmail.com"},
+]
+keywords = ["quantum", "simulation", "vqe", "qaoa", "quantum-computing", "qml"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: MIT License",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.8",
+    "Programming Language :: Python :: 3.9",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Programming Language :: C++",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Artificial Intelligence",
+]
+dependencies = [
+    "numpy",
+    "scipy",
+]
+
+[project.optional-dependencies]
+viz = ["matplotlib"]
+ml = ["scikit-learn", "pandas"]
+dev = ["pytest", "pytest-cov", "numba"]
+docs = ["mkdocs>=1.5", "mkdocs-material>=9.5", "mkdocstrings[python]>=0.24"]
+all = ["matplotlib", "scikit-learn", "pandas", "numba"]
+
+[project.urls]
+Homepage = "https://github.com/xuanvinh1997/qforge"
+Documentation = "https://xuanvinh1997.github.io/qforge"
+Repository = "https://github.com/xuanvinh1997/qforge"
+Issues = "https://github.com/xuanvinh1997/qforge/issues"
