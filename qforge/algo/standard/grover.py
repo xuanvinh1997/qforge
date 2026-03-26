@@ -60,7 +60,7 @@ def grover_diffusion(wavefunction, qubits: list[int]) -> None:
 
 
 def grover_search(oracle_fn, n_qubits: int, n_iterations: int | None = None,
-                   backend: str = 'python', n_samples: int = 1000) -> dict:
+                   backend: str = 'auto', n_samples: int = 1000) -> dict:
     """Run Grover's search algorithm.
 
     Args:

@@ -21,10 +21,10 @@ class QNodeFunction:
     Args:
         circuit:     A qforge Circuit (template with parameters).
         hamiltonian: A qforge Hamiltonian.
-        backend:     Simulation backend (default 'python').
+        backend:     Simulation backend (default ``'auto'``).
     """
 
-    def __init__(self, circuit, hamiltonian, backend='python'):
+    def __init__(self, circuit, hamiltonian, backend='auto'):
         if not _HAS_TORCH:
             raise ImportError(
                 "PyTorch is required for QNodeFunction. "

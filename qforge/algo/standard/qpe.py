@@ -10,7 +10,7 @@ from qforge.measurement import measure_all
 
 
 def qpe(unitary_fn, n_ancilla: int, target_state_fn=None,
-         n_target: int = 1, backend: str = 'python',
+         n_target: int = 1, backend: str = 'auto',
          n_samples: int = 1000) -> dict:
     """Quantum Phase Estimation.
 

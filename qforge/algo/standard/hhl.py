@@ -9,7 +9,7 @@ from qforge.algo.standard.qft import qft, inverse_qft
 
 
 def hhl(A: np.ndarray, b: np.ndarray, n_ancilla: int = 4,
-         backend: str = 'python') -> dict:
+         backend: str = 'auto') -> dict:
     """Solve the linear system Ax = b using the HHL algorithm.
 
     This is a simplified/pedagogical implementation for small systems.

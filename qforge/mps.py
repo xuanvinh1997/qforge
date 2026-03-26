@@ -72,9 +72,12 @@ class MatrixProductState:
         if backend == 'auto':
             backend = 'cpu' if _HAS_MPS_CPP else 'python'
 
+        self._backend = backend
+
         if backend == 'cpu' and _HAS_MPS_CPP:
             self._mps = _MPS_core(n_qubits, max_bond_dim)
         else:
+            self._backend = 'python'
             self._tensors = _init_product_state(n_qubits)
 
     # ----------------------------------------------------------------
@@ -85,6 +88,11 @@ class MatrixProductState:
     def _sv(self):
         """Always None — signals gates to use the _mps dispatch branch."""
         return None
+
+    @property
+    def backend(self) -> str:
+        """Return the name of the active backend ('cpu' for C++ MPS, 'python')."""
+        return self._backend
 
     @property
     def amplitude(self) -> np.ndarray:

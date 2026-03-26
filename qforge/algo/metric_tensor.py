@@ -11,7 +11,7 @@ from qforge.ir import Circuit
 def fubini_study_metric(
     circuit: Circuit,
     params: np.ndarray,
-    backend: str = 'python',
+    backend: str = 'auto',
     shift: float = np.pi / 2,
 ) -> np.ndarray:
     """Compute the Fubini-Study metric tensor.

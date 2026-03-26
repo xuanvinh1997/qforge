@@ -6,7 +6,7 @@ from __future__ import annotations
 import numpy as np
 
 
-def qnode_tf(circuit, hamiltonian, backend='python'):
+def qnode_tf(circuit, hamiltonian, backend='auto'):
     """Create a TensorFlow-differentiable quantum function.
 
     Returns a function ``params -> tf.Tensor`` that supports
@@ -15,7 +15,7 @@ def qnode_tf(circuit, hamiltonian, backend='python'):
     Args:
         circuit:     A qforge Circuit (template with parameters).
         hamiltonian: A qforge Hamiltonian.
-        backend:     Simulation backend (default 'python').
+        backend:     Simulation backend (default ``'auto'``).
 
     Returns:
         A TensorFlow-compatible callable.

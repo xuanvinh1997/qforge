@@ -14,7 +14,7 @@ from qforge.ir import Circuit, GateOp, _dispatch_op, _adjoint_op
 
 def adjoint_differentiation(circuit: Circuit, hamiltonian,
                              params: np.ndarray,
-                             backend: str = 'python') -> np.ndarray:
+                             backend: str = 'auto') -> np.ndarray:
     """Compute the gradient of ⟨H⟩ w.r.t. circuit parameters using adjoint method.
 
     The adjoint differentiation method:
@@ -205,12 +205,13 @@ def _numerical_gate_gradient(bra, ket, op: GateOp, param_idx: int,
     op_minus = GateOp(name=op.name, qubits=op.qubits, params=tuple(params_minus),
                       matrix=op.matrix, is_adjoint=op.is_adjoint, controls=op.controls)
 
-    wf_plus = Qubit(n_qubits, backend='python')
+    backend = getattr(ket, 'backend', 'python')
+    wf_plus = Qubit(n_qubits, backend=backend)
     wf_plus.amplitude = ket.amplitude.copy()
     _dispatch_op(wf_plus, _adjoint_op(op))  # undo current gate
     _dispatch_op(wf_plus, op_plus)  # apply with +eps
 
-    wf_minus = Qubit(n_qubits, backend='python')
+    wf_minus = Qubit(n_qubits, backend=backend)
     wf_minus.amplitude = ket.amplitude.copy()
     _dispatch_op(wf_minus, _adjoint_op(op))
     _dispatch_op(wf_minus, op_minus)

@@ -35,15 +35,21 @@ class Wavefunction(object):
         >>> wf.probabilities()     # array([0.5, 0. , 0. , 0.5])
     """
 
-    def __init__(self, states, amplitude_vector, _sv=None):
+    def __init__(self, states, amplitude_vector, _sv=None, backend: str = 'python'):
         self.state = states
         self._sv = _sv
+        self._backend = backend
         if _sv is not None:
             # C++ backend: amplitude is a zero-copy numpy view
             self._sv.amplitude[:] = amplitude_vector
         else:
             self._amplitude = amplitude_vector
         self.visual = []
+
+    @property
+    def backend(self) -> str:
+        """Return the name of the active backend ('metal', 'cuda', 'cpu', or 'python')."""
+        return self._backend
 
     @property
     def amplitude(self):

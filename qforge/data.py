@@ -8,10 +8,6 @@ from qforge import _HAS_CPP
 if _HAS_CPP:
     from qforge import _qforge_core
 
-def _has_cpp_data_ops(wavefunction):
-    """Check if we can use C++ data ops (only for CPU StateVector backend)."""
-    return _HAS_CPP and wavefunction._sv is not None and hasattr(wavefunction._sv, 'n_qubits')
-
 def intrinsic_dim_from_cov(dataset):
     '''Return the estimated Intrinsic Dimension using the spectrum of the covariance matrix'''
     cov = np.cov(dataset, rowvar=False)

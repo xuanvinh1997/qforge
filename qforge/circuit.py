@@ -3,7 +3,10 @@
 """Quantum circuit initialization."""
 from __future__ import annotations
 from qforge.wavefunction import Wavefunction
-from qforge import _HAS_CPP, _HAS_CUDA, _HAS_METAL, _HAS_DISTRIBUTED
+from qforge import (
+    _HAS_CPP, _HAS_CUDA, _HAS_METAL, _HAS_DISTRIBUTED,
+    _resolve_backend, get_backend,
+)
 import itertools
 import numpy as np
 
@@ -22,36 +25,33 @@ def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
 
     Args:
         qubit_num: Number of qubits.
-        backend: 'auto', 'cpu', 'cuda', or 'metal'.
-            'auto' picks CUDA > Metal > CPU based on availability.
+        backend: ``'auto'``, ``'cpu'``, ``'cuda'``, ``'metal'``, or ``'python'``.
+            ``'auto'`` uses the global default set by :func:`qforge.set_backend`.
     """
     states = ["".join(seq) for seq in itertools.product("01", repeat=qubit_num)]
     amplitude_vector = np.zeros(2**qubit_num, dtype=complex)
     amplitude_vector[0] = 1.0
 
     if backend == 'auto':
-        if _HAS_CUDA:
-            backend = 'cuda'
-        elif _HAS_METAL:
-            backend = 'metal'
-        elif _HAS_CPP:
-            backend = 'cpu'
-        else:
-            backend = 'python'
+        backend = _resolve_backend(get_backend())
 
     if backend == 'cuda' and _HAS_CUDA:
         sv = _CudaStateVector(qubit_num)
-        return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
+                            backend='cuda')
     elif backend == 'metal' and _HAS_METAL:
         sv = _MetalStateVector(qubit_num)
-        return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
+                            backend='metal')
     elif backend == 'distributed' and _HAS_DISTRIBUTED:
         sv = _DistributedStateVector(qubit_num)
-        return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
+                            backend='distributed')
     elif backend in ('cpu', 'auto') and _HAS_CPP:
         sv = _StateVector(qubit_num)
-        return Wavefunction(np.array(states), amplitude_vector, _sv=sv)
-    return Wavefunction(np.array(states), amplitude_vector)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
+                            backend='cpu')
+    return Wavefunction(np.array(states), amplitude_vector, backend='python')
 
 def Walk_Qubit(qubit_num=1, dim=1):
     """create a initial quantum state for hadamard coin"""
@@ -67,7 +67,7 @@ def Walk_Qubit(qubit_num=1, dim=1):
             amplitude_vector = np.zeros(4*qubit_num-2, dtype = complex)
             amplitude_vector[qubit_num-1] = 2**-0.5
             amplitude_vector[3*qubit_num-2] = (-2)**-0.5
-            return Wavefunction(np.array(states), amplitude_vector)
+            return Wavefunction(np.array(states), amplitude_vector, backend='python')
         else:
             #initial state: ((|0> + i|1>)/sqrt(2))x((|0> + i|1>)/sqrt(2))x|n=0>x|n=0>
             states = ['0' + str(i) for i in range(0, (2*qubit_num-1)**2)]
@@ -81,4 +81,4 @@ def Walk_Qubit(qubit_num=1, dim=1):
             amplitude_vector[index+(2*qubit_num-1)**2] = 0.5j
             amplitude_vector[index+2*(2*qubit_num-1)**2] = 0.5j
             amplitude_vector[index+3*(2*qubit_num-1)**2] = -1/2
-            return Wavefunction(np.array(states), amplitude_vector)
+            return Wavefunction(np.array(states), amplitude_vector, backend='python')
