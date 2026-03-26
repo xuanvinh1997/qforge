@@ -26,8 +26,8 @@ Large-scale quantum circuit simulator with C++/CUDA/Metal acceleration, MPS/DMRG
 ### Basic install (C++ CPU backend)
 
 ```bash
-git clone https://github.com/vinhpx/Quantum_Virtual_Machine.git
-cd Quantum_Virtual_Machine
+git clone https://github.com/xuanvinh1997/qforge.git
+cd qforge
 pip install -e .
 ```
 

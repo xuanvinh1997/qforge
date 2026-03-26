@@ -21,7 +21,7 @@ The C++ acceleration engine delivers 100--200x speedup over pure Python and is s
 ### Build Steps
 
 ```bash
-git clone https://github.com/yourorg/Qforge.git
+git clone https://github.com/xuanvinh1997/qforge.git
 cd qforge
 python -m venv .venv
 source .venv/bin/activate    # On Windows: .venv\Scripts\activate

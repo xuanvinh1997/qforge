@@ -1,7 +1,7 @@
 site_name: Qforge Documentation
 site_description: Wavefunction-based quantum circuit simulator with C++/CUDA/Metal acceleration
-site_url: https://qforge.readthedocs.io
-repo_url: https://github.com/vinhpx/Quantum_Virtual_Machine
+site_url: https://xuanvinh1997.github.io/qforge
+repo_url: https://github.com/xuanvinh1997/qforge
 
 theme:
   name: material
