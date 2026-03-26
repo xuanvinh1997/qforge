@@ -1,0 +1,1019 @@
+{
+  "timestamp": "2026-03-26T15:49:02",
+  "config": {
+    "n_warmup": 2,
+    "n_runs": 5,
+    "seed": 42,
+    "max_qubits": 24,
+    "steps": 50,
+    "lr": 0.1
+  },
+  "system_info": {
+    "platform": "macOS-26.3.1-arm64-arm-64bit",
+    "python": "3.11.15",
+    "processor": "arm",
+    "qforge_version": "3.0.0",
+    "qforge_cpp": "True",
+    "qforge_cuda": "False",
+    "pennylane_version": "0.44.1",
+    "qiskit_version": "2.3.1"
+  },
+  "suites": {
+    "gates": {
+      "H_4q": {
+        "gate": "H",
+        "qubits": 4,
+        "qforge": 0.40429100045002997,
+        "pennylane": 15.570457995636389,
+        "qiskit": 10.660291998647153
+      },
+      "X_4q": {
+        "gate": "X",
+        "qubits": 4,
+        "qforge": 0.4002919886261225,
+        "pennylane": 10.082209002575837,
+        "qiskit": 10.57724999554921
+      },
+      "RX_4q": {
+        "gate": "RX",
+        "qubits": 4,
+        "qforge": 0.43416599510237575,
+        "pennylane": 33.49216700007673,
+        "qiskit": 12.455124990083277
+      },
+      "RZ_4q": {
+        "gate": "RZ",
+        "qubits": 4,
+        "qforge": 0.43191699660383165,
+        "pennylane": 26.75529199768789,
+        "qiskit": 12.210459011839703
+      },
+      "CNOT_4q": {
+        "gate": "CNOT",
+        "qubits": 4,
+        "qforge": 0.4281250003259629,
+        "pennylane": 39.68395899573807,
+        "qiskit": 10.888874996453524
+      },
+      "SWAP_4q": {
+        "gate": "SWAP",
+        "qubits": 4,
+        "qforge": 0.508208991959691,
+        "pennylane": 15.880332997767256,
+        "qiskit": 11.333208996802568
+      },
+      "CCNOT_4q": {
+        "gate": "CCNOT",
+        "qubits": 4,
+        "qforge": 0.5401660018833354,
+        "pennylane": 59.5714160008356,
+        "qiskit": 10.75779199891258
+      },
+      "H_8q": {
+        "gate": "H",
+        "qubits": 8,
+        "qforge": 0.6240829970920458,
+        "pennylane": 16.497332995641045,
+        "qiskit": 12.189083005068824
+      },
+      "X_8q": {
+        "gate": "X",
+        "qubits": 8,
+        "qforge": 0.6270000012591481,
+        "pennylane": 10.32037500408478,
+        "qiskit": 12.377042003208771
+      },
+      "RX_8q": {
+        "gate": "RX",
+        "qubits": 8,
+        "qforge": 0.6755829963367432,
+        "pennylane": 32.277499994961545,
+        "qiskit": 14.172124996548519
+      },
+      "RZ_8q": {
+        "gate": "RZ",
+        "qubits": 8,
+        "qforge": 0.6632080039707944,
+        "pennylane": 26.29500000330154,
+        "qiskit": 13.75729200663045
+      },
+      "CNOT_8q": {
+        "gate": "CNOT",
+        "qubits": 8,
+        "qforge": 0.6647920090472326,
+        "pennylane": 39.3791670067003,
+        "qiskit": 12.204458005726337
+      },
+      "SWAP_8q": {
+        "gate": "SWAP",
+        "qubits": 8,
+        "qforge": 0.6276250060182065,
+        "pennylane": 15.557999999145977,
+        "qiskit": 12.343458001851104
+      },
+      "CCNOT_8q": {
+        "gate": "CCNOT",
+        "qubits": 8,
+        "qforge": 0.6843330047558993,
+        "pennylane": 57.25174999679439,
+        "qiskit": 12.660209002206102
+      },
+      "H_12q": {
+        "gate": "H",
+        "qubits": 12,
+        "qforge": 4.30141699325759,
+        "pennylane": 16.023582997149788,
+        "qiskit": 45.06566700001713
+      },
+      "X_12q": {
+        "gate": "X",
+        "qubits": 12,
+        "qforge": 4.285874994820915,
+        "pennylane": 10.1660000073025,
+        "qiskit": 45.056249990011565
+      },
+      "RX_12q": {
+        "gate": "RX",
+        "qubits": 12,
+        "qforge": 4.542374997981824,
+        "pennylane": 35.27504100929946,
+        "qiskit": 47.29775000305381
+      },
+      "RZ_12q": {
+        "gate": "RZ",
+        "qubits": 12,
+        "qforge": 4.3880000011995435,
+        "pennylane": 26.250583992805332,
+        "qiskit": 46.59325000829995
+      },
+      "CNOT_12q": {
+        "gate": "CNOT",
+        "qubits": 12,
+        "qforge": 4.14795899996534,
+        "pennylane": 41.2298750015907,
+        "qiskit": 38.08200001367368
+      },
+      "SWAP_12q": {
+        "gate": "SWAP",
+        "qubits": 12,
+        "qforge": 2.902542008087039,
+        "pennylane": 16.37125000706874,
+        "qiskit": 37.881124997511506
+      },
+      "CCNOT_12q": {
+        "gate": "CCNOT",
+        "qubits": 12,
+        "qforge": 3.216249999240972,
+        "pennylane": 58.0428329994902,
+        "qiskit": 25.671958006569184
+      },
+      "H_16q": {
+        "gate": "H",
+        "qubits": 16,
+        "qforge": 75.3247079992434,
+        "pennylane": 16.91733299230691,
+        "qiskit": 496.2544589943718
+      },
+      "X_16q": {
+        "gate": "X",
+        "qubits": 16,
+        "qforge": 71.61724999605212,
+        "pennylane": 11.246875001234002,
+        "qiskit": 506.4390410116175
+      },
+      "RX_16q": {
+        "gate": "RX",
+        "qubits": 16,
+        "qforge": 67.2563749976689,
+        "pennylane": 32.24599998793565,
+        "qiskit": 492.4759580026148
+      },
+      "RZ_16q": {
+        "gate": "RZ",
+        "qubits": 16,
+        "qforge": 72.04066700069234,
+        "pennylane": 27.28325000498444,
+        "qiskit": 494.1662500059465
+      },
+      "CNOT_16q": {
+        "gate": "CNOT",
+        "qubits": 16,
+        "qforge": 57.07125000481028,
+        "pennylane": 43.51233399938792,
+        "qiskit": 390.41966600052547
+      },
+      "SWAP_16q": {
+        "gate": "SWAP",
+        "qubits": 16,
+        "qforge": 43.78508299123496,
+        "pennylane": 16.32016699295491,
+        "qiskit": 377.53508299647365
+      },
+      "CCNOT_16q": {
+        "gate": "CCNOT",
+        "qubits": 16,
+        "qforge": 46.9298750103917,
+        "pennylane": 60.22420899535064,
+        "qiskit": 194.4535420043394
+      },
+      "H_20q": {
+        "gate": "H",
+        "qubits": 20,
+        "qforge": 1412.547915999312,
+        "pennylane": 23.31525000045076,
+        "qiskit": 7471.638292001444
+      },
+      "X_20q": {
+        "gate": "X",
+        "qubits": 20,
+        "qforge": 1269.1498329950264,
+        "pennylane": 16.135749989189208,
+        "qiskit": 7406.303582989494
+      },
+      "RX_20q": {
+        "gate": "RX",
+        "qubits": 20,
+        "qforge": 1261.676209003781,
+        "pennylane": 38.875124999322,
+        "qiskit": 7402.687541994965
+      },
+      "RZ_20q": {
+        "gate": "RZ",
+        "qubits": 20,
+        "qforge": 1266.1644170002546,
+        "pennylane": 32.50566599308513,
+        "qiskit": 7412.09687499213
+      },
+      "CNOT_20q": {
+        "gate": "CNOT",
+        "qubits": 20,
+        "qforge": 1046.7340830073226,
+        "pennylane": 45.23454098671209,
+        "qiskit": 5552.199041994754
+      },
+      "SWAP_20q": {
+        "gate": "SWAP",
+        "qubits": 20,
+        "qforge": 761.0987500083866,
+        "pennylane": 22.118417007732205,
+        "qiskit": 5514.670040996862
+      },
+      "CCNOT_20q": {
+        "gate": "CCNOT",
+        "qubits": 20,
+        "qforge": 809.8520830099005,
+        "pennylane": 64.44937500054948,
+        "qiskit": 2507.8737909934716
+      }
+    },
+    "circuits": {
+      "H+CNOT (d=10)_4q": {
+        "pattern": "H+CNOT (d=10)",
+        "qubits": 4,
+        "qforge": 0.03458299033809453,
+        "pennylane": 2.113499998813495,
+        "qiskit": 0.7844579959055409
+      },
+      "H+CNOT (d=10)_8q": {
+        "pattern": "H+CNOT (d=10)",
+        "qubits": 8,
+        "qforge": 0.1281669974559918,
+        "pennylane": 4.839125002035871,
+        "qiskit": 1.918082998599857
+      },
+      "H+CNOT (d=10)_12q": {
+        "pattern": "H+CNOT (d=10)",
+        "qubits": 12,
+        "qforge": 1.4932909980416298,
+        "pennylane": 13.191375008318573,
+        "qiskit": 12.404625013004988
+      },
+      "H+CNOT (d=10)_16q": {
+        "pattern": "H+CNOT (d=10)",
+        "qubits": 16,
+        "qforge": 32.090374996187165,
+        "pennylane": 69.47429099818692,
+        "qiskit": 76.4974999910919
+      },
+      "H+CNOT (d=10)_20q": {
+        "pattern": "H+CNOT (d=10)",
+        "qubits": 20,
+        "qforge": 608.4012500068638,
+        "pennylane": 992.3152909905184,
+        "qiskit": 1303.9601249911357
+      },
+      "QFT-like_4q": {
+        "pattern": "QFT-like",
+        "qubits": 4,
+        "qforge": 0.009625000529922545,
+        "pennylane": 0.6451660010498017,
+        "qiskit": 0.19920799240935594
+      },
+      "QFT-like_8q": {
+        "pattern": "QFT-like",
+        "qubits": 8,
+        "qforge": 0.06195800960995257,
+        "pennylane": 2.177041009417735,
+        "qiskit": 0.6992909911787137
+      },
+      "QFT-like_12q": {
+        "pattern": "QFT-like",
+        "qubits": 12,
+        "qforge": 0.9690000006230548,
+        "pennylane": 9.40337500651367,
+        "qiskit": 3.449333002208732
+      },
+      "QFT-like_16q": {
+        "pattern": "QFT-like",
+        "qubits": 16,
+        "qforge": 22.320249991025776,
+        "pennylane": 43.75987499952316,
+        "qiskit": 39.31437501159962
+      },
+      "QFT-like_20q": {
+        "pattern": "QFT-like",
+        "qubits": 20,
+        "qforge": 428.13695799850393,
+        "pennylane": 576.8576659902465,
+        "qiskit": 704.0917499980424
+      },
+      "Random (50g)_4q": {
+        "pattern": "Random (50g)",
+        "qubits": 4,
+        "qforge": 0.02795799809973687,
+        "pennylane": 1.7836660117609426,
+        "qiskit": 0.6367919995682314
+      },
+      "Random (50g)_8q": {
+        "pattern": "Random (50g)",
+        "qubits": 8,
+        "qforge": 0.06995900184847414,
+        "pennylane": 1.9385829946259037,
+        "qiskit": 0.7382500043604523
+      },
+      "Random (50g)_12q": {
+        "pattern": "Random (50g)",
+        "qubits": 12,
+        "qforge": 0.8427499997196719,
+        "pennylane": 3.8329579983837903,
+        "qiskit": 2.9548329912358895
+      },
+      "Random (50g)_16q": {
+        "pattern": "Random (50g)",
+        "qubits": 16,
+        "qforge": 17.977124996832572,
+        "pennylane": 12.126292000175454,
+        "qiskit": 13.859083002898842
+      },
+      "Random (50g)_20q": {
+        "pattern": "Random (50g)",
+        "qubits": 20,
+        "qforge": 300.8417079981882,
+        "pennylane": 166.23712499858811,
+        "qiskit": 197.8008339938242
+      },
+      "HEA (3L)_4q": {
+        "pattern": "HEA (3L)",
+        "qubits": 4,
+        "qforge": 0.016833000699989498,
+        "pennylane": 1.1066669976571575,
+        "qiskit": 0.3374170046299696
+      },
+      "HEA (3L)_8q": {
+        "pattern": "HEA (3L)",
+        "qubits": 8,
+        "qforge": 0.07174999336712062,
+        "pennylane": 2.2572499874513596,
+        "qiskit": 0.7655420049559325
+      },
+      "HEA (3L)_12q": {
+        "pattern": "HEA (3L)",
+        "qubits": 12,
+        "qforge": 1.0584580013528466,
+        "pennylane": 5.655542001477443,
+        "qiskit": 3.0477920081466436
+      },
+      "HEA (3L)_16q": {
+        "pattern": "HEA (3L)",
+        "qubits": 16,
+        "qforge": 21.485374993062578,
+        "pennylane": 25.011292003910057,
+        "qiskit": 27.53833300084807
+      },
+      "HEA (3L)_20q": {
+        "pattern": "HEA (3L)",
+        "qubits": 20,
+        "qforge": 381.4951249951264,
+        "pennylane": 361.7927500017686,
+        "qiskit": 467.1234999987064
+      }
+    },
+    "vqe": {
+      "H2 (2q)_cpu": {
+        "time": 0.01598054099304136,
+        "energy": -1.1921538367475766,
+        "framework": "qforge_cpu",
+        "problem": "H2 (2q)"
+      },
+      "H2 (2q)_metal": {
+        "time": 0.8770126660092501,
+        "energy": -1.1921538342788534,
+        "framework": "qforge_metal",
+        "problem": "H2 (2q)"
+      },
+      "H2 (2q)_pennylane": {
+        "time": 0.24287154199555516,
+        "energy": -1.1921538367475766,
+        "framework": "pennylane",
+        "problem": "H2 (2q)"
+      },
+      "H2 (2q)_qiskit": {
+        "time": 0.2173735830001533,
+        "energy": -1.1921538367475764,
+        "framework": "qiskit",
+        "problem": "H2 (2q)"
+      },
+      "LiH-like (6q)_cpu": {
+        "time": 0.15180662499915343,
+        "energy": -7.677660882888727,
+        "framework": "qforge_cpu",
+        "problem": "LiH-like (6q)"
+      },
+      "LiH-like (6q)_metal": {
+        "time": 6.118528584003798,
+        "energy": -7.677660882888727,
+        "framework": "qforge_metal",
+        "problem": "LiH-like (6q)"
+      },
+      "LiH-like (6q)_pennylane": {
+        "time": 1.540465416997904,
+        "energy": -7.677660882888727,
+        "framework": "pennylane",
+        "problem": "LiH-like (6q)"
+      },
+      "LiH-like (6q)_qiskit": {
+        "time": 1.1983847079973202,
+        "energy": -7.677660882888727,
+        "framework": "qiskit",
+        "problem": "LiH-like (6q)"
+      }
+    },
+    "qaoa": {
+      "4-node ring_cpu": {
+        "time": 0.013000500010093674,
+        "cut": 2.7651474012342927,
+        "framework": "qforge_cpu",
+        "problem": "4-node ring"
+      },
+      "4-node ring_metal": {
+        "time": 1.3825927919970127,
+        "cut": 2.7651470462550045,
+        "framework": "qforge_metal",
+        "problem": "4-node ring"
+      },
+      "4-node ring_pennylane": {
+        "time": 0.8709623330069007,
+        "cut": 2.9999999999999987,
+        "framework": "pennylane",
+        "problem": "4-node ring"
+      },
+      "4-node ring_qiskit": {
+        "time": 0.1580977499979781,
+        "cut": 2.7651474012342887,
+        "framework": "qiskit",
+        "problem": "4-node ring"
+      },
+      "8-node 3-reg_cpu": {
+        "time": 0.05199612499563955,
+        "cut": 6.0,
+        "framework": "qforge_cpu",
+        "problem": "8-node 3-reg"
+      },
+      "8-node 3-reg_metal": {
+        "time": 3.1972456249932293,
+        "cut": 5.999999979292066,
+        "framework": "qforge_metal",
+        "problem": "8-node 3-reg"
+      },
+      "8-node 3-reg_pennylane": {
+        "time": 5.039066583995009,
+        "cut": 6.162865748027162,
+        "framework": "pennylane",
+        "problem": "8-node 3-reg"
+      },
+      "8-node 3-reg_qiskit": {
+        "time": 0.32947362499544397,
+        "cut": 5.999999999999985,
+        "framework": "qiskit",
+        "problem": "8-node 3-reg"
+      }
+    },
+    "gradient": {
+      "4q/1L": {
+        "n_params": 8,
+        "qforge": 0.5995410028845072,
+        "pennylane": 12.065708011505194,
+        "qiskit": 9.341415992821567
+      },
+      "8q/1L": {
+        "n_params": 16,
+        "qforge": 3.7650839949492365,
+        "pennylane": 42.54475000197999,
+        "qiskit": 31.381875000079162
+      },
+      "4q/2L": {
+        "n_params": 12,
+        "qforge": 0.9772920020623133,
+        "pennylane": 23.36049999576062,
+        "qiskit": 17.959749995497987
+      }
+    },
+    "measurement": {
+      "pauliZ_4q": {
+        "qubits": 4,
+        "qforge": 0.4580069798976183,
+        "pennylane": 439.1249967738986,
+        "qiskit": 136.12500333692878
+      },
+      "pauliZ_8q": {
+        "qubits": 8,
+        "qforge": 0.500003807246685,
+        "pennylane": 725.8330006152391,
+        "qiskit": 254.41599427722394
+      },
+      "pauliZ_12q": {
+        "qubits": 12,
+        "qforge": 2.0419975044205785,
+        "pennylane": 1563.4580049663782,
+        "qiskit": 1356.7079877248034
+      },
+      "pauliZ_16q": {
+        "qubits": 16,
+        "qforge": 26.16700658109039,
+        "pennylane": 6299.291009781882,
+        "qiskit": 7813.457996235229
+      },
+      "sampling_4q": {
+        "qubits": 4,
+        "qforge": 0.9204160014633089,
+        "pennylane": 1.120291999541223,
+        "qiskit": 9.990791993914172
+      },
+      "sampling_8q": {
+        "qubits": 8,
+        "qforge": 1.696207997156307,
+        "pennylane": 1.6554160101804882,
+        "qiskit": 13.786959010758437
+      },
+      "sampling_12q": {
+        "qubits": 12,
+        "qforge": 2.7670000126818195,
+        "pennylane": 2.995791001012549,
+        "qiskit": 31.7804999940563
+      },
+      "sampling_16q": {
+        "qubits": 16,
+        "qforge": 3.8222909934120253,
+        "pennylane": 9.432541992282495,
+        "qiskit": 288.5032079939265
+      }
+    },
+    "scaling": {
+      "2q": {
+        "qubits": 2,
+        "qforge": 0.00608300615567714,
+        "qforge_cuda": null,
+        "pennylane": 0.3995419974671677,
+        "qiskit": 0.10849999671336263
+      },
+      "4q": {
+        "qubits": 4,
+        "qforge": 0.01012500433716923,
+        "qforge_cuda": null,
+        "pennylane": 0.6107499939389527,
+        "qiskit": 0.18233299488201737
+      },
+      "6q": {
+        "qubits": 6,
+        "qforge": 0.019708008039742708,
+        "qforge_cuda": null,
+        "pennylane": 0.8395000040763989,
+        "qiskit": 0.2753750013653189
+      },
+      "8q": {
+        "qubits": 8,
+        "qforge": 0.05191699892748147,
+        "qforge_cuda": null,
+        "pennylane": 1.113000005716458,
+        "qiskit": 0.3729169984580949
+      },
+      "10q": {
+        "qubits": 10,
+        "qforge": 0.1891670108307153,
+        "qforge_cuda": null,
+        "pennylane": 1.5454579988727346,
+        "qiskit": 0.5673339910572395
+      },
+      "12q": {
+        "qubits": 12,
+        "qforge": 0.7920000061858445,
+        "qforge_cuda": null,
+        "pennylane": 2.670375004527159,
+        "qiskit": 2.040749997831881
+      },
+      "14q": {
+        "qubits": 14,
+        "qforge": 3.4957500029122457,
+        "qforge_cuda": null,
+        "pennylane": 4.910625008051284,
+        "qiskit": 4.048374990816228
+      },
+      "16q": {
+        "qubits": 16,
+        "qforge": 15.73662500595674,
+        "qforge_cuda": null,
+        "pennylane": 11.931416011066176,
+        "qiskit": 12.237792005180381
+      },
+      "18q": {
+        "qubits": 18,
+        "qforge": 68.78454200341366,
+        "qforge_cuda": null,
+        "pennylane": 43.820000006235205,
+        "qiskit": 60.02224999247119
+      },
+      "20q": {
+        "qubits": 20,
+        "qforge": 303.6558750027325,
+        "qforge_cuda": null,
+        "pennylane": 165.12166601023637,
+        "qiskit": 205.63766699342523
+      },
+      "22q": {
+        "qubits": 22,
+        "qforge": 1317.4161669885507,
+        "qforge_cuda": null,
+        "pennylane": 1143.4524590004003,
+        "qiskit": 1847.01395900629
+      },
+      "24q": {
+        "qubits": 24,
+        "qforge": 5583.358417003183,
+        "qforge_cuda": null,
+        "pennylane": 4599.285624994081,
+        "qiskit": 7231.880749997799
+      }
+    },
+    "accuracy": {
+      "bell": {
+        "qf_pl": 1.1102230246251565e-16,
+        "qf_qk": 1.1102230246251565e-16,
+        "pl_qk": 0.0
+      },
+      "ghz_4q": {
+        "qf_pl": 1.1102230246251565e-16,
+        "qf_qk": 1.1102230246251565e-16,
+        "pl_qk": 0.0
+      },
+      "ghz_8q": {
+        "qf_pl": 1.1102230246251565e-16,
+        "qf_qk": 1.1102230246251565e-16,
+        "pl_qk": 0.0
+      },
+      "ghz_12q": {
+        "qf_pl": 1.1102230246251565e-16,
+        "qf_qk": 1.1102230246251565e-16,
+        "pl_qk": 0.0
+      },
+      "random_8q": {
+        "qf_pl": 7.550332863779066e-16,
+        "qf_qk": 7.550332863779066e-16,
+        "pl_qk": 1.2412670766236366e-16
+      }
+    },
+    "memory": {
+      "4q": {
+        "qubits": 4,
+        "theoretical": 0.000244140625,
+        "qforge": 0.00209808349609375,
+        "pennylane": 0.03125762939453125,
+        "qiskit": 0.011698722839355469
+      },
+      "8q": {
+        "qubits": 8,
+        "theoretical": 0.00390625,
+        "qforge": 0.02835845947265625,
+        "pennylane": 0.04742622375488281,
+        "qiskit": 0.02254199981689453
+      },
+      "12q": {
+        "qubits": 12,
+        "theoretical": 0.0625,
+        "qforge": 0.5204238891601562,
+        "pennylane": 0.2021045684814453,
+        "qiskit": 0.2577543258666992
+      },
+      "16q": {
+        "qubits": 16,
+        "theoretical": 1.0,
+        "qforge": 9.599555969238281,
+        "pennylane": 3.055849075317383,
+        "qiskit": 4.008212089538574
+      },
+      "20q": {
+        "qubits": 20,
+        "theoretical": 16.0,
+        "qforge": 173.0579605102539,
+        "pennylane": 48.0653018951416,
+        "qiskit": 64.00886058807373
+      },
+      "24q": {
+        "qubits": 24,
+        "theoretical": 256.0,
+        "qforge": 3096.1027297973633,
+        "pennylane": 768.0759525299072,
+        "qiskit": 1024.0098600387573
+      }
+    },
+    "mps": {
+      "gate_ghz_8q": {
+        "qubits": 8,
+        "statevector": 0.041624996811151505,
+        "mps_chi64": 0.019708008039742708,
+        "mps_chi128": 0.0195419997908175
+      },
+      "gate_ghz_12q": {
+        "qubits": 12,
+        "statevector": 0.8012500038603321,
+        "mps_chi64": 0.027832997147925198,
+        "mps_chi128": 0.027667003450915217
+      },
+      "gate_ghz_16q": {
+        "qubits": 16,
+        "statevector": 13.992082996992394,
+        "mps_chi64": 0.03866699989885092,
+        "mps_chi128": 0.037874997360631824
+      },
+      "gate_ghz_20q": {
+        "qubits": 20,
+        "statevector": 273.70579200214706,
+        "mps_chi64": 0.05191699892748147,
+        "mps_chi128": 0.048959002015180886
+      },
+      "gate_ghz_30q": {
+        "qubits": 30,
+        "statevector": null,
+        "mps_chi64": 0.07008400280028582,
+        "mps_chi128": 0.06854100502096117
+      },
+      "gate_ghz_50q": {
+        "qubits": 50,
+        "statevector": null,
+        "mps_chi64": 0.12070800585206598,
+        "mps_chi128": 0.11633300164248794
+      },
+      "qubit_scale_20q": {
+        "qubits": 20,
+        "time_ms": 0.07254199590533972,
+        "max_chi": 2
+      },
+      "qubit_scale_50q": {
+        "qubits": 50,
+        "time_ms": 0.18054099928122014,
+        "max_chi": 2
+      },
+      "qubit_scale_100q": {
+        "qubits": 100,
+        "time_ms": 0.3849579952657223,
+        "max_chi": 2
+      },
+      "qubit_scale_200q": {
+        "qubits": 200,
+        "time_ms": 0.7492919976357371,
+        "max_chi": 2
+      },
+      "qubit_scale_500q": {
+        "qubits": 500,
+        "time_ms": 2.1657500037690625,
+        "max_chi": 2
+      },
+      "bonddim_4": {
+        "max_chi": 4,
+        "time_ms": 0.08466700091958046,
+        "actual_chi": 1
+      },
+      "bonddim_8": {
+        "max_chi": 8,
+        "time_ms": 0.08391599112655967,
+        "actual_chi": 1
+      },
+      "bonddim_16": {
+        "max_chi": 16,
+        "time_ms": 0.08416699711233377,
+        "actual_chi": 1
+      },
+      "bonddim_32": {
+        "max_chi": 32,
+        "time_ms": 0.0838330015540123,
+        "actual_chi": 1
+      },
+      "bonddim_64": {
+        "max_chi": 64,
+        "time_ms": 0.08391700976062566,
+        "actual_chi": 1
+      },
+      "bonddim_128": {
+        "max_chi": 128,
+        "time_ms": 0.08379100472666323,
+        "actual_chi": 1
+      },
+      "bonddim_256": {
+        "max_chi": 256,
+        "time_ms": 0.08370900468435138,
+        "actual_chi": 1
+      },
+      "accuracy_chi2": {
+        "chi": 2,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "accuracy_chi4": {
+        "chi": 4,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "accuracy_chi8": {
+        "chi": 8,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "accuracy_chi16": {
+        "chi": 16,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "accuracy_chi32": {
+        "chi": 32,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "accuracy_chi64": {
+        "chi": 64,
+        "fidelity": 0.9999999999999791,
+        "max_error": 2.3592239273284576e-15
+      },
+      "entropy_20q": {
+        "qubits": 20,
+        "time_us": 34.083001082763076,
+        "max_entropy": 1.0
+      },
+      "entropy_50q": {
+        "qubits": 50,
+        "time_us": 156.75000031478703,
+        "max_entropy": 1.0
+      },
+      "entropy_100q": {
+        "qubits": 100,
+        "time_us": 602.5000038789585,
+        "max_entropy": 1.0
+      }
+    },
+    "dmrg": {
+      "heisenberg_10": {
+        "n_sites": 10,
+        "time_s": 0.00012904198956675828,
+        "energy": 11.0,
+        "energy_per_site": 1.1
+      },
+      "heisenberg_20": {
+        "n_sites": 20,
+        "time_s": 0.00013041601050645113,
+        "energy": 21.0,
+        "energy_per_site": 1.05
+      },
+      "heisenberg_40": {
+        "n_sites": 40,
+        "time_s": 0.00025887500669341534,
+        "energy": 41.0,
+        "energy_per_site": 1.025
+      },
+      "heisenberg_60": {
+        "n_sites": 60,
+        "time_s": 0.000407750005251728,
+        "energy": 61.0,
+        "energy_per_site": 1.0166666666666666
+      },
+      "heisenberg_80": {
+        "n_sites": 80,
+        "time_s": 0.0004866250092163682,
+        "energy": 81.0,
+        "energy_per_site": 1.0125
+      },
+      "heisenberg_100": {
+        "n_sites": 100,
+        "time_s": 0.0006275000050663948,
+        "energy": 101.0,
+        "energy_per_site": 1.01
+      },
+      "bondconv_4": {
+        "chi": 4,
+        "energy": 21.0,
+        "time_s": 0.00012358299863990396,
+        "actual_chi": 1
+      },
+      "bondconv_8": {
+        "chi": 8,
+        "energy": 21.0,
+        "time_s": 0.00012229201092850417,
+        "actual_chi": 1
+      },
+      "bondconv_16": {
+        "chi": 16,
+        "energy": 21.0,
+        "time_s": 0.00012679200153797865,
+        "actual_chi": 1
+      },
+      "bondconv_32": {
+        "chi": 32,
+        "energy": 21.0,
+        "time_s": 0.00012533299741335213,
+        "actual_chi": 1
+      },
+      "bondconv_64": {
+        "chi": 64,
+        "energy": 21.0,
+        "time_s": 0.00012579199392348528,
+        "actual_chi": 1
+      },
+      "bondconv_128": {
+        "chi": 128,
+        "energy": 21.0,
+        "time_s": 0.00013108301209285855,
+        "actual_chi": 1
+      },
+      "sweep_convergence": {
+        "n_sites": 20,
+        "chi": 32,
+        "energies": [
+          21.0,
+          21.0
+        ],
+        "final_energy": 21.0
+      },
+      "ising_h0.0": {
+        "h": 0.0,
+        "energy": -19.0,
+        "energy_per_site": -0.95,
+        "time_s": 0.00011500000255182385
+      },
+      "ising_h0.2": {
+        "h": 0.2,
+        "energy": -20.485951078989714,
+        "energy_per_site": -1.0242975539494856,
+        "time_s": 0.047619000004488043
+      },
+      "ising_h0.5": {
+        "h": 0.5,
+        "energy": -38.63301274770092,
+        "energy_per_site": -1.931650637385046,
+        "time_s": 0.05610637500649318
+      },
+      "ising_h0.8": {
+        "h": 0.8,
+        "energy": -20.89358917206009,
+        "energy_per_site": -1.0446794586030044,
+        "time_s": 0.058641166004235856
+      },
+      "ising_h1.0": {
+        "h": 1.0,
+        "energy": -19.50012222645569,
+        "energy_per_site": -0.9750061113227846,
+        "time_s": 0.1210868339985609
+      },
+      "ising_h1.5": {
+        "h": 1.5,
+        "energy": -2.099036045609981,
+        "energy_per_site": -0.10495180228049905,
+        "time_s": 0.25140600001032
+      },
+      "ising_h2.0": {
+        "h": 2.0,
+        "energy": -28.845656613417226,
+        "energy_per_site": -1.4422828306708613,
+        "time_s": 0.14131612499477342
+      },
+      "ising_h3.0": {
+        "h": 3.0,
+        "energy": -42.08915821299821,
+        "energy_per_site": -2.10445791064991,
+        "time_s": 0.06204416599939577
+      },
+      "backend_comparison": {
+        "n_sites": 10,
+        "chi": 16,
+        "cpp_time": 7.645900768693537e-05,
+        "python_time": 45.67866729199886
+      }
+    }
+  }
+}
