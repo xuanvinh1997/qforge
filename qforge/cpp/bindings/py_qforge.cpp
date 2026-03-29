@@ -15,7 +15,10 @@ PYBIND11_MODULE(_qforge_core, m) {
     // --- StateVector ---
     py::class_<qforge::StateVector>(m, "StateVector")
         .def(py::init<int>(), py::arg("n_qubits"))
+        .def(py::init<int, int>(), py::arg("n_qudits"), py::arg("dimension"))
         .def_property_readonly("n_qubits", &qforge::StateVector::n_qubits)
+        .def_property_readonly("n_qudits", &qforge::StateVector::n_qudits)
+        .def_property_readonly("dimension", &qforge::StateVector::dimension)
         .def_property_readonly("dim", &qforge::StateVector::dim)
         .def("reset", &qforge::StateVector::reset)
         // Zero-copy numpy array access
@@ -148,6 +151,55 @@ PYBIND11_MODULE(_qforge_core, m) {
             py::gil_scoped_release release;
             return qforge::measurement::pauli_expectation(sv, q, pt);
         }, py::arg("qubit"), py::arg("pauli_type"))
+        // --- Qudit gate/measurement methods ---
+        .def("apply_single_qudit_gate",
+            [](qforge::StateVector& sv, int target, py::array_t<std::complex<double>> gate) {
+                auto buf = gate.request();
+                int d = sv.dimension();
+                if (buf.size != d * d)
+                    throw std::runtime_error("gate matrix must be d*d elements");
+                py::gil_scoped_release release;
+                qforge::gates::apply_single_qudit_gate(sv, target,
+                    static_cast<const std::complex<double>*>(buf.ptr));
+            }, py::arg("target"), py::arg("gate"))
+        .def("apply_controlled_qudit_gate",
+            [](qforge::StateVector& sv, int control, int ctrl_val, int target,
+               py::array_t<std::complex<double>> gate) {
+                auto buf = gate.request();
+                int d = sv.dimension();
+                if (buf.size != d * d)
+                    throw std::runtime_error("gate matrix must be d*d elements");
+                py::gil_scoped_release release;
+                qforge::gates::apply_controlled_qudit_gate(sv, control, ctrl_val, target,
+                    static_cast<const std::complex<double>*>(buf.ptr));
+            }, py::arg("control"), py::arg("ctrl_val"), py::arg("target"), py::arg("gate"))
+        .def("qudit_swap", [](qforge::StateVector& sv, int t1, int t2) {
+            py::gil_scoped_release release;
+            qforge::gates::qudit_swap(sv, t1, t2);
+        }, py::arg("t1"), py::arg("t2"))
+        .def("csum", [](qforge::StateVector& sv, int control, int target) {
+            py::gil_scoped_release release;
+            qforge::gates::csum(sv, control, target);
+        }, py::arg("control"), py::arg("target"))
+        .def("measure_qudit_probs", [](const qforge::StateVector& sv, int qudit) {
+            py::gil_scoped_release release;
+            return qforge::measurement::measure_qudit_probs(sv, qudit);
+        }, py::arg("qudit"))
+        .def("collapse_qudit", [](qforge::StateVector& sv, int qudit, int value) {
+            py::gil_scoped_release release;
+            qforge::measurement::collapse_qudit(sv, qudit, value);
+        }, py::arg("qudit"), py::arg("value"))
+        .def("qudit_expectation",
+            [](const qforge::StateVector& sv, int qudit,
+               py::array_t<std::complex<double>> op) {
+                auto buf = op.request();
+                int d = sv.dimension();
+                if (buf.size != d * d)
+                    throw std::runtime_error("operator matrix must be d*d elements");
+                py::gil_scoped_release release;
+                return qforge::measurement::qudit_expectation(sv, qudit,
+                    static_cast<const std::complex<double>*>(buf.ptr));
+            }, py::arg("qudit"), py::arg("op"))
     ;
 
     // --- Module-level gate functions (backward compat) ---
@@ -359,4 +411,61 @@ PYBIND11_MODULE(_qforge_core, m) {
             return result;
         },
         py::arg("amplitudes"), py::arg("n_qubits"), py::arg("keep_qubits"));
+
+    // --- Module-level qudit functions ---
+    m.def("apply_single_qudit_gate",
+        [](qforge::StateVector& sv, int target, py::array_t<std::complex<double>> gate) {
+            auto buf = gate.request();
+            int d = sv.dimension();
+            if (buf.size != d * d)
+                throw std::runtime_error("gate matrix must be d*d elements");
+            py::gil_scoped_release release;
+            qforge::gates::apply_single_qudit_gate(sv, target,
+                static_cast<const std::complex<double>*>(buf.ptr));
+        }, py::arg("sv"), py::arg("target"), py::arg("gate"));
+
+    m.def("apply_controlled_qudit_gate",
+        [](qforge::StateVector& sv, int control, int ctrl_val, int target,
+           py::array_t<std::complex<double>> gate) {
+            auto buf = gate.request();
+            int d = sv.dimension();
+            if (buf.size != d * d)
+                throw std::runtime_error("gate matrix must be d*d elements");
+            py::gil_scoped_release release;
+            qforge::gates::apply_controlled_qudit_gate(sv, control, ctrl_val, target,
+                static_cast<const std::complex<double>*>(buf.ptr));
+        }, py::arg("sv"), py::arg("control"), py::arg("ctrl_val"),
+           py::arg("target"), py::arg("gate"));
+
+    m.def("qudit_swap", [](qforge::StateVector& sv, int t1, int t2) {
+        py::gil_scoped_release release;
+        qforge::gates::qudit_swap(sv, t1, t2);
+    }, py::arg("sv"), py::arg("t1"), py::arg("t2"));
+
+    m.def("csum", [](qforge::StateVector& sv, int control, int target) {
+        py::gil_scoped_release release;
+        qforge::gates::csum(sv, control, target);
+    }, py::arg("sv"), py::arg("control"), py::arg("target"));
+
+    m.def("measure_qudit_probs", [](const qforge::StateVector& sv, int qudit) {
+        py::gil_scoped_release release;
+        return qforge::measurement::measure_qudit_probs(sv, qudit);
+    }, py::arg("sv"), py::arg("qudit"));
+
+    m.def("collapse_qudit", [](qforge::StateVector& sv, int qudit, int value) {
+        py::gil_scoped_release release;
+        qforge::measurement::collapse_qudit(sv, qudit, value);
+    }, py::arg("sv"), py::arg("qudit"), py::arg("value"));
+
+    m.def("qudit_expectation",
+        [](const qforge::StateVector& sv, int qudit,
+           py::array_t<std::complex<double>> op) {
+            auto buf = op.request();
+            int d = sv.dimension();
+            if (buf.size != d * d)
+                throw std::runtime_error("operator matrix must be d*d elements");
+            py::gil_scoped_release release;
+            return qforge::measurement::qudit_expectation(sv, qudit,
+                static_cast<const std::complex<double>*>(buf.ptr));
+        }, py::arg("sv"), py::arg("qudit"), py::arg("op"));
 }

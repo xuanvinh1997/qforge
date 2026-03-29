@@ -116,4 +116,91 @@ void probabilities(const StateVector& sv, double* out) {
     }
 }
 
+// --- Qudit measurement (any d) ---
+
+std::vector<double> measure_qudit_probs(const StateVector& sv, int qudit) {
+    const int n = sv.n_qudits();
+    const int d = sv.dimension();
+    if (qudit < 0 || qudit >= n)
+        throw std::out_of_range("qudit index out of range");
+
+    const size_t dim = sv.dim();
+    const size_t stride = sv.stride(qudit);
+    const auto* amp = sv.data();
+
+    std::vector<double> probs(d, 0.0);
+
+    for (size_t i = 0; i < dim; ++i) {
+        int val = extract_qudit(i, stride, d);
+        probs[val] += std::norm(amp[i]);
+    }
+    return probs;
+}
+
+void collapse_qudit(StateVector& sv, int qudit, int value) {
+    const int n = sv.n_qudits();
+    const int d = sv.dimension();
+    if (qudit < 0 || qudit >= n)
+        throw std::out_of_range("qudit index out of range");
+    if (value < 0 || value >= d)
+        throw std::invalid_argument("value must be in [0, d)");
+
+    const size_t dim = sv.dim();
+    const size_t stride = sv.stride(qudit);
+    auto* amp = sv.data();
+
+    // Compute probability of the target value
+    double prob = 0.0;
+    for (size_t i = 0; i < dim; ++i) {
+        if (extract_qudit(i, stride, d) == value)
+            prob += std::norm(amp[i]);
+    }
+
+    if (prob < 1e-15)
+        throw std::runtime_error("Cannot collapse to a state with zero probability");
+
+    double norm_factor = 1.0 / std::sqrt(prob);
+
+    // Normalize matching states, zero out non-matching
+    #pragma omp parallel for schedule(static) if(dim > 4096)
+    for (size_t i = 0; i < dim; ++i) {
+        if (extract_qudit(i, stride, d) == value)
+            amp[i] *= norm_factor;
+        else
+            amp[i] = {0.0, 0.0};
+    }
+}
+
+std::complex<double> qudit_expectation(const StateVector& sv, int qudit,
+    const std::complex<double>* op)
+{
+    const int n = sv.n_qudits();
+    const int d = sv.dimension();
+    if (qudit < 0 || qudit >= n)
+        throw std::out_of_range("qudit index out of range");
+
+    const size_t dim = sv.dim();
+    const size_t stride = sv.stride(qudit);
+    const auto* amp = sv.data();
+
+    // <psi| O |psi> = sum_{i} sum_{s,t} conj(a_{i,s}) * O_{s,t} * a_{i,t}
+    // where i runs over all other qudits, s and t are the target qudit values
+    std::complex<double> result = {0.0, 0.0};
+
+    for (size_t idx = 0; idx < dim; ++idx) {
+        int s = extract_qudit(idx, stride, d);
+        if (s != 0) continue;  // canonical: only process when target qudit = 0
+
+        for (int row = 0; row < d; ++row) {
+            size_t idx_row = replace_qudit(idx, stride, 0, row);
+            for (int col = 0; col < d; ++col) {
+                size_t idx_col = replace_qudit(idx, stride, 0, col);
+                result += std::conj(amp[idx_row]) * op[row * d + col] * amp[idx_col];
+            }
+        }
+    }
+
+    return result;
+}
+
 }} // namespace qforge::measurement

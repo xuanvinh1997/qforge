@@ -179,6 +179,7 @@ cpu_sources = [
         "gates_controlled.cpp",
         "gates_swap.cpp",
         "gates_noise.cpp",
+        "gates_qudit.cpp",
         "measurement.cpp",
         "data_ops.cpp",
         "cpu_backend.cpp",

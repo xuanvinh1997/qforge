@@ -1,9 +1,10 @@
 #pragma once
 #include "state_vector.h"
+#include <complex>
 
 namespace qforge { namespace gates {
 
-// --- Core kernels ---
+// --- Core qubit kernels (d=2) ---
 void apply_single_qubit_gate(StateVector& sv, int target,
     std::complex<double> m00, std::complex<double> m01,
     std::complex<double> m10, std::complex<double> m11);
@@ -15,6 +16,24 @@ void apply_controlled_gate(StateVector& sv, int control, int target,
 void apply_double_controlled_gate(StateVector& sv, int c1, int c2, int target,
     std::complex<double> m00, std::complex<double> m01,
     std::complex<double> m10, std::complex<double> m11);
+
+// --- Generic qudit kernels (any d) ---
+
+/// Apply a d×d unitary matrix to a single qudit at position `target`.
+/// `gate` is row-major: gate[row * d + col].
+void apply_single_qudit_gate(StateVector& sv, int target,
+    const std::complex<double>* gate);
+
+/// Apply a d×d unitary to `target` qudit, conditioned on `control` qudit
+/// having value `ctrl_val`.
+void apply_controlled_qudit_gate(StateVector& sv, int control, int ctrl_val,
+    int target, const std::complex<double>* gate);
+
+/// SWAP two qudits (works for any dimension).
+void qudit_swap(StateVector& sv, int t1, int t2);
+
+/// CSUM gate for qutrits: |c,t> -> |c, (t+c) mod d>
+void csum(StateVector& sv, int control, int target);
 
 // --- Single-qubit gates ---
 void H(StateVector& sv, int target);

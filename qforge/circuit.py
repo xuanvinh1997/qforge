@@ -53,6 +53,31 @@ def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
                             backend='cpu')
     return Wavefunction(np.array(states), amplitude_vector, backend='python')
 
+def Qudit(n_qudits: int, dimension: int = 3, backend: str = 'auto') -> Wavefunction:
+    """Create a qudit quantum circuit with arbitrary local dimension.
+
+    Args:
+        n_qudits: Number of qudits.
+        dimension: Local Hilbert space dimension (d=2 for qubits, d=3 for qutrits).
+        backend: ``'auto'``, ``'cpu'``, or ``'python'``.
+    """
+    states = [
+        "".join(str(v) for v in seq)
+        for seq in itertools.product(range(dimension), repeat=n_qudits)
+    ]
+    amplitude_vector = np.zeros(dimension**n_qudits, dtype=complex)
+    amplitude_vector[0] = 1.0
+
+    if backend == 'auto':
+        backend = _resolve_backend(get_backend())
+
+    if backend in ('cpu', 'auto') and _HAS_CPP:
+        sv = _StateVector(n_qudits, dimension)
+        return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
+                            backend='cpu')
+    return Wavefunction(np.array(states), amplitude_vector, backend='python')
+
+
 def Walk_Qubit(qubit_num=1, dim=1):
     """create a initial quantum state for hadamard coin"""
     if dim != 1 and dim != 2:

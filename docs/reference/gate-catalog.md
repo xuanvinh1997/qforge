@@ -67,6 +67,39 @@ Complete reference for all gates in `qforge.gates`. All gate functions take a
 | `E` | `E(wf, n, p)` | Single-qubit depolarizing channel with probability *p*. | Noise |
 | `E_all` | `E_all(wf, p)` | Depolarizing channel on all qubits with probability *p*. | Noise |
 
+## Qudit Gates (`qforge.qudit_gates`)
+
+Gates for qudits with local dimension d >= 2. Import from `qforge.qudit_gates`.
+
+### Single-Qudit Gates
+
+| Gate | Signature | Description | Category |
+|------|-----------|-------------|----------|
+| `Hd` | `Hd(wf, target)` | Qudit Hadamard (DFT / sqrt(d)). | Fourier |
+| `X01` | `X01(wf, target)` | Swap levels \|0> and \|1>. | Subspace swap |
+| `X02` | `X02(wf, target)` | Swap levels \|0> and \|2>. | Subspace swap |
+| `X12` | `X12(wf, target)` | Swap levels \|1> and \|2>. | Subspace swap |
+| `CLOCK` | `CLOCK(wf, target)` | Cyclic shift: \|k> -> \|k+1 mod d>. | Shift |
+| `ZPHASE` | `ZPHASE(wf, target)` | Ternary phase: diag(1, omega, omega^2, ...). | Phase |
+
+### Qudit Rotation Gates
+
+| Gate | Signature | Description | Category |
+|------|-----------|-------------|----------|
+| `R01` | `R01(wf, target, theta)` | Givens rotation in \|0>-\|1> subspace. | Rotation |
+| `R02` | `R02(wf, target, theta)` | Givens rotation in \|0>-\|2> subspace. | Rotation |
+| `R12` | `R12(wf, target, theta)` | Givens rotation in \|1>-\|2> subspace. | Rotation |
+| `RGM` | `RGM(wf, target, gen, angle)` | Rotation by Gell-Mann generator lambda_k. | Rotation |
+
+### Qudit Entangling Gates
+
+| Gate | Signature | Description | Category |
+|------|-----------|-------------|----------|
+| `CSUM` | `CSUM(wf, control, target)` | \|c,t> -> \|c, (t+c) mod d>. Qutrit CNOT analog. | Entangling |
+| `QUDIT_SWAP` | `QUDIT_SWAP(wf, t1, t2)` | Swap two qudits (any dimension). | SWAP |
+| `apply_qudit_gate` | `apply_qudit_gate(wf, target, gate)` | Apply arbitrary d x d unitary. | Custom |
+| `apply_controlled_qudit_gate` | `apply_controlled_qudit_gate(wf, ctrl, val, tgt, gate)` | Controlled d x d gate. | Controlled |
+
 ## Parameter Summary
 
 | Gate | # Qubits | # Parameters | Parametric? |

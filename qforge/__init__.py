@@ -8,7 +8,7 @@ __version__ = "3.0.0"
 __all__ = [
     "circuit", "gates", "measurement", "data", "encodings",
     "kernels", "wavefunction", "gate_walk", "algo",
-    "mps", "dmrg", "ir",
+    "mps", "dmrg", "ir", "qudit_gates",
     "Circuit", "GateOp", "MeasureOp", "ConditionalOp",
     "Parameter", "ParameterVector",
     "StabilizerState",

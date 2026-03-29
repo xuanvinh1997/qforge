@@ -6,9 +6,10 @@ Complete API documentation for the Qforge quantum simulation framework.
 
 | Module | Description |
 |--------|-------------|
-| [`qforge.circuit`](circuit.md) | Circuit initialization (`Qubit`, `Walk_Qubit`) |
+| [`qforge.circuit`](circuit.md) | Circuit initialization (`Qubit`, `Qudit`, `Walk_Qubit`) |
 | [`qforge.wavefunction`](wavefunction.md) | `Wavefunction` class for quantum state representation |
 | [`qforge.gates`](gates.md) | Gate library (30+ gates with C++ dispatch) |
+| [`qforge.qudit_gates`](qudit_gates.md) | Qudit gate library (qutrits, qudits, Gell-Mann rotations) |
 | [`qforge.measurement`](measurement.md) | Measurement operations and expectation values |
 | [`qforge.encodings`](encodings.md) | 13 quantum data encoding strategies |
 | [`qforge.data`](data.md) | Data analysis: Pauli-Z expectation, correlators, entropy |

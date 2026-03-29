@@ -4,6 +4,41 @@ All notable changes to Qforge are documented here.
 
 ---
 
+## v3.0.0 -- Qudit Support (Qutrits and Beyond)
+
+### Added
+
+- **Generalized StateVector** with arbitrary local dimension d
+  - `StateVector(n_qudits, dimension)` constructor (C++)
+  - Precomputed stride tables for base-d indexing
+  - Backward compatible: `StateVector(n_qubits)` still works as d=2
+
+- **Generic qudit gate kernels** (`gates_qudit.cpp`)
+  - `apply_single_qudit_gate`: apply any d x d unitary to a single qudit
+  - `apply_controlled_qudit_gate`: controlled d x d gate with configurable control value
+  - `qudit_swap`: swap two qudits (any dimension)
+  - `csum`: CSUM gate |c,t> -> |c, (t+c) mod d> (qutrit CNOT analog)
+
+- **Qudit measurement** (C++ + Python)
+  - `measure_qudit_probs`: d-outcome probability distribution
+  - `collapse_qudit`: projective measurement with d outcomes
+  - `qudit_expectation`: expectation value of arbitrary d x d operator
+
+- **Python qudit gate library** (`qforge.qudit_gates`)
+  - Standard qutrit gates: `X01`, `X02`, `X12`, `CLOCK`, `ZPHASE`
+  - Qudit Hadamard (DFT): `Hd`
+  - Givens rotations: `R01`, `R02`, `R12`
+  - Gell-Mann generator rotations: `RGM` (8 SU(3) generators)
+  - Entangling: `CSUM`, `QUDIT_SWAP`
+  - Custom gate application: `apply_qudit_gate`, `apply_controlled_qudit_gate`
+  - All 8 Gell-Mann matrices as `GELL_MANN` constant
+
+- **Circuit initialization**: `Qudit(n_qudits, dimension=3)` in `qforge.circuit`
+  - Auto-generates base-d basis state labels
+  - C++ backend dispatch with Python fallback
+
+---
+
 ## v2.2.0 -- MPS, DMRG, and Tensor Network Methods
 
 ### Added
