@@ -9,6 +9,7 @@ Includes standard qutrit (d=3) gates based on Gell-Mann matrices.
 """
 from __future__ import annotations
 import numpy as np
+from scipy.linalg import expm
 
 from qforge import _HAS_CPP
 
@@ -83,11 +84,14 @@ def _infer_dimension(wavefunction) -> int:
     """Infer the local dimension d from the wavefunction."""
     if wavefunction._sv is not None:
         return wavefunction._sv.dimension
-    # Infer from basis state labels
+    # Infer from basis state labels using integer search
     states = wavefunction.state
     n = len(states[0])
-    d = round(len(states) ** (1.0 / n))
-    return d
+    total = len(states)
+    for d in range(2, total + 1):
+        if d ** n == total:
+            return d
+    raise ValueError(f"Cannot infer dimension: {total} states with {n} qudits")
 
 
 # ============================================================
@@ -157,18 +161,19 @@ def _givens_gate(d: int, i: int, j: int, theta: float) -> np.ndarray:
 
 
 def _phase_givens_gate(d: int, i: int, j: int, theta: float) -> np.ndarray:
-    """Phase rotation in the (i,j) subspace with imaginary coupling.
+    """Rotation via imaginary off-diagonal Gell-Mann generator in (i,j) subspace.
 
-    Like RY analog: exp(-i theta lambda_k / 2) for the imaginary off-diagonal
-    Gell-Mann matrix connecting levels i and j.
+    Implements exp(-i theta lambda_k / 2) where lambda_k has entries
+    -i at (i,j) and +i at (j,i).  Result: diagonal cos(theta/2),
+    off-diagonals -sin(theta/2) at (i,j) and +sin(theta/2) at (j,i).
     """
     gate = np.eye(d, dtype=complex)
     c = np.cos(theta / 2.0)
     s = np.sin(theta / 2.0)
     gate[i, i] = c
     gate[j, j] = c
-    gate[i, j] = -1j * s
-    gate[j, i] = -1j * s
+    gate[i, j] = -s
+    gate[j, i] = s
     return gate
 
 
@@ -253,21 +258,14 @@ def RGM(wavefunction, target: int, generator: int, angle: float) -> None:
         raise ValueError(f"generator must be in [1, {len(GELL_MANN)}]")
     lam = GELL_MANN[generator - 1]
     # Matrix exponential: exp(-i * angle/2 * lambda)
-    gate = _matrix_exp_hermitian(-1j * angle / 2.0 * lam)
+    gate = _matrix_exp(-1j * angle / 2.0 * lam)
     apply_qudit_gate(wavefunction, target, gate)
     wavefunction.visual.append([target, f'RGM{generator}', f'RGM{generator}({angle:.2f})'])
 
 
-def _matrix_exp_hermitian(M: np.ndarray) -> np.ndarray:
-    """Matrix exponential for Hermitian-like matrices via eigendecomposition."""
-    eigvals, eigvecs = np.linalg.eigh(
-        (M + M.conj().T) / 2.0  # ensure Hermitian for numerical stability
-    )
-    # But M might not be Hermitian (it's -i*angle/2 * lambda which is anti-Hermitian)
-    # Use full eig instead
-    eigvals, eigvecs = np.linalg.eig(M)
-    exp_diag = np.diag(np.exp(eigvals))
-    return eigvecs @ exp_diag @ np.linalg.inv(eigvecs)
+def _matrix_exp(M: np.ndarray) -> np.ndarray:
+    """Matrix exponential via scipy."""
+    return expm(M)
 
 
 # --- Givens rotation gates ---
