@@ -18,6 +18,9 @@ def _validate_ctrl_target(control: int, target: int, qubit_num: int) -> None:
 
 def _nq(wavefunction) -> int:
     """Get qubit count from wavefunction."""
+    n = getattr(wavefunction, '_n_qubits', 0)
+    if n:
+        return n
     return len(wavefunction.state[0])
 
 

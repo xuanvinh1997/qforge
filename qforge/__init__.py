@@ -70,7 +70,7 @@ except ImportError:
 # Centralized backend selection
 # ================================================================
 
-_VALID_BACKENDS = ('auto', 'metal', 'cuda', 'cpu', 'distributed', 'python')
+_VALID_BACKENDS = ('auto', 'metal', 'cuda', 'cpu', 'numpy', 'distributed', 'python')
 _default_backend = 'auto'
 
 
@@ -84,7 +84,9 @@ def _resolve_backend(backend: str) -> str:
         return 'metal'
     if _HAS_CPP:
         return 'cpu'
-    return 'python'
+    # No native backend compiled — prefer the vectorized numpy kernel over
+    # the pure-python fallback (which scales as O(N * 2^n) Python loops).
+    return 'numpy'
 
 
 def set_backend(backend: str) -> None:

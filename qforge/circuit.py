@@ -2,6 +2,7 @@
 # author: vinhpx
 """Quantum circuit initialization."""
 from __future__ import annotations
+import os
 from qforge.wavefunction import Wavefunction
 from qforge import (
     _HAS_CPP, _HAS_CUDA, _HAS_METAL, _HAS_DISTRIBUTED,
@@ -9,6 +10,12 @@ from qforge import (
 )
 import itertools
 import numpy as np
+
+# GPU backends (Metal/CUDA) have fixed per-kernel dispatch overhead
+# (~100-200 µs on Metal) that only amortizes for circuits with enough
+# amplitudes. Below this threshold, the C++ CPU backend is orders of
+# magnitude faster. Override via ``QFORGE_GPU_MIN_QUBITS``.
+GPU_MIN_QUBITS = int(os.environ.get('QFORGE_GPU_MIN_QUBITS', '14'))
 
 if _HAS_CPP:
     from qforge._qforge_core import StateVector as _StateVector
@@ -34,6 +41,11 @@ def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
 
     if backend == 'auto':
         backend = _resolve_backend(get_backend())
+        # GPU backends are a pessimization for tiny circuits — their
+        # per-kernel dispatch cost dwarfs the actual compute. Fall back
+        # to the C++ CPU backend below the threshold.
+        if backend in ('metal', 'cuda') and qubit_num < GPU_MIN_QUBITS and _HAS_CPP:
+            backend = 'cpu'
 
     if backend == 'cuda' and _HAS_CUDA:
         sv = _CudaStateVector(qubit_num)
@@ -47,6 +59,9 @@ def Qubit(qubit_num: int, backend: str = 'auto') -> Wavefunction:
         sv = _DistributedStateVector(qubit_num)
         return Wavefunction(np.array(states), amplitude_vector, _sv=sv,
                             backend='distributed')
+    elif backend == 'numpy':
+        return Wavefunction(np.array(states), amplitude_vector,
+                            _sv=None, backend='numpy')
     elif backend in ('cpu', 'auto') and _HAS_CPP:
         sv = _StateVector(qubit_num)
         return Wavefunction(np.array(states), amplitude_vector, _sv=sv,

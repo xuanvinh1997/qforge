@@ -45,6 +45,10 @@ class Wavefunction(object):
         else:
             self._amplitude = amplitude_vector
         self.visual = []
+        # Fast-path flags for the NumPy in-place kernel.
+        # Set by Qubit() when ``backend='numpy'`` is selected.
+        self._use_numpy = (backend == 'numpy')
+        self._n_qubits = len(states[0]) if len(states) > 0 else 0
 
     @property
     def backend(self) -> str:
