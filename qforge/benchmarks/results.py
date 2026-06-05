@@ -58,6 +58,7 @@ class BenchmarkResults:
             "n_runs": config.n_runs,
             "seed": config.seed,
             "max_qubits": config.max_qubits,
+            "qml_qubits": config.qml_qubits,
             "steps": config.steps,
             "lr": config.lr,
         }

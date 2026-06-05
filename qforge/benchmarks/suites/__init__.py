@@ -7,6 +7,7 @@ from qforge.benchmarks.suites.circuits import CircuitsBenchmarkSuite
 from qforge.benchmarks.suites.vqe import VQEBenchmarkSuite
 from qforge.benchmarks.suites.qaoa import QAOABenchmarkSuite
 from qforge.benchmarks.suites.gradient import GradientBenchmarkSuite
+from qforge.benchmarks.suites.qml import QMLBenchmarkSuite
 from qforge.benchmarks.suites.measurement import MeasurementBenchmarkSuite
 from qforge.benchmarks.suites.scaling import ScalingBenchmarkSuite
 from qforge.benchmarks.suites.accuracy import AccuracyBenchmarkSuite
@@ -20,6 +21,7 @@ ALL_SUITES = {
     "vqe": VQEBenchmarkSuite,
     "qaoa": QAOABenchmarkSuite,
     "gradient": GradientBenchmarkSuite,
+    "qml": QMLBenchmarkSuite,
     "measurement": MeasurementBenchmarkSuite,
     "scaling": ScalingBenchmarkSuite,
     "accuracy": AccuracyBenchmarkSuite,

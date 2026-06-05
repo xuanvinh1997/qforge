@@ -28,6 +28,9 @@ COLORS = {
     "theoretical":  "#9E9E9E",
     "cpp":         "#2196F3",
     "python":      "#FF5722",
+    "vqc":          "#2196F3",
+    "qcnn":         "#FF9800",
+    "reuploading":  "#4CAF50",
 }
 
 FRAMEWORK_ORDER = ["qforge", "pennylane", "qiskit"]
@@ -339,6 +342,7 @@ def generate_suite_charts(suite_name: str, results: Dict, output_dir: Path) -> L
         "vqe": _charts_comparison,
         "qaoa": _charts_comparison,
         "gradient": _charts_comparison,
+        "qml": _charts_qml,
         "measurement": _charts_comparison,
         "scaling": _charts_scaling,
         "accuracy": _charts_accuracy,
@@ -453,6 +457,69 @@ def _charts_accuracy(name, results, output_dir):
 def _charts_memory(name, results, output_dir):
     """Memory comparison chart."""
     return [memory_chart(results, output_dir / "memory.png")]
+
+
+def _charts_qml(name, results, output_dir):
+    """QML scaling and classifier-training charts."""
+    paths = []
+
+    ansatz_data = {}
+    for key, data in results.items():
+        if key.startswith("ansatz_"):
+            ansatz_data[key] = {
+                "qubits": data.get("qubits"),
+                "qforge": data.get("qforge_ms"),
+                "pennylane": data.get("pennylane_ms"),
+                "qiskit": data.get("qiskit_ms"),
+            }
+    if ansatz_data:
+        paths.append(scaling_line_chart(
+            ansatz_data,
+            x_key="qubits",
+            title="QML Ansatz Scaling",
+            xlabel="Qubits",
+            ylabel="Forward-pass time (ms)",
+            output_path=output_dir / "qml_ansatz_scaling.png",
+            log_scale=True,
+        ))
+
+    kernel_data = {}
+    for key, data in results.items():
+        if key.startswith("kernel_"):
+            kernel_data[key] = {
+                "qubits": data.get("qubits"),
+                "qforge": data.get("qforge_ms"),
+                "pennylane": data.get("pennylane_ms"),
+            }
+    if kernel_data:
+        paths.append(scaling_line_chart(
+            kernel_data,
+            x_key="qubits",
+            title="QML Fidelity-Kernel Scaling",
+            xlabel="Qubits",
+            ylabel="Kernel-matrix time (ms)",
+            output_path=output_dir / "qml_kernel_scaling.png",
+            series_keys=["qforge", "pennylane"],
+            log_scale=True,
+        ))
+
+    train_data = {}
+    for key, data in results.items():
+        if key.startswith("train_"):
+            label = f"{data.get('qubits')}q"
+            train_data.setdefault(label, {})
+            train_data[label][data.get("model")] = data.get("qforge_ms")
+    if train_data:
+        paths.append(grouped_bar_chart(
+            train_data,
+            title="QML Classifier Training Smoke",
+            ylabel="Training time (ms)",
+            output_path=output_dir / "qml_training.png",
+            frameworks=["vqc", "qcnn", "reuploading"],
+            log_scale=True,
+        ))
+
+    return paths
 
 
 def _charts_mps(name, results, output_dir):

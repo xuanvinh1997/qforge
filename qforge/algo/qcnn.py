@@ -128,11 +128,16 @@ class QCNN:
                 kept.append(q_keep)
             active_qubits = kept
 
-        # Readout
-        expectations = np.array([
-            pauli_expectation(wf, active_qubits[q % len(active_qubits)], 'Z')
-            for q in range(self.n_classes)
-        ])
+        # Readout.  After the final pooling stage a binary QCNN typically has
+        # one active qubit; use opposite logits instead of duplicating <Z>.
+        if self.n_classes == 2 and len(active_qubits) == 1:
+            z = pauli_expectation(wf, active_qubits[0], 'Z')
+            expectations = np.array([z, -z])
+        else:
+            expectations = np.array([
+                pauli_expectation(wf, active_qubits[q % len(active_qubits)], 'Z')
+                for q in range(self.n_classes)
+            ])
         return expectations
 
     @staticmethod

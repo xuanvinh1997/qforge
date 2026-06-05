@@ -1,0 +1,175 @@
+{
+  "timestamp": "2026-06-05T14:23:53",
+  "config": {
+    "n_warmup": 0,
+    "n_runs": 1,
+    "seed": 42,
+    "max_qubits": 12,
+    "qml_qubits": [
+      2,
+      4,
+      8,
+      10,
+      12
+    ],
+    "steps": 1,
+    "lr": 0.1
+  },
+  "system_info": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.9",
+    "processor": "arm",
+    "qforge_version": "3.0.0",
+    "qforge_cpp": "True",
+    "qforge_cuda": "False",
+    "pennylane_version": "0.44.1",
+    "qiskit_version": "2.3.1"
+  },
+  "suites": {
+    "qml": {
+      "ansatz_2q": {
+        "qforge_ms": 0.09449999197386205,
+        "observable": 0.9100485388992758,
+        "qubits": 2,
+        "n_layers": 2,
+        "pennylane_ms": 2.019416991970502,
+        "qiskit_ms": 1.2550840037874877
+      },
+      "ansatz_4q": {
+        "qforge_ms": 0.05183299072086811,
+        "observable": 0.8295841174683749,
+        "qubits": 4,
+        "n_layers": 2,
+        "pennylane_ms": 1.917166999191977,
+        "qiskit_ms": 0.9580839978298172
+      },
+      "ansatz_8q": {
+        "qforge_ms": 0.11783400259446353,
+        "observable": 0.614075426559334,
+        "qubits": 8,
+        "n_layers": 2,
+        "pennylane_ms": 3.2847499969648197,
+        "qiskit_ms": 1.7770000122254714
+      },
+      "ansatz_10q": {
+        "qforge_ms": 0.40058299782685935,
+        "observable": 0.57956284828602,
+        "qubits": 10,
+        "n_layers": 2,
+        "pennylane_ms": 4.640875005861744,
+        "qiskit_ms": 1.9688750035129488
+      },
+      "ansatz_12q": {
+        "qforge_ms": 1.2925839982926846,
+        "observable": 0.46540170993099456,
+        "qubits": 12,
+        "n_layers": 2,
+        "pennylane_ms": 8.100292005110532,
+        "qiskit_ms": 3.43220800277777
+      },
+      "kernel_2q": {
+        "qforge_ms": 0.33758400240913033,
+        "kernel_trace": 4.000000000000003,
+        "min_eig": 0.08958295947683008,
+        "n_samples": 4,
+        "qubits": 2,
+        "pennylane_ms": 2.403959006187506
+      },
+      "kernel_4q": {
+        "qforge_ms": 0.4403339989949018,
+        "kernel_trace": 4.0000000000000036,
+        "min_eig": 0.3752828534834717,
+        "n_samples": 4,
+        "qubits": 4,
+        "pennylane_ms": 2.862166002159938
+      },
+      "kernel_8q": {
+        "qforge_ms": 2.326624991837889,
+        "kernel_trace": 4.0000000000000036,
+        "min_eig": 0.9773585953132549,
+        "n_samples": 4,
+        "qubits": 8,
+        "pennylane_ms": 5.702957991161384
+      },
+      "kernel_10q": {
+        "qforge_ms": 7.94691700139083,
+        "kernel_trace": 4.0000000000000036,
+        "min_eig": 0.9933981697776616,
+        "n_samples": 4,
+        "qubits": 10,
+        "pennylane_ms": 7.642500000656582
+      },
+      "kernel_12q": {
+        "qforge_ms": 30.96920899406541,
+        "kernel_trace": 4.0000000000000036,
+        "min_eig": 0.9967516268851776,
+        "n_samples": 4,
+        "qubits": 12,
+        "pennylane_ms": 13.269499992020428
+      },
+      "train_vqc_2q": {
+        "qforge_ms": 0.6659580103587359,
+        "final_loss": 0.7232988048243388,
+        "steps": 1,
+        "qubits": 2,
+        "model": "vqc"
+      },
+      "train_qcnn_2q": {
+        "qforge_ms": 1.1662920005619526,
+        "final_loss": 0.8966782655466317,
+        "steps": 1,
+        "qubits": 2,
+        "model": "qcnn"
+      },
+      "train_reuploading_2q": {
+        "qforge_ms": 2.5687080051284283,
+        "final_loss": 0.7012699912076699,
+        "steps": 1,
+        "qubits": 2,
+        "model": "reuploading"
+      },
+      "train_vqc_4q": {
+        "qforge_ms": 1.5260420041158795,
+        "final_loss": 0.7392581950608479,
+        "steps": 1,
+        "qubits": 4,
+        "model": "vqc"
+      },
+      "train_qcnn_4q": {
+        "qforge_ms": 5.7126250030705705,
+        "final_loss": 1.014178885796498,
+        "steps": 1,
+        "qubits": 4,
+        "model": "qcnn"
+      },
+      "train_reuploading_4q": {
+        "qforge_ms": 8.044000001973473,
+        "final_loss": 0.6929161030914895,
+        "steps": 1,
+        "qubits": 4,
+        "model": "reuploading"
+      },
+      "train_vqc_8q": {
+        "qforge_ms": 10.656041995389387,
+        "final_loss": 0.6650041379840377,
+        "steps": 1,
+        "qubits": 8,
+        "model": "vqc"
+      },
+      "train_qcnn_8q": {
+        "qforge_ms": 50.246832994162105,
+        "final_loss": 0.9013174045763612,
+        "steps": 1,
+        "qubits": 8,
+        "model": "qcnn"
+      },
+      "train_reuploading_8q": {
+        "qforge_ms": 7.971582992468029,
+        "final_loss": 0.6966962272712965,
+        "steps": 1,
+        "qubits": 8,
+        "model": "reuploading"
+      }
+    }
+  }
+}

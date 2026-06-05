@@ -1,0 +1,153 @@
+{
+  "timestamp": "2026-06-05T14:22:31",
+  "config": {
+    "n_warmup": 0,
+    "n_runs": 1,
+    "seed": 42,
+    "max_qubits": 8,
+    "qml_qubits": null,
+    "steps": 1,
+    "lr": 0.1
+  },
+  "system_info": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit-Mach-O",
+    "python": "3.13.9",
+    "processor": "arm",
+    "qforge_version": "3.0.0",
+    "qforge_cpp": "True",
+    "qforge_cuda": "False",
+    "pennylane_version": "0.44.1",
+    "qiskit_version": "2.3.1"
+  },
+  "suites": {
+    "qml": {
+      "ansatz_2q": {
+        "qforge_ms": 0.13041700003668666,
+        "observable": 0.9100485388992765,
+        "qubits": 2,
+        "n_layers": 2,
+        "pennylane_ms": 2.00304199825041,
+        "qiskit_ms": 1.173416996607557
+      },
+      "ansatz_4q": {
+        "qforge_ms": 0.3158330073347315,
+        "observable": 0.8295841174683748,
+        "qubits": 4,
+        "n_layers": 2,
+        "pennylane_ms": 1.7625830078031868,
+        "qiskit_ms": 1.0131250019185245
+      },
+      "ansatz_6q": {
+        "qforge_ms": 1.4164580061333254,
+        "observable": 0.7566781424056607,
+        "qubits": 6,
+        "n_layers": 2,
+        "pennylane_ms": 2.3489580053137615,
+        "qiskit_ms": 1.3580840022768825
+      },
+      "ansatz_8q": {
+        "qforge_ms": 6.868625001516193,
+        "observable": 0.6140754265593341,
+        "qubits": 8,
+        "n_layers": 2,
+        "pennylane_ms": 3.3700000058161095,
+        "qiskit_ms": 1.4747909881407395
+      },
+      "kernel_2q": {
+        "qforge_ms": 0.8506660087732598,
+        "kernel_trace": 3.9999999999999964,
+        "min_eig": 0.0895829594768303,
+        "n_samples": 4,
+        "qubits": 2,
+        "pennylane_ms": 2.5339169951621443
+      },
+      "kernel_4q": {
+        "qforge_ms": 3.435582999372855,
+        "kernel_trace": 3.999999999999995,
+        "min_eig": 0.37528285348347046,
+        "n_samples": 4,
+        "qubits": 4,
+        "pennylane_ms": 3.9061670104274526
+      },
+      "kernel_6q": {
+        "qforge_ms": 16.0402919864282,
+        "kernel_trace": 3.999999999999993,
+        "min_eig": 0.928918733965166,
+        "n_samples": 4,
+        "qubits": 6,
+        "pennylane_ms": 4.523209005128592
+      },
+      "kernel_8q": {
+        "qforge_ms": 76.42933400347829,
+        "kernel_trace": 3.9999999999999885,
+        "min_eig": 0.977358595313251,
+        "n_samples": 4,
+        "qubits": 8,
+        "pennylane_ms": 5.6903329968918115
+      },
+      "train_vqc_2q": {
+        "qforge_ms": 1.6659999964758754,
+        "final_loss": 0.7232988048243388,
+        "steps": 1,
+        "qubits": 2,
+        "model": "vqc"
+      },
+      "train_qcnn_2q": {
+        "qforge_ms": 4.273667000234127,
+        "final_loss": 0.8966782655466318,
+        "steps": 1,
+        "qubits": 2,
+        "model": "qcnn"
+      },
+      "train_reuploading_2q": {
+        "qforge_ms": 9.407459001522511,
+        "final_loss": 0.7012699912076699,
+        "steps": 1,
+        "qubits": 2,
+        "model": "reuploading"
+      },
+      "train_vqc_4q": {
+        "qforge_ms": 11.92474999697879,
+        "final_loss": 0.7392581950608479,
+        "steps": 1,
+        "qubits": 4,
+        "model": "vqc"
+      },
+      "train_qcnn_4q": {
+        "qforge_ms": 74.45116600138135,
+        "final_loss": 1.0141788857964977,
+        "steps": 1,
+        "qubits": 4,
+        "model": "qcnn"
+      },
+      "train_reuploading_4q": {
+        "qforge_ms": 76.86279198969714,
+        "final_loss": 0.6929161030914895,
+        "steps": 1,
+        "qubits": 4,
+        "model": "reuploading"
+      },
+      "train_vqc_8q": {
+        "qforge_ms": 503.0037499964237,
+        "final_loss": 0.6650041379840376,
+        "steps": 1,
+        "qubits": 8,
+        "model": "vqc"
+      },
+      "train_qcnn_8q": {
+        "qforge_ms": 4933.623375007301,
+        "final_loss": 0.9013174045763608,
+        "steps": 1,
+        "qubits": 8,
+        "model": "qcnn"
+      },
+      "train_reuploading_8q": {
+        "qforge_ms": 76.6712920012651,
+        "final_loss": 0.6966962272712965,
+        "steps": 1,
+        "qubits": 8,
+        "model": "reuploading"
+      }
+    }
+  }
+}

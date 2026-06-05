@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Qforge Benchmark Report</title>
+  <style>
+    :root {
+      --bg: #fafafa; --fg: #222; --card: #fff; --border: #e0e0e0;
+      --qforge: #2196F3; --pennylane: #4CAF50; --qiskit: #FF9800;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+           background: var(--bg); color: var(--fg); line-height: 1.6; padding: 2rem; max-width: 1200px; margin: 0 auto; }
+    h1 { font-size: 2rem; margin-bottom: 0.5rem; color: var(--qforge); }
+    h2 { font-size: 1.4rem; margin: 1.5rem 0 1rem; border-bottom: 2px solid var(--border); padding-bottom: 0.3rem; }
+    .meta { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin: 1rem 0 2rem; }
+    .meta table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
+    .meta td { padding: 0.2rem 0.5rem; border-bottom: 1px solid var(--border); }
+    .meta td:first-child { font-weight: 600; width: 40%; }
+    section { background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 1.5rem; margin-bottom: 1.5rem; }
+    .chart { max-width: 100%; height: auto; margin: 1rem 0; border-radius: 4px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    details { margin-top: 1rem; }
+    summary { cursor: pointer; font-weight: 600; color: var(--qforge); }
+    .data-table { width: 100%; border-collapse: collapse; font-size: 0.8rem; margin-top: 0.5rem; }
+    .data-table th, .data-table td { padding: 0.3rem 0.6rem; border: 1px solid var(--border); text-align: right; }
+    .data-table th { background: #f5f5f5; text-align: left; }
+    .summary { display: flex; gap: 1rem; flex-wrap: wrap; margin: 1rem 0; }
+    .summary-card { background: var(--card); border: 1px solid var(--border); border-radius: 8px;
+                     padding: 1rem; flex: 1; min-width: 200px; text-align: center; }
+    .summary-card .num { font-size: 1.8rem; font-weight: 700; color: var(--qforge); }
+    .summary-card .label { font-size: 0.85rem; color: #666; }
+    .footer { text-align: center; font-size: 0.8rem; color: #999; margin-top: 2rem; padding-top: 1rem; border-top: 1px solid var(--border); }
+  </style>
+</head>
+<body>
+  <h1>Qforge Benchmark Report</h1>
+  <p>Generated: 2026-06-05T14:23:53</p>
+
+  <div class="summary">
+    <div class="summary-card">
+      <div class="num">1</div>
+      <div class="label">Suites Run</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">19</div>
+      <div class="label">Total Tests</div>
+    </div>
+    <div class="summary-card">
+      <div class="num">0/0</div>
+      <div class="label">Qforge Fastest</div>
+    </div>
+  </div>
+
+  <div class="meta">
+    <div>
+      <h3>System Info</h3>
+      <table>
+        <tr><td>platform</td><td>macOS-26.5.1-arm64-arm-64bit-Mach-O</td></tr>
+        <tr><td>python</td><td>3.13.9</td></tr>
+        <tr><td>processor</td><td>arm</td></tr>
+        <tr><td>qforge_version</td><td>3.0.0</td></tr>
+        <tr><td>qforge_cpp</td><td>True</td></tr>
+        <tr><td>qforge_cuda</td><td>False</td></tr>
+        <tr><td>pennylane_version</td><td>0.44.1</td></tr>
+        <tr><td>qiskit_version</td><td>2.3.1</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Configuration</h3>
+      <table>
+        <tr><td>n_warmup</td><td>0</td></tr>
+        <tr><td>n_runs</td><td>1</td></tr>
+        <tr><td>seed</td><td>42</td></tr>
+        <tr><td>max_qubits</td><td>12</td></tr>
+        <tr><td>qml_qubits</td><td>[2, 4, 8, 10, 12]</td></tr>
+        <tr><td>steps</td><td>1</td></tr>
+        <tr><td>lr</td><td>0.1</td></tr>
+      </table>
+    </div>
+  </div>
+
+
+    <section>
+      <h2>QML. Quantum Machine Learning</h2>
+      <img src="charts/qml_ansatz_scaling.png" alt="qml_ansatz_scaling" class="chart">
+      <img src="charts/qml_kernel_scaling.png" alt="qml_kernel_scaling" class="chart">
+      <img src="charts/qml_training.png" alt="qml_training" class="chart">
+
+      <details>
+        <summary>Raw Data</summary>
+        <table class="data-table"><tr><th>Test</th><th>final_loss</th><th>kernel_trace</th><th>min_eig</th><th>model</th><th>n_layers</th><th>n_samples</th><th>observable</th><th>pennylane_ms</th><th>qforge_ms</th><th>qiskit_ms</th><th>qubits</th><th>steps</th></tr><tr><td>ansatz_2q</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2</td><td>N/A</td><td>0.91</td><td>2.019</td><td>0.0945</td><td>1.255</td><td>2</td><td>N/A</td></tr><tr><td>ansatz_4q</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2</td><td>N/A</td><td>0.8296</td><td>1.917</td><td>0.05183</td><td>0.9581</td><td>4</td><td>N/A</td></tr><tr><td>ansatz_8q</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2</td><td>N/A</td><td>0.6141</td><td>3.285</td><td>0.1178</td><td>1.777</td><td>8</td><td>N/A</td></tr><tr><td>ansatz_10q</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2</td><td>N/A</td><td>0.5796</td><td>4.641</td><td>0.4006</td><td>1.969</td><td>10</td><td>N/A</td></tr><tr><td>ansatz_12q</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2</td><td>N/A</td><td>0.4654</td><td>8.1</td><td>1.293</td><td>3.432</td><td>12</td><td>N/A</td></tr><tr><td>kernel_2q</td><td>N/A</td><td>4</td><td>0.08958</td><td>N/A</td><td>N/A</td><td>4</td><td>N/A</td><td>2.404</td><td>0.3376</td><td>N/A</td><td>2</td><td>N/A</td></tr><tr><td>kernel_4q</td><td>N/A</td><td>4</td><td>0.3753</td><td>N/A</td><td>N/A</td><td>4</td><td>N/A</td><td>2.862</td><td>0.4403</td><td>N/A</td><td>4</td><td>N/A</td></tr><tr><td>kernel_8q</td><td>N/A</td><td>4</td><td>0.9774</td><td>N/A</td><td>N/A</td><td>4</td><td>N/A</td><td>5.703</td><td>2.327</td><td>N/A</td><td>8</td><td>N/A</td></tr><tr><td>kernel_10q</td><td>N/A</td><td>4</td><td>0.9934</td><td>N/A</td><td>N/A</td><td>4</td><td>N/A</td><td>7.643</td><td>7.947</td><td>N/A</td><td>10</td><td>N/A</td></tr><tr><td>kernel_12q</td><td>N/A</td><td>4</td><td>0.9968</td><td>N/A</td><td>N/A</td><td>4</td><td>N/A</td><td>13.27</td><td>30.97</td><td>N/A</td><td>12</td><td>N/A</td></tr><tr><td>train_vqc_2q</td><td>0.7233</td><td>N/A</td><td>N/A</td><td>vqc</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>0.666</td><td>N/A</td><td>2</td><td>1</td></tr><tr><td>train_qcnn_2q</td><td>0.8967</td><td>N/A</td><td>N/A</td><td>qcnn</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>1.166</td><td>N/A</td><td>2</td><td>1</td></tr><tr><td>train_reuploading_2q</td><td>0.7013</td><td>N/A</td><td>N/A</td><td>reuploading</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>2.569</td><td>N/A</td><td>2</td><td>1</td></tr><tr><td>train_vqc_4q</td><td>0.7393</td><td>N/A</td><td>N/A</td><td>vqc</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>1.526</td><td>N/A</td><td>4</td><td>1</td></tr><tr><td>train_qcnn_4q</td><td>1.014</td><td>N/A</td><td>N/A</td><td>qcnn</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>5.713</td><td>N/A</td><td>4</td><td>1</td></tr><tr><td>train_reuploading_4q</td><td>0.6929</td><td>N/A</td><td>N/A</td><td>reuploading</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>8.044</td><td>N/A</td><td>4</td><td>1</td></tr><tr><td>train_vqc_8q</td><td>0.665</td><td>N/A</td><td>N/A</td><td>vqc</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>10.66</td><td>N/A</td><td>8</td><td>1</td></tr><tr><td>train_qcnn_8q</td><td>0.9013</td><td>N/A</td><td>N/A</td><td>qcnn</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>50.25</td><td>N/A</td><td>8</td><td>1</td></tr><tr><td>train_reuploading_8q</td><td>0.6967</td><td>N/A</td><td>N/A</td><td>reuploading</td><td>N/A</td><td>N/A</td><td>N/A</td><td>N/A</td><td>7.972</td><td>N/A</td><td>8</td><td>1</td></tr></table>
+      </details>
+    </section>
+
+  <div class="footer">
+    Qforge Benchmark Suite &mdash; <a href="https://github.com/vinhpx/qforge">github.com/vinhpx/qforge</a>
+  </div>
+</body>
+</html>

@@ -26,6 +26,7 @@ class BenchConfig:
     n_runs: int = 5
     seed: int = 42
     max_qubits: int = 20
+    qml_qubits: List[int] | None = None
     shift: float = np.pi / 2
     lr: float = 0.1
     steps: int = 50

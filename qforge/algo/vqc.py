@@ -85,10 +85,20 @@ class VQC:
         layer_size = self.n_qubits * 2
         for l in range(self.n_layers):
             self._variational_layer(wf, params[l * layer_size:(l + 1) * layer_size])
-        # Readout: Pauli-Z expectations → softmax
-        expectations = np.array([
-            pauli_expectation(wf, q, 'Z') for q in range(self.n_classes)
-        ])
+        # Readout: a single measured qubit is enough for binary
+        # classification if the two logits are opposite margins.
+        if self.n_classes == 2 and self.n_qubits == 1:
+            z = pauli_expectation(wf, 0, 'Z')
+            expectations = np.array([z, -z])
+        else:
+            if self.n_classes > self.n_qubits:
+                raise ValueError(
+                    "VQC requires n_qubits >= n_classes, except for "
+                    "binary readout with n_qubits=1"
+                )
+            expectations = np.array([
+                pauli_expectation(wf, q, 'Z') for q in range(self.n_classes)
+            ])
         return expectations
 
     @staticmethod

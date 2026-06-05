@@ -187,7 +187,7 @@ def H(wavefunction: object, n: int) -> None:
         n: Qubit index.
     """
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         r = _INV_SQRT2
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, r, r, r, -r)
     elif wavefunction._sv is not None:
@@ -206,7 +206,7 @@ def H(wavefunction: object, n: int) -> None:
 def X(wavefunction: object, n: int) -> None:
     """Pauli-X gate."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, 0, 1, 1, 0)
     elif wavefunction._sv is not None:
         wavefunction._sv.X(n)
@@ -223,7 +223,7 @@ def X(wavefunction: object, n: int) -> None:
 def Y(wavefunction: object, n: int) -> None:
     """Pauli-Y gate."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, 0, -1j, 1j, 0)
     elif wavefunction._sv is not None:
         wavefunction._sv.Y(n)
@@ -240,7 +240,7 @@ def Y(wavefunction: object, n: int) -> None:
 def Z(wavefunction: object, n: int) -> None:
     """Pauli-Z gate."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, 1, 0, 0, -1)
     elif wavefunction._sv is not None:
         wavefunction._sv.Z(n)
@@ -265,7 +265,7 @@ def RX(wavefunction: object, n: int, phi: float = 0) -> None:
         phi: Rotation angle in radians.
     """
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         c, s = math.cos(phi/2), math.sin(phi/2)
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n,
                    c, -1j*s, -1j*s, c)
@@ -295,7 +295,7 @@ def RY(wavefunction: object, n: int, phi: float = 0) -> None:
         phi: Rotation angle in radians.
     """
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         c, s = math.cos(phi/2), math.sin(phi/2)
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, c, -s, s, c)
     elif wavefunction._sv is not None:
@@ -324,7 +324,7 @@ def RZ(wavefunction: object, n: int, phi: float = 0) -> None:
         phi: Rotation angle in radians.
     """
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         em, ep = cmath.exp(-1j*phi/2), cmath.exp(1j*phi/2)
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, em, 0, 0, ep)
     elif wavefunction._sv is not None:
@@ -353,7 +353,7 @@ def Phase(wavefunction: object, n: int, phi: float = 0) -> None:
         phi: Phase angle in radians.
     """
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n,
                    1, 0, 0, cmath.exp(1j*phi))
     elif wavefunction._sv is not None:
@@ -373,7 +373,7 @@ def Phase(wavefunction: object, n: int, phi: float = 0) -> None:
 def S(wavefunction: object, n: int) -> None:
     """S gate — Phase(pi/2)."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, 1, 0, 0, 1j)
     elif wavefunction._sv is not None:
         wavefunction._sv.S(n)
@@ -390,7 +390,7 @@ def S(wavefunction: object, n: int) -> None:
 def T(wavefunction: object, n: int) -> None:
     """T gate — Phase(pi/4)."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n,
                    1, 0, 0, cmath.exp(1j*cmath.pi/4))
     elif wavefunction._sv is not None:
@@ -408,7 +408,7 @@ def T(wavefunction: object, n: int) -> None:
 def Xsquare(wavefunction: object, n: int) -> None:
     """Square root of NOT gate."""
     _validate_qubit(n, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         a, b = (1+1j)/2, (1-1j)/2
         _np_single(wavefunction._amplitude, wavefunction._n_qubits, n, a, b, b, a)
     elif wavefunction._sv is not None:
@@ -452,7 +452,7 @@ def CNOT(wavefunction: object, control: int, target: int) -> None:
         target: Target qubit index.
     """
     _validate_ctrl_target(control, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_cnot(wavefunction._amplitude, wavefunction._n_qubits, control, target)
     elif wavefunction._sv is not None:
         wavefunction._sv.CNOT(control, target)
@@ -476,7 +476,7 @@ def CRX(wavefunction: object, control: int, target: int, phi: float = 0) -> None
         phi: Rotation angle in radians.
     """
     _validate_ctrl_target(control, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         c, s = math.cos(phi/2), math.sin(phi/2)
         _np_controlled(wavefunction._amplitude, wavefunction._n_qubits,
                        control, target, c, -1j*s, -1j*s, c)
@@ -508,7 +508,7 @@ def CRY(wavefunction: object, control: int, target: int, phi: float = 0) -> None
         phi: Rotation angle in radians.
     """
     _validate_ctrl_target(control, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         c, s = math.cos(phi/2), math.sin(phi/2)
         _np_controlled(wavefunction._amplitude, wavefunction._n_qubits,
                        control, target, c, -s, s, c)
@@ -539,7 +539,7 @@ def CRZ(wavefunction: object, control: int, target: int, phi: float = 0) -> None
         phi: Rotation angle in radians.
     """
     _validate_ctrl_target(control, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         em, ep = cmath.exp(-1j*phi/2), cmath.exp(1j*phi/2)
         _np_controlled(wavefunction._amplitude, wavefunction._n_qubits,
                        control, target, em, 0, 0, ep)
@@ -571,7 +571,7 @@ def CPhase(wavefunction: object, control: int, target: int, phi: float = 0) -> N
         phi: Phase angle in radians.
     """
     _validate_ctrl_target(control, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_controlled(wavefunction._amplitude, wavefunction._n_qubits,
                        control, target, 1, 0, 0, cmath.exp(1j*phi))
     elif wavefunction._sv is not None:
@@ -614,7 +614,7 @@ def CCNOT(wavefunction: object, control_1: int, control_2: int, target: int) -> 
         target: Target qubit index.
     """
     _validate_three_distinct(control_1, control_2, target, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_ccnot(wavefunction._amplitude, wavefunction._n_qubits,
                   control_1, control_2, target)
     elif wavefunction._sv is not None:
@@ -691,7 +691,7 @@ def SWAP(wavefunction: object, target_1: int, target_2: int) -> None:
         target_2: Second qubit index.
     """
     _validate_swap(target_1, target_2, _nq(wavefunction))
-    if wavefunction._use_numpy:
+    if getattr(wavefunction, "_use_numpy", False):
         _np_swap(wavefunction._amplitude, wavefunction._n_qubits, target_1, target_2)
         wavefunction.visual.append([target_1, target_2, 'SWAP'])
         _record_op('SWAP', (target_1, target_2))

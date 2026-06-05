@@ -89,11 +89,17 @@ class DataReuploadingClassifier:
                 for q in range(self.n_qubits - 1):
                     CNOT(wf, q, q + 1)
 
-        # Readout
-        expectations = np.array([
-            pauli_expectation(wf, q % self.n_qubits, 'Z')
-            for q in range(self.n_classes)
-        ])
+        # Readout.  The default one-qubit/binary setting must produce two
+        # independent logits; duplicating the same expectation makes softmax
+        # exactly uniform and prevents learning.
+        if self.n_classes == 2 and self.n_qubits == 1:
+            z = pauli_expectation(wf, 0, 'Z')
+            expectations = np.array([z, -z])
+        else:
+            expectations = np.array([
+                pauli_expectation(wf, q % self.n_qubits, 'Z')
+                for q in range(self.n_classes)
+            ])
         return expectations
 
     @staticmethod

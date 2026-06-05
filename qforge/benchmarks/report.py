@@ -49,6 +49,7 @@ SUITE_TITLES = {
     "vqe":         "3. VQE Algorithm",
     "qaoa":        "4. QAOA Algorithm (Max-Cut)",
     "gradient":    "5. Gradient Computation",
+    "qml":         "QML. Quantum Machine Learning",
     "measurement": "6. Measurement Operations",
     "scaling":     "7. Scalability",
     "accuracy":    "8. Accuracy & Correctness",
